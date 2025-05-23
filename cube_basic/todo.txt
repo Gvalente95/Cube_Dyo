@@ -1,0 +1,8 @@
+- Cubes en diagonales (ne pas passer au travers)
+
+- Map parsing --> ajuster le calcul de coordonnees
+
+- Touches enfoncees pour deplacement continu
+
+- Ombres (et textures ?)
+

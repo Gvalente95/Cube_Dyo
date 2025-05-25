@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/25 08:32:40 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/25 08:47:29 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,12 @@ int	extract_length(t_data *data, int x, int  y)
 	return (sqrt(dx * dx + dy * dy));
 }
 
+/*void	draw_vertical_line(t_data *data, int start, int end, int width)
+{
+	for (int y = 0; y < start_y; y++)
+		if (y >= 0 && y < HI)
+			my_mlx_pixel_put2(data, r, y, BLUE);
+}*/
 
 void cast_length(t_data *data, float distance, int r)
 {
@@ -185,6 +191,7 @@ void	update_ray_pos(t_ray *ray)
 void	cast_rays(t_data *data)
 {
 	t_ray	ray;
+	float	distance;
 
 	ray.step = FOV / NUM_RAYS;
 	ray.ra = (data->run.player.pa - PI / 2 - (FOV / 2));
@@ -192,16 +199,16 @@ void	cast_rays(t_data *data)
 		ray.ra += 2 * PI;
 	for (int r = NUM_RAYS; r > 0; r--)
 	{
+		ray.depth = 0;
 		adjust_ray_data(&ray, data);
-//		float	slope = ray.dx / ray.dy;
-//		printf("Slope is : %f\n", slope);
-		for (ray.depth = 0; ray.depth < 500; ray.depth++)
+		while (ray.depth < 500)
 		{
 			update_ray_pos(&ray);
 			if (wall_hit(ray.mapXidx, ray.mapYidx))
 				break ;
+			ray.depth++;
 		}
-		float distance = extract_length(data, ray.rx, ray.ry);
+		distance = extract_length(data, ray.rx, ray.ry);
 		cast_length(data, distance, r);
 		draw_line(data->run.player.px + PSIZE / 2,
 			data->run.player.py + PSIZE / 2, (int)ray.rx, (int)ray.ry, data);

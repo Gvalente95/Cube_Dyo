@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/23 07:19:46 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/25 08:31:45 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,29 @@ int	key_update_direction(int key, t_player *p)
 	return (0);
 }
 
-# define SECURE_STEP 11
+# define SECURE_STEP 10
 
 static void	key_correct_path(int key, t_player *p)
 {
-	int	mapXidx, mapYidx;//, mapS = 64, mapX = 8, mapY = 8;
+	int	mapXidx, mapYidx;
 	int	mapX=15, mapY=8, mapS=64;
-	int	map[]=
+	int	map[8][15]=
 		{
-			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-			1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-			1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-			1,0,1,0,0,0,0,0,0,1,0,0,0,0,1,
-			1,0,1,0,0,0,0,0,0,0,1,0,0,0,1,
-			1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,
-			1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,
-			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+			{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+			{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+			{1,0,1,0,0,0,0,0,0,1,0,0,0,0,1},
+			{1,0,1,0,0,0,0,0,0,0,1,0,0,0,1},
+			{1,0,0,0,0,1,0,0,0,0,0,1,0,0,1},
+			{1,0,0,0,0,0,0,0,1,0,0,0,0,0,1},
+			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 		};
 	
 	mapXidx = (int)(p->px / mapS);
 	mapYidx = (int)(p->py / mapS);
 	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
 	{
-		if (map[mapYidx * mapX + mapXidx] == 0)
+		if (map[mapYidx][mapXidx] == 0)// && map[mapYidx * mapX + mapXidx] == 0)
 			return ;
 	}
 	else
@@ -146,14 +146,23 @@ static int	key_menu(int key, t_data *data)
 
 void	black(t_data *data, int win)
 {
-	for (int i = 0; i < WI; i++)
-		for (int j = 0; j < HI; j++)
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WI)
+	{
+		j = 0;
+		while (j < HI)
 		{
 			if (win == 1)
 				my_mlx_pixel_put(data, i, j, BLACK);
 			else
 				my_mlx_pixel_put2(data, i, j, BLACK);
+			j++;
 		}
+		i++;
+	}
 }
 
 int	key_update_env(int key, t_data *data)

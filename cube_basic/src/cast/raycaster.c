@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/23 07:58:27 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/25 08:32:40 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 #include "cub.h"
 
 int	mapX=15, mapY=8, mapS=64;
-int	map[]=
+int	map[8][15]=
 	{
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-		1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-		1,0,1,0,0,0,0,0,0,1,0,0,0,0,1,
-		1,0,1,0,0,0,0,0,0,0,1,0,0,0,1,
-		1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,
-		1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+		{1,0,1,0,0,0,0,0,0,1,0,0,0,0,1},
+		{1,0,1,0,0,0,0,0,0,0,1,0,0,0,1},
+		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,1},
+		{1,0,0,0,0,0,0,0,1,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
 #define FOV_ANGLE 60.0
@@ -61,47 +61,71 @@ void	draw_line(int x0, int y0, int x1, int y1, t_data *data)
 
 void	draw_2Dwall(t_data *data, int x, int y, int color)
 {
-	for (int i = x + 1; i < x + mapS - 1; i++)
-		for (int j = y + 1; j < y + mapS - 1; j++)
-			my_mlx_pixel_put(data, i, j, color);
+	int	i;
+	int	j;
+
+	i = x + 1;
+	while (i < x + mapS - 1)
+	{
+		j = y + 1;
+		while (j < y + mapS - 1)
+			my_mlx_pixel_put(data, i, j++, color);
+		i++;
+	}
 }
 
 void	draw_2Dmap(t_data *data)
 {
-	int	x, y, x0, y0, color;
+	int	x;
+	int	y;
+	int	x0;
+	int	y0;
+	int	color;
 
-	for (y = 0; y < mapY; y++)
+	y = 0;
+	while (y < mapY)
 	{
-		for (x = 0; x < mapX; x++)
+		x = 0;
+		while (x < mapX)
 		{
-			if (map[y * mapX + x] == 1)
+			if (map[y][x] == 1)//map[y * mapX + x] == 1)
 				color = WHITE;
 			else
 				color = RED;
 			x0 = x * mapS;
 			y0 = y * mapS;
 			draw_2Dwall(data, x0, y0, color);
+			x++;
 		}
+		y++;
 	}
 }
 
 void	draw_player(t_data *data)
 {
+	int	x;
+	int	y;
+
 	if (data->run.player.px == 0)
 	{
 		data->run.player.px = 300;
 		data->run.player.py = 300;
 	}
-	for (int x = data->run.player.px; x <= data->run.player.px + PSIZE; x++)
-		for (int y = data->run.player.py; y <= data->run.player.py + PSIZE; y++)
-			my_mlx_pixel_put(data, x, y, BLUE);
+	x = data->run.player.px;
+	while (x <= data->run.player.px + PSIZE)
+	{
+		y = data->run.player.py;
+		while (y <= data->run.player.py + PSIZE)
+			my_mlx_pixel_put(data, x, y++, BLUE);
+		x++;
+	}
 }
 
 bool	wall_hit(int mapXidx, int mapYidx)
 {
 	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
 	{
-		if (map[mapYidx * mapX + mapXidx] == 1)
+		if (map[mapYidx][mapXidx] == 1)//[mapYidx * mapX + mapXidx] == 1)
 			return (true);
 	}
 	return (false);

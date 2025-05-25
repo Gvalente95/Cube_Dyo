@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/25 08:47:29 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/25 11:15:25 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	draw_2Dmap(t_data *data)
 		x = 0;
 		while (x < mapX)
 		{
-			if (map[y][x] == 1)//map[y * mapX + x] == 1)
+			if (map[y][x] == 1)
 				color = WHITE;
 			else
 				color = RED;
@@ -125,7 +125,7 @@ bool	wall_hit(int mapXidx, int mapYidx)
 {
 	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
 	{
-		if (map[mapYidx][mapXidx] == 1)//[mapYidx * mapX + mapXidx] == 1)
+		if (map[mapYidx][mapXidx] == 1)
 			return (true);
 	}
 	return (false);
@@ -141,33 +141,51 @@ int	extract_length(t_data *data, int x, int  y)
 	return (sqrt(dx * dx + dy * dy));
 }
 
-/*void	draw_vertical_line(t_data *data, int start, int end, int width)
+void	draw_vertical_line(t_data *data, int start, int end, int ray, int distance, int color)
 {
-	for (int y = 0; y < start_y; y++)
-		if (y >= 0 && y < HI)
-			my_mlx_pixel_put2(data, r, y, BLUE);
-}*/
+	int		shade;
+	int		shaded_color;
 
-void cast_length(t_data *data, float distance, int r)
+	if (color == WHITE)
+	{
+		shade = 255 - (distance * 255 / NUM_RAYS);
+		if (shade < 0)
+			shade = 0;
+		if (shade > 255)
+			shade = 255;
+	}
+	else
+		shaded_color = color;
+	while (start < end)
+	{
+		if (start >= 0 && start < HI)
+		{
+			if (color == WHITE)
+				shaded_color = (shade << 16) | (shade << 8) | shade;
+			my_mlx_pixel_put2(data, ray, start, shaded_color);
+		}
+		start++;
+	}
+}
+
+#define PROJECTION_CONSTANT WI * 30
+
+void cast_length(t_data *data, float distance, int ray)
 {
-    float	projection_constant = WI * 30;
-    float	wall_height = (projection_constant / distance);
-    int		start_y = (HI / 2) - (wall_height / 2);
-    int		end_y = (HI / 2) + (wall_height / 2);
+    float	wall_height;
+    int		start_y;
+    int		end_y;
 
+	wall_height = PROJECTION_CONSTANT / distance;
+	start_y = HI / 2 - wall_height / 2;
+	end_y = HI / 2 + wall_height / 2;
 	if (start_y < 0)
 		start_y = 0;
 	if (end_y > HI)
 	    end_y = HI;
-	for (int y = 0; y < start_y; y++)
-        if (y >= 0 && y < HI)
-            my_mlx_pixel_put2(data, r, y, BLUE);
-	for (int y = start_y; y < end_y; y++)
-        if (y >= 0 && y < HI)
-            my_mlx_pixel_put2(data, r, y, WHITE);
-	for (int y = end_y; y < HI; y++)
-		if (y >= 0 && y < HI)
-			my_mlx_pixel_put2(data, r, y, GREEN);
+	draw_vertical_line(data, 0, start_y, ray, distance, BLUE);
+	draw_vertical_line(data, start_y, end_y, ray, distance, WHITE);
+	draw_vertical_line(data, end_y, HI, ray, distance, GREEN);
 }
 
 void	adjust_ray_data(t_ray *ray, t_data *data)
@@ -191,25 +209,27 @@ void	update_ray_pos(t_ray *ray)
 void	cast_rays(t_data *data)
 {
 	t_ray	ray;
+	int		r;
 	float	distance;
 
 	ray.step = FOV / NUM_RAYS;
 	ray.ra = (data->run.player.pa - PI / 2 - (FOV / 2));
 	if (ray.ra < 0)
 		ray.ra += 2 * PI;
-	for (int r = NUM_RAYS; r > 0; r--)
+	r = NUM_RAYS;
+	while (r > 0)
 	{
 		ray.depth = 0;
 		adjust_ray_data(&ray, data);
-		while (ray.depth < 500)
+		while (ray.depth < 1000)
 		{
 			update_ray_pos(&ray);
 			if (wall_hit(ray.mapXidx, ray.mapYidx))
 				break ;
 			ray.depth++;
-		}
+	}
 		distance = extract_length(data, ray.rx, ray.ry);
-		cast_length(data, distance, r);
+		cast_length(data, distance, r--);
 		draw_line(data->run.player.px + PSIZE / 2,
 			data->run.player.py + PSIZE / 2, (int)ray.rx, (int)ray.ry, data);
 		ray.ra += ray.step;

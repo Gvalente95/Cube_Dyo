@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_tools_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 02:04:12 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/04/04 11:59:49 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	compute_row_start(t_md *md, t_ent *e, float ray_dst)
 	float	vertical_offset;
 
 	(void)e;
-	pitch_factor = tanf(md->cam.rot.y * (M_PI / 180.0f));
+	pitch_factor = tanf(md->cam.rot.y * (_PI / 180.0f));
 	vertical_offset = (md->cam.pos.z * md->win_sz.y) / (ray_dst + 1.0f);
 	pitch_offset = (-pitch_factor * md->win_sz.y / 2) - vertical_offset;
 	return (pitch_offset);

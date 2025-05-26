@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_menu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:23:31 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/03 11:47:44 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 12:03:17 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	set_color_pickers(t_md *md, t_menu *menu)
 
 	md->var = size.x;
 	set_clr_pck(md, &menu->clrp[0], &md->hud.floor_color, "Floor");
-	set_clr_pck(md, &menu->clrp[1], &md->hud.sky_color, "Sky");
+	set_clr_pck(md, &menu->clrp[1], &md->hud.skyclr, "Sky");
 	set_clr_pck(md, &menu->clrp[2], &md->hud.fog_color, "Fog");
 	menu->clrp[0].pos = v2(base_p.x, base_p.y);
 	menu->clrp[1].pos = v2(base_p.x + md->var + spc, base_p.y);

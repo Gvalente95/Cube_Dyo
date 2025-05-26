@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast_threads_Loop.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 21:26:11 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/05 14:42:07 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:47:11 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	cast_ray_threads_lp(t_md *md)
 	rm->ray_visu_offset = get_2d_ray_pos(md);
 	compute_ray_directions(md, rm->dir_vals, md->win_sz.x);
 	trigger_threads(md);
-	if (md->prm.use_grass)
+	if (md->prm.show_grass)
 	{
 		draw_from_pos(md->env.grass_overlay, md->screen, \
 			_v2(0), v2(0, md->env.overlay_y_start));

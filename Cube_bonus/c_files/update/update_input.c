@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_input.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 01:55:29 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 11:15:11 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 16:45:12 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ int	update_key_input(t_md *md, t_menu *menu, t_inventory *inv, unsigned int c)
 {
 	if (update_buttons_triggers(md, menu, c))
 		return (1);
-	if (c == TAB_KEY)
-		set_weapon_index(md);
-	else if (c == Q_KEY)
+	if (c == Q_KEY)
 		set_menu_mode(md, &md->menu, !menu->active);
 	else if (c == I_KEY)
 		set_inventory(md, &md->inv, !md->inv.active);

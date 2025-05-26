@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_entities.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 00:11:00 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 14:11:14 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	init_player(t_md *md, char c, t_vec2 pos, int map_index)
 	else if (base_c == 'W')
 		md->cam.rot.x = 180;
 	md->cam.x_dir_start = md->cam.rot.x;
-	e->angle = md->cam.rot.x * (M_PI / 180.0f);
+	e->angle = md->cam.rot.x * (_PI / 180.0f);
 	e->size = v2(md->t_len / 2, md->t_len / 2);
 	e->pos.z = 0;
 	e->pos.x += md->t_len / 2;
@@ -103,6 +103,7 @@ t_ent	*init_ent(t_md *md, char c, t_vec2 pos, int map_index)
 	e->map_index = map_index;
 	e->screen_p = _v2(-1);
 	e->screen_sz = _v2(-1);
+	e->pk_team = NULL;
 	set_type_specifics(md, e, e->type);
 	if (pos.x > -1 && pos.y > -1)
 		add_ent_at_cord(md, e, pos);

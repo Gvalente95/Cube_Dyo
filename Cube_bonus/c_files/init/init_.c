@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:36:33 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/16 18:24:11 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:47:31 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ static void	init_game_params(t_md *md, t_parameters *prm, int start_debug)
 	prm->fly_cam = 0;
 	prm->ent_mode = 0;
 	prm->use_thrd = 1;
-	prm->use_grass = 0;
+	prm->show_grass = 0;
 	prm->view_2d = 0;
-	prm->use_ceiling = 1;
-	prm->use_floor = 1;
+	prm->show_ceiling = 1;
+	prm->show_floor = 1;
 	prm->show_walls = 1;
 	prm->show_sky = 0;
 	prm->alternate_draw = 1;
@@ -117,8 +117,9 @@ int	init_cube(t_md *md, char *file_arg, int start_debug)
 	md->timer.game_start = get_time_in_seconds();
 	md->timer.elapsed_pause = md->timer.game_start;
 	md->init_steps++;
-	ft_strlcpy(md->plr_name, "Evaluator", 15);
-	md->plr_name_indx = 9;
+	ft_strlcpy(md->plr_name, " ", 15);
+	md->plr_name_indx = 0;
+	md->cam.rot = v3f(0);
 	show_init_information(md);
 	return (0);
 }

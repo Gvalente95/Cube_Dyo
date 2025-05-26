@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:37:22 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:21:26 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	show_init_information(t_md *md)
 	print_vec2(md->map.size, "map size");
 	print_vec3f(md->plr.pos, "plr pos");
 	print_vec3f(md->cam.rot, "plr rot");
+	printf("AU: %d\n", md->prm.au_on);
 	print_vec3(md->plr.coord, "plr coord");
 	printf("map name: %s\nmap content: \n", md->map.name);
 	return ;

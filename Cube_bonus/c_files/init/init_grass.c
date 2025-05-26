@@ -12,16 +12,6 @@
 
 #include "../../cube.h"
 
-static int	get_grass_color(void)
-{
-	t_vec4	rgb;
-
-	rgb.r = r_range(0, 20);
-	rgb.g = r_range(120, 200);
-	rgb.b = r_range(0, 40);
-	return ((rgb.r << 16) | (rgb.g << 8) | rgb.b);
-}
-
 t_fe_type	get_random_fe_type(void)
 {
 	const int	distr[4] = {[fe_grass] = 400, [fe_tree] = 2, [fe_bush] = 1};
@@ -53,7 +43,8 @@ void	init_fe(t_md *md, t_fe *fe)
 		return ;
 	fe->type = get_random_fe_type();
 	fe->cut_len = 0;
-	fe->base_color = get_grass_color();
+	fe->base_color = \
+		v4_to_color(r_range(0, 20), r_range(120, 200), r_range(0, 40), 255);
 	fe->growth_factor = f_range(0.99, 1.01);
 	fe->size = v2(r_range(14, 15), 1);
 	fe->height_max = r_range(5, 7);
@@ -67,6 +58,33 @@ void	init_fe(t_md *md, t_fe *fe)
 	}
 	fe->age = 0;
 	fe->height = fe->size.y;
+}
+
+int	free_env(t_md *md, t_env_manager *env)
+{
+	const t_vec2	mapsz = md->map.size;
+	t_vec2			map;
+	t_vec2			cord;
+	int				free_count;
+
+	free_count = free_image_data(md, env->grass_overlay);
+	map.y = -1;
+	while (++map.y < mapsz.y)
+	{
+		map.x = -1;
+		while (++map.x < mapsz.x)
+		{
+			cord.y = -1;
+			while (++cord.y < md->t_len)
+				free(env->grass[map.y][map.x][cord.y]);
+			free(env->grass[map.y][map.x]);
+		}
+		free(env->grass[map.y]);
+	}
+	free(env->grass);
+	free_count = (map.x * md->t_len) * map.y + 2;
+	printf("%d env elements freed\n", free_count);
+	return (free_count);
 }
 
 void	init_fes(t_md *md, t_env_manager *env, int tlen)

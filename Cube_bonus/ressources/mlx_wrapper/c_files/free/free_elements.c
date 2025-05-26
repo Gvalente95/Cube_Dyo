@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_elements.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 04:32:24 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/04/29 19:27:08 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:19:59 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	free_hud(t_md *md, t_hud *hud)
 	fa += free_image_data(md, hud->key_icon);
 	fa += free_image_data(md, hud->key2_icon);
 	fa += free_image_data(md, hud->hp_icon);
+	fa += free_image_data(md, hud->center);
 	printf("hud freed %d\n", fa);
 	return (fa);
 }
@@ -68,15 +69,15 @@ int	free_var(t_md *md, t_mmap *mmap, t_fx_data *fx, t_mouse *mouse)
 	int	i;
 
 	fa = 0;
+	fa += free_image_data(md, fx->vignette);
 	fa += free_image_data(md, md->screen);
-	fa += free_image_data(md, md->hud.center);
-	fa += safe_free(md->map.buffer);
 	fa += free_image_data(md, mmap->bg);
 	fa += free_image_data(md, mmap->img);
-	fa += free_image_data(md, fx->vignette);
 	fa += free_image_data(md, mouse->cursor);
 	fa += free_image_data(md, mouse->curs_dtc);
 	fa += free_image_data(md, mouse->curs_grb);
+	fa += safe_free(md->map.buffer);
+	fa += safe_free(md->out_map);
 	i = -1;
 	while (++i < 2)
 		if (md->portal.ends[i].e && md->portal.ends[i].e->overlay)
@@ -85,19 +86,19 @@ int	free_var(t_md *md, t_mmap *mmap, t_fx_data *fx, t_mouse *mouse)
 	return (fa);
 }
 
-int	free_menu(t_md *md, t_menu *menu)
+int	free_ent(t_md *md, t_ent *e)
 {
-	int	i;
 	int	fa;
 
 	fa = 0;
-	fa += free_image_data(md, menu->overlay);
-	fa += free_image_data(md, menu->freeze_frame);
-	i = -1;
-	while (++i < 3)
-		fa += free_image_data(md, menu->clrp[i].img);
-	printf("menu freed %d\n", fa);
-	return (fa);
+	if (e->type == nt_mob)
+	{
+		fa += free_mob_images(md, e, "mob");
+		while (e->team_sz)
+			fa += free_ent(md, e->pk_team[--e->team_sz]);
+	}
+	if (e->frames)
+		fa += free_images_data(md, e->frames, "e frames");
 }
 
 int	free_ents(t_md *md)
@@ -114,14 +115,10 @@ int	free_ents(t_md *md)
 	while (node)
 	{
 		e = (t_ent *)node->content;
-		if (e->type == nt_mob)
-			fa += free_mob_images(md, e, "mob");
-		if (e->frames)
-			fa += free_images_data(md, e->frames, "e frames");
+		fa += free_ent(md, e);
 		node = node->next;
 	}
 	fa += dblst_size(md->entities);
 	dblst_clear(&md->entities, free);
-	printf("ent freed %d\n", fa + 1);
-	return (fa);
+	return (printf("ent freed %d\n", fa + 1), fa);
 }

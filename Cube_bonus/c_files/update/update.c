@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 21:45:36 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/03 14:18:49 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 14:00:59 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,21 @@ int	set_menu_mode(t_md *md, t_menu *menu, int mode)
 {
 	if (mode)
 		play_sound(md, AU_MENU_IN);
-	set_mouse_lock(md, !mode);
+	md->mouse.locked = !mode;
 	if (md->is_linux)
 	{
 		if (mode)
+		{
+			show_cursor(md);
 			mlx_mouse_move(md->mlx, md->win, \
 				md->win_sz.x / 2, md->win_sz.y / 2);
+		}
 		else
+		{
+			hide_cursor(md);
 			mlx_mouse_move(md->mlx, md->win, \
 				md->mouse.prev.x, md->mouse.prev.y);
+		}
 	}
 	menu->active = mode;
 	menu->slider_hov = -1;

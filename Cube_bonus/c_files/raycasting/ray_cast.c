@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_cast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:31:58 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/04/23 12:34:07 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	cast_check_ray(t_md *md, t_ray *ray, t_vec3f start_pos, t_ent *check)
 	new_ray->init_steps = ray->steps + 1;
 	new_ray->pos = start_pos;
 	new_ray->had_door = ray->had_door;
-	yaw = (md->cam.rot.x) * (M_PI / 180.0f);
-	if (yaw < -M_PI)
-		yaw += 2 * M_PI;
-	else if (yaw >= M_PI)
-		yaw -= 2 * M_PI;
-	fov = (int)md->prm.fov * (M_PI / 180.0f);
+	yaw = (md->cam.rot.x) * (_PI / 180.0f);
+	if (yaw < -_PI)
+		yaw += 2 * _PI;
+	else if (yaw >= _PI)
+		yaw -= 2 * _PI;
+	fov = (int)md->prm.fov * (_PI / 180.0f);
 	angle_step = fov / (float)(md->win_sz.x - 1);
 	ray_yaw = yaw - (fov / 2.0f) + (angle_step * (-new_ray->index));
 	new_ray->angle = atan2f(sinf(ray_yaw), cosf(ray_yaw));
@@ -62,12 +62,12 @@ void	compute_ray_directions(t_md *md, t_vec3f *dir_vals, int rays_amount)
 	int		i;
 	float	ray_yaw;
 
-	yaw = md->cam.rot.x * (M_PI / 180.0f);
-	if (yaw < -M_PI)
-		yaw += 2 * M_PI;
-	else if (yaw >= M_PI)
-		yaw -= 2 * M_PI;
-	fov = (int)md->prm.fov * (M_PI / 180.0f);
+	yaw = md->cam.rot.x * (_PI / 180.0f);
+	if (yaw < -_PI)
+		yaw += 2 * _PI;
+	else if (yaw >= _PI)
+		yaw -= 2 * _PI;
+	fov = (int)md->prm.fov * (_PI / 180.0f);
 	angle_step = fov / (float)(md->win_sz.x - 1);
 	i = -1;
 	while (++i < rays_amount)

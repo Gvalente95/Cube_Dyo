@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   menu_tools.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:50:28 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/03 11:50:13 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ void	set_wheel(t_clrp *w, t_vec2 mouse_pos, t_vec2 img_center)
 	{
 		angle = atan2f(-dt.y, -dt.x);
 		if (angle < 0)
-			angle += 2 * M_PI;
-		hu_st_v.x = angle / (2 * M_PI);
+			angle += 2 * _PI;
+		hu_st_v.x = angle / (2 * _PI);
 		hu_st_v.y = norm_dist;
 		hu_st_v.z = 1.0f;
 		hsv_to_rgb(hu_st_v.x, hu_st_v.y, hu_st_v.z, &rgb);

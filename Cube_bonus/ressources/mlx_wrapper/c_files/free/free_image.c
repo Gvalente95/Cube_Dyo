@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_image.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 18:46:54 by gvalente          #+#    #+#             */
-/*   Updated: 2025/03/29 12:39:35 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:21:04 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,20 @@ int	free_mob_images(t_md *md, t_ent *e, char *label)
 		fa += free_images_data(md, e->anim[action], "label");
 	}
 	fa += safe_free(e->anim);
+	return (fa);
+}
+
+int	free_menu(t_md *md, t_menu *menu)
+{
+	int	i;
+	int	fa;
+
+	fa = 0;
+	fa += free_image_data(md, menu->overlay);
+	fa += free_image_data(md, menu->freeze_frame);
+	i = -1;
+	while (++i < 3)
+		fa += free_image_data(md, menu->clrp[i].img);
+	printf("menu freed %d\n", fa);
 	return (fa);
 }

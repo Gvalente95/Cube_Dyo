@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_ceiling.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:56:10 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/03 11:36:13 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:31:05 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	draw_ceiling_pxl(t_md *md, t_floor_draw_d d)
 
 static int	set_ceiling_pxl(t_md *md, t_floor_draw_d *d)
 {
-	const t_image	*img = md->txd.ext_wall;
+	const t_image	*img = md->hud.ceiling;
 	const t_vec2	img_sz = img->size;
 	t_vec2f			flr_t;
 	int				map_i;
@@ -88,28 +88,29 @@ int	calculate_door_y(t_md *md, t_floor_draw_d d)
 	return (door_y);
 }
 
-void	draw_ceiling(t_md *md, t_floor_draw_d d)
+void	draw_ceiling(t_md *md, t_floor_draw_d d, float pitch_offset)
 {
-	const t_vec2	winsz = md->win_sz;
-	const int		sky_clr = md->hud.sky_color;
-
 	d.door_y_start = calculate_door_y(md, d);
-	d.win.y = d.ray->wall_strip_pos.x + md->prm.height + 1;
+	d.win.y = (d.ray->wall_strip_pos.x + md->prm.height + 1);
 	if (md->prm.show_sky)
 		draw_strip(md->hud.sky_buffer, md->screen, _v2(d.win.x), d.win.y);
 	else
-		draw_pixels(md->screen, v2(d.win.x, 0), v2(1, d.win.y), sky_clr);
+		draw_pixels(md->screen, v2(d.win.x, 0), v2(1, d.win.y), md->hud.skyclr);
+	d.p = (md->win_sz.y / 2 - pitch_offset) - d.win.y;
 	while (d.win.y-- > 0)
 	{
 		if (d.win.y > d.door_y_start)
+		{
+			d.p++;
 			continue ;
-		d.p = (winsz.y / 2 - md->cam.rot.y * 8) - d.win.y;
+		}
 		if (d.p == 0)
 			d.p = 1;
-		d.rwd = ((0.5 + (md->cam.pos.z / md->t_len)) * winsz.y) / d.p;
-		d.stp.x = d.rwd * (d.dirr.x - d.dirl.x) / winsz.x;
-		d.stp.y = d.rwd * (d.dirr.y - d.dirl.y) / winsz.x;
+		d.rwd = ((0.5 + (md->cam.pos.z / md->t_len)) * md->win_sz.y) / d.p;
+		d.stp.x = d.rwd * (d.dirr.x - d.dirl.x) / md->win_sz.x;
+		d.stp.y = d.rwd * (d.dirr.y - d.dirl.y) / md->win_sz.x;
 		if (!set_ceiling_pxl(md, &d))
 			break ;
+		d.p++;
 	}
 }

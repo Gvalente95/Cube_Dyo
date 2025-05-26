@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_shape.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 22:04:37 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 13:54:26 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	draw_rotated(t_md *md, t_image *from, t_image *onto, t_vec3f pos)
 
 	if (!md || !from || !onto || !from->src || !onto->src)
 		return ;
-	ctx.r = pos.z * (M_PI / 180.0f);
+	ctx.r = pos.z * (_PI / 180.0f);
 	ctx.g = cosf(ctx.r);
 	ctx.b = sinf(ctx.r);
 	ctx.a = 0;

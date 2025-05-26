@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 02:01:00 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:32 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 15:07:02 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	validate_check_hit(t_md *md, t_ray *ray, t_ent *ent, t_ent_type tp)
 		ray->hit_data[ray->hits_len - 1].hit == ent && !md->prm.super_view)
 		return (0);
 	if (ray->check_hit && ray->check_hit != ent)
-		return (0);
+		return (0); 
 	if (is_wall)
 		return ((v3f_bounds(ray->pos, v3f(0), \
 			ent->pos, get_v3f(ent->frame->size.x + 1, ent->frame->size.y, 0))));

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 19:44:01 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/06 17:59:58 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:14:58 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 static int	get_scale_and_pos(t_md *md, t_ent *e, t_vec2 win_sz, t_vec2 *draw_p)
 {
-	float	scale_factor;
-	float	dist;
-	int		scale;
-	int		e_size;
+	float		scale_factor;
+	float		dist;
+	int			scale;
+	int			e_size;
+	const float	pitch_offset = \
+		tanf(md->cam.rot.y * (_PI / 180.0f)) * (win_sz.y / 2);
 
 	e_size = max(md->t_len, e->size.y);
 	scale_factor = e_size / md->txd.e_scales[e->type];
 	dist = (maxf(0.1, e->hit_dist) / 2) * scale_factor;
 	scale = minmaxf(5, win_sz.y * 2, (win_sz.y * e->size.y) / dist);
 	draw_p->x = e->ray_hit_index - scale / 2;
-	draw_p->y = (win_sz.y / 2 - (scale * 0.2f) - \
-		(((md->plr.pos.z * .8) * scale_factor)) - (md->cam.rot.y * 8));
+	draw_p->y = (win_sz.y / 2 - pitch_offset - (scale * 0.4f) - \
+		((md->plr.pos.z * .8f) * scale_factor));
 	if (e->type == nt_pokemon)
 	{
 		draw_p->y -= ((float)((e->size.y * .8) - \

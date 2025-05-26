@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_cube.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 00:03:18 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	init_cube_draw_data(t_cube_drawd *d, t_vec3 pos, \
 	{-c.x, c.y, -c.z}, {c.x, c.y, -c.z}};
 	t_vec2			ij;
 
-	d->angle = scale_vec3f(rot, (M_PI / 180.0f));
+	d->angle = scale_vec3f(rot, (_PI / 180.0f));
 	ij.x = -1;
 	while (++ij.x < 8)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hud.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 22:44:55 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 12:03:17 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,9 @@ t_image	*init_center_cross(t_md *md)
 
 void	init_hud(t_md *md, t_hud *hud)
 {
-	hud->unlocked_weapons[Knife] = 1;
-	hud->unlocked_weapons[Pistol] = 1;
-	hud->unlocked_weapons[Machine_Gun] = 1;
-	hud->unlocked_weapons[Flame_Thrower] = 1;
-	hud->unlocked_weapons[Rocket] = 1;
-	md->hud.ammo = 100;
-	hud->weapon_frame = 0;
-	hud->wpn_index = 1;
 	md->hud.hp = 100;
 	md->hud.keys = 1;
-	hud->bgr_color = md->hud.sky_color;
+	hud->bgr_color = md->hud.skyclr;
 	md->screen = init_img(md, md->win_sz, NULL, hud->bgr_color);
 	hud->overlay = init_img(md, md->win_sz, NULL, -1);
 	hud->lock_x_icon = init_img(md, _v2(20), "hud/icons/lock_x.xpm", -1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_autocam.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 22:58:02 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 10:52:45 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 14:07:44 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static int	exit_autocam(t_md *md, t_autocam *autocam)
 	md->prm.alternate_draw = 1;
 	md->prm.fly_cam = 0;
 	md->prm.super_view = 0;
-	md->prm.use_ceiling = 1;
+	md->prm.show_ceiling = 1;
 	md->hud.fog_color = v4_to_color(10, 10, 10, 255);
-	md->fx.fog = .3f;
+	md->fx.fog = .8f;
 	autocam->active = 0;
 	autocam->quitting = 0;
 	return (1);
@@ -57,8 +57,8 @@ static void	init_autocam(t_md *md, t_autocam *autocam)
 	md->plr.angle = M_PI_2;
 	md->plr.pos.z = -md->t_len * minf(8, (md->map.size.y * .5f));
 	md->prm.fly_cam = 1;
-	md->prm.use_ceiling = 0;
-	md->prm.use_grass = 1;
+	md->prm.show_ceiling = 0;
+	md->prm.show_grass = 1;
 	md->fx.fog = .01f;
 	md->prm.super_view = 1;
 	md->prm.alternate_draw = 0;
@@ -74,14 +74,14 @@ void	update_player_orbit(t_md *md, t_autocam *aut)
 	const float		spd = 5.0f;
 
 	md->plr.angle += 0.005f;
-	if (md->plr.angle > M_PI * 2)
-		md->plr.angle -= M_PI * 2;
+	if (md->plr.angle > _PI * 2)
+		md->plr.angle -= _PI * 2;
 	md->plr.pos.x = aut->center.x + (aut->map_diag * 1) * cosf(md->plr.angle);
 	md->plr.pos.y = aut->center.y + (aut->map_diag * 1) * sinf(md->plr.angle);
 	delta.x = aut->center.x - md->plr.pos.x;
 	delta.y = aut->center.y - md->plr.pos.y;
 	md->cam.rot.z = 0;
-	md->cam.rot.x = atan2f(delta.y, delta.x) * (180.0f / M_PI);
+	md->cam.rot.x = atan2f(delta.y, delta.x) * (180.0f / _PI);
 	md->cam.rot.y = aut->base_y + sinf(md->plr.angle * spd) * amplitude;
 	md->plr.dir.x = cosf(md->plr.angle);
 	md->plr.dir.y = sinf(md->plr.angle);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_rot.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 16:52:38 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 13:54:37 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:19 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	draw_rot_z(t_md *md, t_image *from, t_image *onto, t_vec3f pos)
 
 	if (!from || !onto || !from->src || !onto->src)
 		return ;
-	scale.x = maxf(0.05f, cosf(pos.z * (M_PI / 180.0f)));
+	scale.x = maxf(0.05f, cosf(pos.z * (_PI / 180.0f)));
 	d_pos.x = -1;
 	while (++d_pos.x < src_sz.x)
 	{
@@ -35,7 +35,7 @@ void	draw_rot_z(t_md *md, t_image *from, t_image *onto, t_vec3f pos)
 			draw_d.x = pos.x + sc_pos.x - (src_sz.x * scale.x / 2);
 			draw_d.y = pos.y + sc_pos.y - (src_sz.y / 2);
 			draw_d.y += (int)((d_pos.x - src_sz.x / 2) * \
-				cosf(pos.x * (M_PI / 180.0f)) * 0.5f);
+				cosf(pos.x * (_PI / 180.0f)) * 0.5f);
 			draw_pixel(onto, v2(draw_d.x, draw_d.y), draw_d.z, -1);
 		}
 	}
@@ -51,7 +51,7 @@ void	draw_rot_y(t_md *md, t_image *from, t_image *onto, t_vec3f pos)
 
 	if (!from || !onto || !from->src || !onto->src)
 		return ;
-	scale.y = maxf(0.05f, cosf(pos.z * (M_PI / 180.0f)));
+	scale.y = maxf(0.05f, cosf(pos.z * (_PI / 180.0f)));
 	d_pos.y = -1;
 	while (++d_pos.y < src_sz.y)
 	{
@@ -78,8 +78,8 @@ void	draw_rot_yz(t_md *md, t_image *from, t_image *onto, t_vec4f pos)
 
 	if (!from || !onto || !from->src || !onto->src)
 		return ;
-	scale.x = maxf(0.05f, cosf(pos.b * (M_PI / 180.0f)));
-	scale.y = maxf(0.05f, cosf(pos.a * (M_PI / 180.0f)));
+	scale.x = maxf(0.05f, cosf(pos.b * (_PI / 180.0f)));
+	scale.y = maxf(0.05f, cosf(pos.a * (_PI / 180.0f)));
 	d_pos.y = -1;
 	while (++d_pos.y < src_sz.y)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image_rotate.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:10:50 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static inline float	deg_to_rad(float angle_deg)
 {
-	return (angle_deg * (M_PI / 180.0f));
+	return (angle_deg * (_PI / 180.0f));
 }
 
 void	draw_img_yaw(t_md *md, t_image *from, t_image *onto, t_vec3f pos)

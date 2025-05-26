@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_minimap.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 17:59:55 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:27:51 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	render_minimap_ray(t_md *md)
 		ray_start.y = (ray->start.y / md->t_len) * mp->ic_scl;
 		ray_end.x = (ray->pos.x / md->t_len) * mp->ic_scl;
 		ray_end.y = (ray->pos.y / md->t_len) * mp->ic_scl;
-		draw_line(mp->img, ray_start, ray_end, v2(_GREEN, 1));
+		draw_line(mp->img, ray_start, ray_end, v2(0x00FFAA, 1));
 	}
 	ray = &md->rays[md->win_sz.x / 2];
 	ray_start.x = (ray->start.x / md->t_len) * mp->ic_scl;

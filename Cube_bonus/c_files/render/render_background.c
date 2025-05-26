@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_background.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 22:45:20 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:32 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:47:31 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,15 @@ void	render_background(t_md *md)
 	hud = &md->hud;
 	if (md->prm.view_2d)
 		render_2d_floor(md);
-	if (!md->prm.use_ceiling)
+	if (!md->prm.show_ceiling)
 	{
 		if (md->prm.show_sky)
 			render_sky(md);
 		else
 			draw_pixels(md->screen, \
-	_v2(0), v2(md->win_sz.x, hud->floor_start + 1), hud->sky_color);
+	_v2(0), v2(md->win_sz.x, hud->floor_start + 1), hud->skyclr);
 	}
-	if (!md->prm.use_floor)
+	if (!md->prm.show_floor)
 		draw_pixels(md->screen, \
 			v2(0, hud->floor_start), md->win_sz, hud->floor_color);
 }

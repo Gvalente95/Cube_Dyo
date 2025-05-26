@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:53:43 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/08 17:21:44 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:05:00 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@
 # define HEIGHT			0
 # define BOB_AMOUNT		.2
 # define BOB_SPD		7
-# define GRAVITY		.02
+# define GRAVITY		.03
 # define ARROW_ROT_SPEED 2
 # define MOUSESPD		.5
 # define START_HP		10
 # define SHOOT_REFRESH	.1
 # define WALK_REFRESH	.5
 # define ANIM_REFRESH	.05
-
 # define MAX_AMMO		50
 # define MAX_KEY		3
 //		HUD
@@ -51,7 +50,6 @@
 
 # define THREADS_BATCH	16
 # define FLOOR_WORKERS	4
-
 # define FE_PER_TILE	50
 # define REVEAL_DISTANCE 5
 # define TARGET_FPS		100
@@ -189,7 +187,6 @@ int		str_to_color(const char *line);
 char	*ftoa(float num, int precision);
 
 //	update/update_plr.c
-void	set_weapon_index(t_md *md);
 int		update_player(t_md *md, t_ent *plr);
 
 //	update/update_input.c
@@ -226,7 +223,6 @@ int		get_portal_angle_offset(t_wrd_dir start_dir, t_wrd_dir end_dir);
 int		validate_portal_collision(t_md *md, t_ent *b);
 
 //	render/render_minimap.c
-void	render_mmap_ray(t_md *md, int ray_index, int color);
 void	render_minimap_ray(t_md *md);
 void	show_minimap_entity(t_md *md, t_ent *e, t_image *screen, int no_redraw);
 void	render_minimap(t_md *md, t_mmap *mp);
@@ -274,7 +270,7 @@ int		draw_wall_line_dda(t_md *md, float dist, t_ent *hit, t_ray *ray);
 int		ray_move_dda(t_md *md, t_ray *ray);
 int		update_and_render_fe(t_md *md, t_floor_draw_d *d, t_vec2 t_crd);
 void	draw_raycast_background(t_md *md, t_ray *ray);
-void	draw_ceiling(t_md *md, t_floor_draw_d d);
+void	draw_ceiling(t_md *md, t_floor_draw_d d, float pitch_offset);
 int		draw_stored_sprite_hits(t_md *md, t_ray *ray);
 int		display_quick_letter(t_md *md, char c, t_txtd data);
 int		update_autocam(t_md *md, t_autocam *autocam);
@@ -285,7 +281,6 @@ int		add_ent_at_cord(t_md *md, t_ent *e, t_vec2 new_cord);
 
 //		map_ents
 void	init_mapped_ent(t_md *md);
-int		remove_ent_at_cord(t_md *md, t_vec2 cord);
 t_ent	*get_mapped_at_cord(t_md *md, t_vec2 cord);
 t_ent	*get_mapped_at_pos(t_md *md, t_vec2f pos);
 
@@ -367,5 +362,6 @@ void	handle_pkmn_ko(t_md *md, t_battle_d *bd, t_ent *pk, int i);
 void	draw_grad_pxls(t_image *dst, t_vec2 pos, t_vec2 sz, t_vec3 clr);
 void	draw_from_pos(t_image *src, t_image *dst, t_vec2 pos, t_vec2 draw_strt);
 void	init_ent_pkteam(t_md *md, t_ent *e, int team_size);
+float	get_pitch_offset(t_md *md);
 
 #endif

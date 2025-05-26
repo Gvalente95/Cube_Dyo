@@ -3,26 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   update_plr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 23:43:58 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cube.h"
 
-void	set_weapon_index(t_md *md)
-{
-	md->hud.wpn_index = (md->hud.wpn_index + 1) % (WEAPON_TYPE_LEN - 1);
-	while (!md->hud.unlocked_weapons[md->hud.wpn_index])
-		md->hud.wpn_index = (md->hud.wpn_index + 1) % (WEAPON_TYPE_LEN - 1);
-}
-
 static void	update_player_rot(t_md *md)
 {
 	float		speed;
-	const float	pitch = md->cam.rot.y * (M_PI / 180.0f);
+	const float	pitch = md->cam.rot.y * (_PI / 180.0f);
 
 	speed = md->prm.rot_speed;
 	if (!md->mouse.lock_rot.x && md->mouse.delta.x && md->mouse.focus)
@@ -38,7 +31,7 @@ static void	update_player_rot(t_md *md)
 	else
 		md->cam.rot.y = minmaxf(-80, 80, md->cam.rot.y);
 	md->cam.rot.z = 0;
-	md->plr.angle = (md->cam.rot.x) * (M_PI / 180.0f);
+	md->plr.angle = (md->cam.rot.x) * (_PI / 180.0f);
 	md->plr.dir.x = cosf(md->plr.angle);
 	md->plr.dir.y = sinf(md->plr.angle);
 	md->plr.dir.z = sinf(pitch) * .05;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   collisions_portal.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 16:52:49 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/04/04 11:38:35 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	set_pos_and_angle(t_md *md, t_wrd_dir start_dir, \
 	if (new_angle > 180)
 		new_angle -= 360;
 	md->cam.rot.x = new_angle;
-	plr->angle = (new_angle) * (M_PI / 180.0f);
+	plr->angle = (new_angle) * (_PI / 180.0f);
 	plr->dir.x = cosf(plr->angle);
 	plr->dir.y = sinf(plr->angle);
 	plr->pos.x = out_pos.x;

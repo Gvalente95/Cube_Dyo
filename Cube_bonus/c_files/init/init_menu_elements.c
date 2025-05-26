@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_menu_elements.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 21:25:49 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 10:49:36 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 14:06:56 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	init_sliders(t_md *md, \
 	inisld(md, "Grass speed", get_v4f(0, .02, 3, 100), &pm->fe_speed);
 	inisld(md, "text size", get_v4f(10, pm->txt_sc, 30, 20), &pm->txt_sc);
 	inisld(md, "ray len", get_v4f(0, 9999, 9999, 100), &pm->ray_depth);
-	inisld(md, "Fog", get_v4f(0, .4, 3, 100), &md->fx.fog);
+	inisld(md, "Fog", get_v4f(0, .8, 3, 100), &md->fx.fog);
 	inisld(md, "noise", get_v4f(0, 0, 1, 100), &fx->noise);
 	inisld(md, "scanlines fx", get_v4f(0, 0, 1, 100), &fx->scanlines);
 	inisld(md, "barrel fx", get_v4f(0, 0, 5, 100), &fx->barrel_amount);
@@ -83,22 +83,21 @@ static void	inibut(t_button *but, int *value, char *label, unsigned int map_c)
 	but->active = 1;
 }
 
-static void	init_buttons(t_md *md, t_menu *menu, t_parameters *prm)
+static void	init_buttons(t_md *md, t_menu *menu, t_parameters *prm, int i)
 {
-	int	i;
-
 	i = 0;
 	inibut(&menu->buttons[i++], &prm->debug_mode, "1_debug mode", _1_KEY);
 	inibut(&menu->buttons[i++], &prm->view_2d, "2_Show Grid", _2_KEY);
 	inibut(&menu->buttons[i++], &prm->show_rays, "3_show rays", _3_KEY);
 	inibut(&menu->buttons[i++], &prm->show_walls, "4_show walls", _4_KEY);
-	inibut(&menu->buttons[i++], &prm->use_ceiling, "5_Show ceiling", _5_KEY);
+	inibut(&menu->buttons[i++], &prm->show_ceiling, "5_Show ceiling", _5_KEY);
 	inibut(&menu->buttons[i++], &prm->show_sky, "4_Show sky", _6_KEY);
+	inibut(&menu->buttons[i++], &prm->show_wmap, "Y_Show Wmap", Y_KEY);
 	inibut(&menu->buttons[i++], &prm->show_fps, "5_Show FPS", _7_KEY);
 	inibut(&menu->buttons[i++], &prm->show_hud, "H_Show HUD", H_KEY);
-	inibut(&menu->buttons[i++], &prm->use_floor, "B_Show floor", B_KEY);
+	inibut(&menu->buttons[i++], &prm->show_floor, "B_Show floor", B_KEY);
 	inibut(&menu->buttons[i++], &prm->ent_mode, "E_Show sprites", E_KEY);
-	inibut(&menu->buttons[i++], &prm->use_grass, "G_Show grass", G_KEY);
+	inibut(&menu->buttons[i++], &prm->show_grass, "G_Show grass", G_KEY);
 	inibut(&menu->buttons[i++], &prm->alternate_draw, "O_ALTERNATE", O_KEY);
 	inibut(&menu->buttons[i++], &prm->fly_cam, "F_Fly cam", F_KEY);
 	inibut(&menu->buttons[i++], &prm->use_thrd, "T_Use Threads", T_KEY);
@@ -122,6 +121,5 @@ void	init_menu_elements(t_md *md, t_menu *menu)
 	menu->slider_index = 0;
 	init_sliders(md, &md->prm, &md->fx);
 	menu->sliders[menu->slider_index].active = 0;
-	init_buttons(md, menu, &md->prm);
-	return ;
+	init_buttons(md, menu, &md->prm, 0);
 }

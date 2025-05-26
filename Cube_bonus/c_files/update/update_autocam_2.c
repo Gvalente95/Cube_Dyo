@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_autocam_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 18:31:03 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 10:54:39 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	render_autocam_text(t_md *md, float t)
 	int			i;
 
 	base_p = (t_vec2){md->win_sz.x / 2 - (scale * 2), scale * 1.5};
-	d = (t_txtd){base_p.x, base_p.y, md->hud.fog_color, scale, NULL};
+	d = (t_txtd){base_p.x, base_p.y, md->hud.fog_color, scale, md->screen};
 	i = -1;
 	while (++i < 7)
 	{
@@ -104,7 +104,7 @@ int	move_cam_to_start(t_md *md)
 		md->cam.rot.x += (md->cam.x_dir_start - md->cam.rot.x) * rot_spd.x;
 	if (md->cam.rot.y > 0)
 		md->cam.rot.y -= md->cam.rot.y * rot_spd.y;
-	md->plr.angle = md->cam.rot.x * (M_PI / 180.0f);
+	md->plr.angle = md->cam.rot.x * (_PI / 180.0f);
 	md->plr.dir = (t_vec3f){cosf(md->plr.angle), sinf(md->plr.angle), 0};
 	md->hud.floor_start = md->win_sz.y / 2 - (md->cam.rot.y * 8) + 1;
 	render_background(md);

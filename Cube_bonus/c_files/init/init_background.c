@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_background.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 02:19:07 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:56 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 12:03:17 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ static void	init_sky(t_md *md, t_hud *hud, t_vec2 win_sz)
 	int		base_color;
 	int		rad;
 
-	hud->base_sky = init_img(md, md->win_sz, NULL, hud->sky_color);
-	hud->sky = init_img(md, md->win_sz, NULL, hud->sky_color);
+	hud->base_sky = init_img(md, md->win_sz, NULL, hud->skyclr);
+	hud->sky = init_img(md, md->win_sz, NULL, hud->skyclr);
 	darken_towards_dir(hud->sky, left, .5);
 	init_nebulas(hud->sky, win_sz);
 	i = -1;
@@ -112,5 +112,5 @@ void	init_background(t_md *md, t_hud *hud, t_vec2 win_sz)
 	hud->floor2d = copy_image(md, hud->wall, _v2(md->txd.size_2d), -1);
 	flush_img(hud->floor, hud->floor_color, 0.5, 0);
 	init_sky(md, hud, win_sz);
-	md->hud.fog_color = md->hud.sky_color;
+	md->hud.fog_color = md->hud.skyclr;
 }

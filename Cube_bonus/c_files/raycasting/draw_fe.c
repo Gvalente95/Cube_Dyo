@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_fe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 12:24:01 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 14:26:36 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,12 @@ int	update_and_render_fe(t_md *md, t_floor_draw_d *d, t_vec2 t_crd)
 	render_fe(md, fe, fe->pos, fe->size.x);
 	fe->was_drawn = md->timer.time;
 	return (1);
+}
+
+float	get_pitch_offset(t_md *md)
+{
+	const float		pitch = tanf(md->cam.rot.y * (_PI / 180.0f));
+	const float		pitch_offset = pitch * md->win_sz.y / 2;
+
+	return (pitch_offset);
 }

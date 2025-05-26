@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_gen_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 05:17:00 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/04/29 19:27:08 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 18:03:59 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   audio.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 04:54:44 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/01 08:12:12 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 12:37:33 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ pid_t	play_sound(t_md *md, const char *filename)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (execlp("afplay", "afplay", filename, (char *) NULL) == -1)
-		{
-			perror("execlp failed");
-			exit(EXIT_FAILURE);
-		}
+		if (md->is_linux)
+			execlp("ffplay", "ffplay", "-v", "quiet", "-nodisp", "-autoexit", \
+				filename, (char *) NULL);
+		else
+			execlp("afplay", "afplay", filename, (char *) NULL);
+		perror("execlp failed!");
+		exit(EXIT_FAILURE);
 	}
 	return (pid);
 }
@@ -73,6 +75,11 @@ int	play_loop(t_md *md, pid_t *pid, char *filename, int depend)
 	}
 	if (waitpid(*pid, &status, WNOHANG) == 0)
 		return (0);
+	if (access(filename, F_OK) == -1)
+	{
+		*pid = play_sound(md, filename);
+		return (1);
+	}
 	*pid = play_sound(md, filename);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 13:31:58 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/06 12:15:40 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/24 11:51:13 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	update_ray_data(t_md *md, t_ray *ray, t_vec3f dir_val)
 {
 	ray->hit_data[0].hit = NULL;
+	ray->hit_data[0].vertical_hit_at_e = 0;
 	ray->hits_len = 0;
 	init_base_ray(ray, ray->index, md->cam.pos, 0);
 	ray->wall_strip_pos = _v2(md->hud.floor_start);

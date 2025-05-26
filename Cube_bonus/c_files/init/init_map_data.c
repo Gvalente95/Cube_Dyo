@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_map_data.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:55:04 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 13:50:34 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 12:03:17 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	parse_file_line(char *line, t_md *md)
 	else if (!ft_strncmp(line, "WE ", 3))
 		add_texture_img(md, line, WEST, 1);
 	else if (line[0] == 'C')
-		md->hud.sky_color = str_to_color(line + 2);
+		md->hud.skyclr = str_to_color(line + 2);
 	else if (line[0] == 'F')
 		md->hud.floor_color = str_to_color(line + 2);
 	else if (contains_valid_character(line, md->txd.ents_tp_map[0]))
@@ -99,7 +99,7 @@ static char	*parse_file_data(t_md *md)
 			break ;
 		setstr(&line, extract_line(file_content));
 	}
-	print_color(md->hud.sky_color, "Sky color");
+	print_color(md->hud.skyclr, "Sky color");
 	print_color(md->hud.floor_color, "Floor color");
 	return (safe_free(line), ft_strdup(file_content));
 }

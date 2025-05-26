@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_utils.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:32:42 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/03 13:39:30 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/24 13:59:47 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@
 # define MOUSE_SENSITIVITY	.2
 # define MAPPED_ENT_MAX		150
 # define MOUSE_SMTH			0.2f
+# define _PI				3.14159265358979323846
 
 typedef struct s_mmap
 {
@@ -93,15 +94,11 @@ typedef struct s_hud
 	t_image		*key2_icon;
 	t_image		*hp_icon;
 	t_image		*center;
-	int			unlocked_weapons[WEAPON_TYPE_LEN];
 	int			bgr_color;
 	int			floor_color;
-	int			sky_color;
+	int			skyclr;
 	int			fog_color;
 	int			floor_start;
-	int			wpn_index;
-	int			weapon_frame;
-	int			ammo;
 	int			keys;
 	int			hp;
 }	t_hud;
@@ -135,11 +132,12 @@ typedef struct s_parameters
 	int				ent_mode;
 	int				max_view_sprite;
 	int				au_on;
-	int				use_grass;
 	float			cap_fps;
-	int				use_ceiling;
-	int				use_floor;
+	int				show_ceiling;
+	int				show_floor;
 	int				super_view;
+	int				show_grass;
+	int				show_wmap;
 	int				show_walls;
 	int				show_hud;
 	int				show_sky;
@@ -272,7 +270,6 @@ typedef struct s_md
 	t_inventory		inv;
 	char			base_map_path[50];
 	char			*out_map;
-	t_vec3			*cells;
 	unsigned int	r_seed;
 	int				plr_in_house;
 	int				switch_interior;
@@ -292,7 +289,7 @@ typedef struct s_md
 
 //		input/input_tools.c
 void	wrap_mouse(t_md *md, int delta_x, int delta_y);
-void	set_mouse_lock(t_md *md, int lock);
+void	lock_mouse_center(t_md *md);
 
 //		input/input_mouse.c
 int		mouse_event_handler(int button, int x, int y, void *param);
@@ -318,7 +315,8 @@ int		free_txd(t_md *md, t_texture_data *txd);
 int		free_var(t_md *md, t_mmap *mmap, t_fx_data *fx, t_mouse *mouse);
 int		free_menu(t_md *md, t_menu *menu);
 int		free_ents(t_md *md);
-
+int		free_inv(t_md *md, t_inventory *inv);
+int		free_env(t_md *md, t_env_manager *env);
 //		free/free.c
 int		safe_free(void *item);
 int		free_void_array(void **elements);
@@ -405,5 +403,8 @@ int		rnd_fast_txt(t_md *md, t_txtd data, const char *format, ...);
 int		rnd_txt_simple(t_md *md, t_vec2 pos, const char *format, ...);
 void	init_fonts(t_md *md);
 void	flush_gradient(t_image *src, int color_a, int color_b, float transp);
+void	lock_mouse_center(t_md *md);
+void	show_cursor(t_md *md);
+void	hide_cursor(t_md *md);
 
 #endif

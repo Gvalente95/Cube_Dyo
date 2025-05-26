@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_inventory.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 13:51:20 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 11:01:19 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/23 16:56:13 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,27 @@ void	init_inventory(t_md *md, t_inventory *inv)
 	const t_vec2	pannel_sz = v2((tx_sc * 1.2f) * 5, line_h * 3);
 
 	init_inv_pages(inv);
-	inv->active = 0;
-	inv->sel_i = -1;
 	inv->img = init_img(md, sz, NULL, -1);
 	inv->sz = inv->img->size;
-	inv->p = v2(md->win_sz.x / 2 - sz.x / 2, md->win_sz.y / 2 - sz.y / 2);
-	inv->held_used = 0;
 	inv->opt_img = init_img(md, pannel_sz, NULL, _BLACK);
 	inv->opt_sz = inv->opt_img->size;
+	inv->p = v2(md->win_sz.x / 2 - sz.x / 2, md->win_sz.y / 2 - sz.y / 2);
+	inv->held_used = 0;
 	inv->held_sz = _v2(md->win_sz.x * .2);
+	inv->active = 0;
+	inv->sel_i = -1;
 	inv->held_screen_img = NULL;
 	inv->held_i = -1;
 	inv->line_height = line_h;
 	md->inv.inv_map = NULL;
+}
+
+int	free_inv(t_md *md, t_inventory *inv)
+{
+	int	free_count;
+
+	free_count = free_image_data(md, inv->opt_img);
+	free_count += free_image_data(md, inv->img);
+	free_count += free_image_data(md, inv->inv_map);
+	return (free_count);
 }

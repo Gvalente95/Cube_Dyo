@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/21 12:52:02 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/26 12:49:50 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "string_array.h"
 # include <mlx.h>
 # include <math.h>
+# include <limits.h>
 
 # include "macros.h"
 # include "test.h"
@@ -68,11 +69,18 @@ typedef struct s_player
 	bool		gun;
 }	t_player;
 
-typedef struct s_point
+typedef struct s_poinst
 {
-	double	x;
-	double	y;
+	int	x;
+	int	y;
 }	t_point;
+
+typedef struct s_map
+{
+	char	**map;
+	int		**imap;
+	t_point	max;
+}	t_map;
 
 typedef struct s_ray
 {
@@ -81,6 +89,8 @@ typedef struct s_ray
 	float	ry;
 	int		mapXidx;
 	int		mapYidx;
+	float	fx_idx;
+	float	fy_idx;
 	float	dx;
 	float	dy;
 	int		depth;
@@ -95,8 +105,9 @@ typedef struct s_engine
 	t_player	player;
 	t_bot		*bots;
 	t_ray		*ray;
-	char		**map;
-	int			*imap;
+	t_map		map;
+//	char		**map;
+//	int			**imap;
 }	t_engine;
 
 typedef struct s_menu
@@ -108,10 +119,10 @@ typedef struct s_menu
 
 typedef struct s_data
 {
-	void		*mlx;
-	void		*win;
 	t_menu		menu;
 	t_engine	run;
+	void		*mlx;
+	void		*win;
 	void		*mlx_cast;
 	void		*win_cast;	
 	int			key;
@@ -120,8 +131,11 @@ typedef struct s_data
 //	SETUP
 void	init_struct(t_data *data);
 void	set_up_loops(t_data *data);
-void	set_up_env(t_data *data);
+//void	set_up_env(t_data *data);
+
+//	MAP PARSE
 char	**parse_map(char *doc);
+int		**scale_map(char **map, t_data *data);
 bool	check_map(char **map);
 
 //	MOUSE EVENTS

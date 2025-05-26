@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/25 11:15:25 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/26 10:33:29 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,27 @@ void	draw_player(t_data *data)
 	}
 }
 
-bool	wall_hit(int mapXidx, int mapYidx)
+//bool	check_wall_aura(int mapXidx, int mapYidx, t_ray *ray)
+//{
+//	if (ray->fx_idx + 0.2 > mapXidx && ray->fx_idx - 0.2 < mapXidx
+//		&& ray->fy_idx + 0.2 > mapYidx && ray->fy_idx - 0.2 < mapYidx)
+//		return (true);
+//}
+bool	wall_hit(int mapXidx, int mapYidx, t_ray *ray)
 {
 	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
 	{
 		if (map[mapYidx][mapXidx] == 1)
 			return (true);
+//		else if ((mapXidx < mapX && map[mapYidx][mapXidx + 1] == 1)
+//			|| mapXidx > 0 && map[mapYidx][mapXidx - 1] == 1
+//			|| mapYidx < mapY && map[mapYidx + 1][mapXidx] == 1
+//			|| mapYidx > 0 && map[mapYidx - 1][mapXidx] == 1)
+//			if (check_wall_aura(mapXidx, mapYidx, ray))
+//				return (true);
 	}
 	return (false);
+	(void)ray;
 }
 
 int	extract_length(t_data *data, int x, int  y)
@@ -202,14 +215,16 @@ void	update_ray_pos(t_ray *ray)
 {
 	ray->rx += ray->dx;
 	ray->ry += ray->dy;
-	ray->mapXidx = (int)(ray->rx / mapS);
-	ray->mapYidx = (int) (ray->ry / mapS);
+	ray->mapXidx = (int)((ray->rx) / mapS);
+	ray->mapYidx = (int) ((ray->ry) / mapS);
+	ray->fx_idx = ray->rx / mapS;
+	ray->fy_idx = ray->ry / mapS;
 }
 
 void	cast_rays(t_data *data)
 {
 	t_ray	ray;
-	int		r;
+	int		r;	
 	float	distance;
 
 	ray.step = FOV / NUM_RAYS;
@@ -221,13 +236,12 @@ void	cast_rays(t_data *data)
 	{
 		ray.depth = 0;
 		adjust_ray_data(&ray, data);
-		while (ray.depth < 1000)
+		while (ray.depth++ < 1000)
 		{
 			update_ray_pos(&ray);
-			if (wall_hit(ray.mapXidx, ray.mapYidx))
+			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray))
 				break ;
-			ray.depth++;
-	}
+		}
 		distance = extract_length(data, ray.rx, ray.ry);
 		cast_length(data, distance, r--);
 		draw_line(data->run.player.px + PSIZE / 2,

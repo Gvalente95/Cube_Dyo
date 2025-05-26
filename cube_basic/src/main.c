@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/07 12:13:59 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/26 12:55:07 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,19 @@ static char	*get_content(char *file)
 	return (content);
 }
 
+static void	print_map(int **imap)
+{
+	printf("yoyoyo\n");
+	for (int i = 0; imap && imap[i]; i++)
+	{
+		printf("\ny : %i : ", i);
+		for (int j = 0; imap[i][j] != INT_MAX; j++)
+			printf("%d ", imap[i][j]);
+	}
+	printf("Map printed\n");
+	
+}
+
 static void	gather_data(t_data *data, int ac, char **av)
 {
 	char	*doc;
@@ -88,8 +101,10 @@ static void	gather_data(t_data *data, int ac, char **av)
 		printf("File not found\n");
 		exit(1);
 	}
-	data->run.map = parse_map(doc);
-	if (!check_map(data->run.map))
+	data->run.map.map = parse_map(doc);
+	data->run.map.imap = scale_map(data->run.map.map, data);
+	print_map(data->run.map.imap);
+	if (!check_map(data->run.map.map))
 		exit_game(data);
 }
 

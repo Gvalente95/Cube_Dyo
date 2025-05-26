@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:09 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/20 09:35:37 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/26 12:50:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,26 @@ int	close_window(void *param)
 	return (0);
 }
 
+static void	int_array_free(int ***array)
+{
+	t_point	iter;
+
+	ft_bzero(&iter, sizeof(t_point));
+	if (!array || !*array)
+		return ;
+	while (*array[iter.y])
+	{
+		free(*array[iter.y]);
+		iter.y++;
+	}
+}
+
 void	free_data(t_data *data)
 {
+	string_array_free(&data->run.map.map);
+	int_array_free(&data->run.map.imap);
+	if (!data->mlx || !data->win)
+		return ;
 	if (data->run.frame.img)
 		mlx_destroy_image(data->mlx, data->run.frame.img);
 	if (data->run.frame2.img)
@@ -35,7 +53,6 @@ void	free_data(t_data *data)
 	mlx_destroy_display(data->mlx_cast);
 	free(data->mlx);
 	free(data->mlx_cast);
-	string_array_free(&data->run.map);
 }
 
 void	exit_game(t_data *data)

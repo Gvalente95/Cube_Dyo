@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:09 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/26 12:50:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/27 11:14:28 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,25 @@ int	close_window(void *param)
 	return (0);
 }
 
-static void	int_array_free(int ***array)
+static void	int_array_free(int **array)
 {
-	t_point	iter;
+	int	i;
 
-	ft_bzero(&iter, sizeof(t_point));
-	if (!array || !*array)
-		return ;
-	while (*array[iter.y])
+	i = 0;
+	if (!array)
+		return;
+	while (array[i])
 	{
-		free(*array[iter.y]);
-		iter.y++;
+		free(array[i]);
+		i++;
 	}
+	free(array);
 }
 
 void	free_data(t_data *data)
 {
 	string_array_free(&data->run.map.map);
-	int_array_free(&data->run.map.imap);
+	int_array_free(data->run.map.imap);
 	if (!data->mlx || !data->win)
 		return ;
 	if (data->run.frame.img)

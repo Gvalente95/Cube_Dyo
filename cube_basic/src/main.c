@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/26 12:55:07 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/26 13:03:47 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ static void	gather_data(t_data *data, int ac, char **av)
 	data->run.map.map = parse_map(doc);
 	data->run.map.imap = scale_map(data->run.map.map, data);
 	print_map(data->run.map.imap);
+	free_data(data);
+	exit(1);
 	if (!check_map(data->run.map.map))
 		exit_game(data);
 }

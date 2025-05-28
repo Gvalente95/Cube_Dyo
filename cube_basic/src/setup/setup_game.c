@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 05:52:58 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 06:05:37 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_struct(t_data *data)
 	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
 	data->run.player.dx = 10;
+	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 4;
 }
 
 void	set_up_loops(t_data *data)

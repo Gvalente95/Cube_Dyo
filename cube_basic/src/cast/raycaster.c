@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 05:47:57 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 06:04:20 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 #include "cub.h"
 
 int	mapX=15, mapY=8, mapS=64;
-int	map[8][15]=
-	{
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
-		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
-		{1,0,1,0,0,0,0,0,0,1,0,0,0,0,1},
-		{1,0,1,0,0,0,0,0,0,0,1,0,0,0,1},
-		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,1},
-		{1,0,0,0,0,0,0,0,1,0,0,0,0,0,1},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-	};
+//int	map[8][15]=
+//	{
+//		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+//		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
+//		{1,0,1,0,0,0,0,0,0,1,0,0,0,0,1},
+//		{1,0,1,0,0,0,0,0,0,0,1,0,0,0,1},
+//		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,1},
+//		{1,0,0,0,0,0,0,0,1,0,0,0,0,0,1},
+//		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+//	};
 
 #define FOV_ANGLE 60.0
 #define TILE_SIZE 16
@@ -65,10 +65,10 @@ void	draw_2Dwall(t_data *data, int x, int y, int color)
 	int	j;
 
 	i = x + 1;
-	while (i < x + mapS - 1)
+	while (i < x + data->run.map.mapS - 1)
 	{
 		j = y + 1;
-		while (j < y + mapS - 1)
+		while (j < y + data->run.map.mapS - 1)
 			my_mlx_pixel_put(data, i, j++, color);
 		i++;
 	}
@@ -83,17 +83,19 @@ void	draw_2Dmap(t_data *data)
 	int	color;
 
 	y = 0;
-	while (y < mapY)
+	while (y < data->run.map.max.y * SCALE_MAP)
 	{
 		x = 0;
-		while (x < mapX)
+		while (x < data->run.map.max.x * SCALE_MAP)
 		{
-			if (map[y][x] == 1)
+			if (data->run.map.imap[y][x] == 1)
 				color = WHITE;
+			else if (data->run.map.imap[y][x] == 2)
+				color = BLUE;
 			else
 				color = RED;
-			x0 = x * mapS;
-			y0 = y * mapS;
+			x0 = x * data->run.map.mapS;
+			y0 = y * data->run.map.mapS;
 			draw_2Dwall(data, x0, y0, color);
 			x++;
 		}
@@ -121,10 +123,10 @@ void	draw_player(t_data *data)
 	}
 }
 
-int	wall_hit(int mapXidx, int mapYidx, t_ray *ray)
+int	wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 {
-	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
-		return (map[mapYidx][mapXidx]);
+	if (mapXidx >= 0 && mapXidx < map->max.x && mapYidx >= 0 && mapYidx < map->max.y)
+		return (map->imap[mapYidx][mapXidx]);
 	return (false);
 	(void)ray;
 }
@@ -198,7 +200,6 @@ void	adjust_ray_data(t_ray *ray, t_data *data)
 
 void	update_ray_pos(t_ray *ray, t_map *map)
 {
-	ray->rx += ray->dx;
 	ray->ry += ray->dy;
 	ray->mapXidx = (int)((ray->rx) / map->mapS);
 	ray->mapYidx = (int) ((ray->ry) / map->mapS);
@@ -224,7 +225,7 @@ void	cast_rays(t_data *data)
 		while (ray.depth++ < 1000)
 		{
 			update_ray_pos(&ray, &data->run.map);
-			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray))
+			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
 				break ;
 		}
 		distance = extract_length(data, ray.rx, ray.ry);

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 07:40:28 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:13:28 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	key_update_direction(int key, t_player *p, t_map *map)
 {
 	if (key == 'd')
 	{
-		printf("DIR LEFT\n");
+		printf("DIR s\n");
 		p->pa += 0.2;
 		p->dx = cos(p->pa) * STEP;
 		p->dy = sin(p->pa) * STEP;
@@ -41,7 +41,7 @@ int	key_update_direction(int key, t_player *p, t_map *map)
 
 # define SECURE_STEP 10
 
-static int	wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
+/*static int	wall_hit_for_player(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 {
 	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP
 			&& mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
@@ -78,39 +78,67 @@ static void	key_correct_path(int key, t_player *p, t_map *map)
 		p->px += p->dy;
 		p->py += p->dx;
 	}
+}*/
+
+int	would_wall_hit(t_data *data, t_player *player)
+{
+	int	mapXidx;
+	int	mapYidx;
+
+	mapXidx = data->run.ray->rx / data->run.map.mapS;
+	mapYidx = data->run.ray->ry / data->run.map.mapS;
+	if (mapXidx >= 0 && mapXidx < data->run.map.max.x * SCALE_MAP
+			&& mapYidx >= 0 && mapYidx < data->run.map.max.y * SCALE_MAP)
+		return (data->run.map.imap[mapYidx][mapXidx]);
+	return (0);
+	(void)player;
 }
 
 int	key_update_position(int key, t_data *data, t_player *p)
 {
 	if (data->menu.is_menu)
 		return (1);
-	if (key == 'r')
-	{
-		p->px = 0;
-		p->py = 0;
-	}
 	if (key == A_UP && p->py < HI - SECURE_STEP)
 	{
 		p->px += p->dx;
 		p->py += p->dy;
+		if (would_wall_hit(data, p) == 2)
+		{
+			p->px -= p->dx;
+			p->py -= p->dx;
+		}
 	}
 	else if (key == A_RIGHT && p->px > SECURE_STEP)
 	{
 		p->py += p->dx;
 		p->px -= p->dy;
+		if (would_wall_hit(data, p) == 2)
+		{
+			p->py -= p->dx;
+			p->px += p->dx;
+		}
 	}
 	else if (key == A_LEFT && p->px < WI - SECURE_STEP)
 	{
 		p->py -= p->dx;
 		p->px += p->dy;
+		if (would_wall_hit(data, p) == 2)
+		{
+			p->py += p->dx;
+			p->px -= p->dx;
+		}
 	}
 	else if (key == A_DOWN && p->py > SECURE_STEP)
 	{
 		p->px -= p->dx;
 		p->py -= p->dy;
+		if (would_wall_hit(data, p) == 2)
+		{
+			p->px += p->dx;
+			p->py += p->dx;
+		}
 	}
 	key_update_direction(key, p, &data->run.map);
-	key_correct_path(key, p, &data->run.map);
 	return (0);
 }
 

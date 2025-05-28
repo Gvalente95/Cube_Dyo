@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 07:44:44 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 08:24:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	draw_2Dmap(t_data *data)
 		{
 			if (data->run.map.imap[y][x] == 1)
 				color = WHITE;
-			else if (data->run.map.imap[y][x] == 2)
+			else if (data->run.map.imap[y][x] == -PLAYER_POS)
 				color = BLUE;
 			else
 				color = RED;
@@ -106,7 +106,7 @@ void	draw_player(t_data *data)
 	{
 		y = data->run.player.py;
 		while (y <= data->run.player.py + PSIZE)
-			my_mlx_pixel_put(data, x, y++, BLUE);
+			my_mlx_pixel_put(data, x, y++, GREEN);
 		x++;
 	}
 }
@@ -115,9 +115,8 @@ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 {
 	mapXidx = ray->rx / map->mapS;
 	mapYidx = ray->ry / map->mapS;
-
 	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
-		if (map->imap[mapYidx][mapXidx] == 1)
+		if (map->imap[mapYidx][mapXidx] == 1)// || map->imap[mapYidx][mapXidx] == -PLAYER_POS)
 			return (1);
 	return (0);
 }

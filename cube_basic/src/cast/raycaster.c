@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 07:40:05 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:44:44 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 	mapXidx = ray->rx / map->mapS;
 	mapYidx = ray->ry / map->mapS;
 
-	if (mapXidx >= 0 && mapXidx < map->max.x && mapYidx >= 0 && mapYidx < map->max.y)
+	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
 		if (map->imap[mapYidx][mapXidx] == 1)
 			return (1);
 	return (0);
@@ -222,10 +222,6 @@ void	cast_rays(t_data *data)
 			ra -= 2 * PI;
 		ray.ra = ra;
 		adjust_ray_data(&ray, data);
-		//ray.rx = data->run.player.px;
-		//ray.ry = data->run.player.py;
-		//ray.dx = -cos(ra);
-		//ray.dy = sin(ra);
 		ray.depth = 0;
 		while (ray.depth++ < 1000)
 		{

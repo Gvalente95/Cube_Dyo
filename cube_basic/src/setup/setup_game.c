@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 07:07:29 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:46:11 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	set_player_pos(t_data *data)
 				break ;
 			}
 		}
-	data->run.player.py = pos.y * data->run.map.mapS * 2;
-	data->run.player.px = pos.x * data->run.map.mapS * 3;
+	data->run.player.py = pos.y * SCALE_MAP;// * data->run.map.mapS * 2;
+	data->run.player.px = pos.x * SCALE_MAP;// * data->run.map.mapS * 3;
 	printf("pos x : %d\npos y : %d\n", pos.x, pos.y);
 }
 

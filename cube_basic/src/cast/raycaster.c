@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 06:04:20 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:40:05 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,11 @@
 #include <stdbool.h>
 #include "cub.h"
 
-int	mapX=15, mapY=8, mapS=64;
-//int	map[8][15]=
-//	{
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-//		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
-//		{1,0,1,0,0,1,0,0,0,0,0,0,0,0,1},
-//		{1,0,1,0,0,0,0,0,0,1,0,0,0,0,1},
-//		{1,0,1,0,0,0,0,0,0,0,1,0,0,0,1},
-//		{1,0,0,0,0,1,0,0,0,0,0,1,0,0,1},
-//		{1,0,0,0,0,0,0,0,1,0,0,0,0,0,1},
-//		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-//	};
-
 #define FOV_ANGLE 60.0
 #define TILE_SIZE 16
 #define FOV 1.0471975512 // 60 degrés en radians
 #define NUM_RAYS WI
+#define PROJECTION_CONSTANT WI * 30
 
 void	draw_line(int x0, int y0, int x1, int y1, t_data *data)
 {
@@ -108,7 +96,7 @@ void	draw_player(t_data *data)
 	int	x;
 	int	y;
 
-	if (data->run.player.px == 0)
+	if (data->run.player.px == 0 && data->run.player.py == 0)
 	{
 		data->run.player.px = 300;
 		data->run.player.py = 300;
@@ -123,13 +111,26 @@ void	draw_player(t_data *data)
 	}
 }
 
-int	wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
+static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 {
+	mapXidx = ray->rx / map->mapS;
+	mapYidx = ray->ry / map->mapS;
+
 	if (mapXidx >= 0 && mapXidx < map->max.x && mapYidx >= 0 && mapYidx < map->max.y)
-		return (map->imap[mapYidx][mapXidx]);
+		if (map->imap[mapYidx][mapXidx] == 1)
+			return (1);
+	return (0);
+}
+
+/*static int	wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
+{
+	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP
+			&& mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
+		if (map->imap[mapYidx][mapXidx] == 1)
+			return (1);
 	return (false);
 	(void)ray;
-}
+}*/
 
 int	extract_length(t_data *data, int x, int  y)
 {
@@ -168,15 +169,13 @@ void	draw_vertical_line(t_data *data, int start, int end, int ray, int distance,
 	}
 }
 
-#define PROJECTION_CONSTANT WI * 30
-
 void cast_length(t_data *data, float distance, int ray)
 {
     float	wall_height;
     int		start_y;
     int		end_y;
 
-	wall_height = PROJECTION_CONSTANT / distance;
+	wall_height = PROJECTION_CONSTANT / (distance * 3);
 	start_y = HI / 2 - wall_height / 2;
 	end_y = HI / 2 + wall_height / 2;
 	if (start_y < 0)
@@ -194,34 +193,40 @@ void	adjust_ray_data(t_ray *ray, t_data *data)
 		ray->ra -= 2 * PI;
 	ray->rx = data->run.player.px;
 	ray->ry = data->run.player.py;
-	ray->dx = -cos(ray->ra) * 1;
+	ray->dx = cos(ray->ra) * 1;
 	ray->dy = sin(ray->ra) * 1;
 }
 
 void	update_ray_pos(t_ray *ray, t_map *map)
 {
+	ray->rx += ray->dx;
 	ray->ry += ray->dy;
 	ray->mapXidx = (int)((ray->rx) / map->mapS);
-	ray->mapYidx = (int) ((ray->ry) / map->mapS);
-	ray->fx_idx = ray->rx / map->mapS;
-	ray->fy_idx = ray->ry / map->mapS;
+	ray->mapYidx = (int)((ray->ry) / map->mapS);
 }
 
 void	cast_rays(t_data *data)
 {
 	t_ray	ray;
-	int		r;	
+	int		r;
 	float	distance;
+	float	step = FOV / NUM_RAYS;
+	float	ra = data->run.player.pa - (FOV / 2);
 
-	ray.step = FOV / NUM_RAYS;
-	ray.ra = (data->run.player.pa - PI / 2 - (FOV / 2));
-	if (ray.ra < 0)
-		ray.ra += 2 * PI;
 	r = NUM_RAYS;
 	while (r > 0)
 	{
-		ray.depth = 0;
+		if (ra < 0)
+			ra += 2 * PI;
+		else if (ra > 2 * PI)
+			ra -= 2 * PI;
+		ray.ra = ra;
 		adjust_ray_data(&ray, data);
+		//ray.rx = data->run.player.px;
+		//ray.ry = data->run.player.py;
+		//ray.dx = -cos(ra);
+		//ray.dy = sin(ra);
+		ray.depth = 0;
 		while (ray.depth++ < 1000)
 		{
 			update_ray_pos(&ray, &data->run.map);
@@ -231,8 +236,9 @@ void	cast_rays(t_data *data)
 		distance = extract_length(data, ray.rx, ray.ry);
 		cast_length(data, distance, r--);
 		draw_line(data->run.player.px + PSIZE / 2,
-			data->run.player.py + PSIZE / 2, (int)ray.rx, (int)ray.ry, data);
-		ray.ra += ray.step;
+		          data->run.player.py + PSIZE / 2,
+		          (int)ray.rx, (int)ray.ry, data);
+		ra += step;
 	}
 }
 

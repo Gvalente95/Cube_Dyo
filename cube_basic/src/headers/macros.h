@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:56:48 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 05:50:29 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 07:21:39 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define WI 1024
 # define HI 512
 
-# define SCALE_MAP 2
+# define SCALE_MAP 1
 
 # define MV_MOUSE 6
 # define CLOSE 17

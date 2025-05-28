@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/26 12:49:50 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 05:42:47 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_map
 {
 	char	**map;
 	int		**imap;
+	int		mapS;
 	t_point	max;
 }	t_map;
 

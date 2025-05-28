@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/27 11:12:02 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/27 11:33:47 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,53 +84,9 @@ int	**allocate_scaled_map(t_point max)
 	return (smap);
 }
 
-/*void	map_scale_object(int ***scaled_map, char **map, t_point *original)
-{
-	int		object;
-	t_point	scale;
-	t_point	iter;
-
-	ft_bzero(&iter, sizeof(t_point));
-	scale.x = original->x * SCALE_MAP;
-	scale.y = original->y * SCALE_MAP;
-	if (ft_isspace(map[original->y][original->x]))
-		object = -1;
-	else
-		object = map[original->y][original->x] - '0';
-	while (iter.y < SCALE_MAP)
-	{
-		while (iter.x < SCALE_MAP)
-			(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
-		iter.y++;
-	}
-	original->x++;
-}
-
-int	**scale_map(char **map, t_data *data)
-{
-	int		**scaled_map;
-	t_point	max;
-	t_point	iter;
-
-	ft_bzero(&iter, sizeof(t_point));
-	ft_bzero(&max, sizeof(t_point));
-	map_get_format(map, data);
-	max = data->run.map.max;
-	scaled_map = allocate_scaled_map(max);
-	if (!scaled_map)
-		return (NULL);
-	while (iter.y < max.y)
-	{
-		while (iter.x < max.x)
-			map_scale_object(&scaled_map, map, &iter);
-		iter.y++;
-	}
-	printf("voila\n");
-	return (scaled_map);
-}*/
-
 void	map_scale_object(int ***scaled_map, char **map, t_point *original)
 {
+	char	current;
 	int		object;
 	t_point	scale;
 	t_point	iter;
@@ -138,15 +94,15 @@ void	map_scale_object(int ***scaled_map, char **map, t_point *original)
 	ft_bzero(&iter, sizeof(t_point));
 	scale.x = original->x * SCALE_MAP;
 	scale.y = original->y * SCALE_MAP;
-
-	char current = map[original->y][original->x];
+	current = map[original->y][original->x];
 	if (ft_isspace(current))
 		object = -1;
 	else if (current >= '0' && current <= '9')
 		object = current - '0';
+	else if (ft_isalpha(current))
+		object = 9;
 	else
 		object = -2;
-
 	while (iter.y < SCALE_MAP)
 	{
 		iter.x = 0;
@@ -179,7 +135,6 @@ int	**scale_map(char **map, t_data *data)
 			map_scale_object(&scaled_map, map, &iter);
 		iter.y++;
 	}
-	printf("voila\n");
 	return (scaled_map);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/25 08:57:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 05:45:22 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	key_correct_path(int key, t_player *p)
 	mapYidx = (int)(p->py / mapS);
 	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
 	{
-		if (map[mapYidx][mapXidx] == 0)// && map[mapYidx * mapX + mapXidx] == 0)
+		if (map[mapYidx][mapXidx] == 0)
 			return ;
 	}
 	else

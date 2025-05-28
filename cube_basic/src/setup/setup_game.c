@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/27 03:42:05 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 05:52:58 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 void	init_struct(t_data *data)
 {
-//	data->mlx = mlx_init();
-//	data->mlx_cast = mlx_init();
-	ft_memset(&data->run, 0, sizeof(t_engine));
-//	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
-//	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
+	data->mlx = mlx_init();
+	data->mlx_cast = mlx_init();
+	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
+	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
 	data->run.player.dx = 10;
 }

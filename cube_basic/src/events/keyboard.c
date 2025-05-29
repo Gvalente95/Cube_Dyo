@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:39:42 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:49:05 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,25 +61,21 @@ int	key_update_position(int key, t_data *data, t_player *p)
 		return (1);
 	
 	if (key == A_UP && p->py < HI - SECURE_STEP)
-//		&& !would_wall_hit(data, p->dx + p->dx, p->py + p->dy))
 	{
 		p->py += p->dx;
 		p->px += p->dy;
 	}
 	else if (key == A_LEFT && p->px > SECURE_STEP)
-//		&& !would_wall_hit(data, p->dx + p->dx, p->py - p->dy))
 	{
 		p->px += p->dx;
 		p->py -= p->dy;
 	}
 	else if (key == A_RIGHT && p->px < WI - SECURE_STEP)
-//		&& !would_wall_hit(data, p->dx - p->dx, p->py + p->dy))
 	{
 		p->px -= p->dx;
 		p->py += p->dy;
 	}
 	else if (key == A_DOWN && p->py > SECURE_STEP) 
-//		&& !would_wall_hit(data, p->dx - p->dx, p->py - p->dy))
 	{
 		p->py -= p->dx;
 		p->px -= p->dy;
@@ -158,9 +154,9 @@ void	check_player_direction(t_data *data, t_player *player)
 				break ;
 		}
 		distance = extract_length(data, ray.rx, ray.ry);
-		draw_line(data->run.player.px + PSIZE / 2,
-		          data->run.player.py + PSIZE / 2,
-		          (int)ray.rx, (int)ray.ry, data);
+//		draw_line(data->run.player.px + PSIZE / 2,
+//		          data->run.player.py + PSIZE / 2,
+//		          (int)ray.rx, (int)ray.ry, BLACK, data);
 		ra += step;
 		r--;
 	}

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:18:18 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:42:47 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	compute_raycast(t_data *data);
 //	DISPLAY
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	my_mlx_pixel_put2(t_data *data, int x, int y, int color);
-void	draw_line(int x0, int y0, int x1, int y1, t_data *data);
+void	draw_line(int x0, int y0, int x1, int y1, int color, t_data *data);
 void	draw_2Dwall(t_data *data, int x, int y, int color);
 void	draw_2Dmap(t_data *data);
 void	draw_player(t_data *data);

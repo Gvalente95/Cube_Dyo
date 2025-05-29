@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 12:04:51 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 12:21:35 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,28 @@ int	key_update_position(int key, t_data *data, t_player *p)
 {
 	if (data->menu.is_menu)
 		return (1);
-	if (key == A_UP && p->py < HI - SECURE_STEP && data->run.player.dir.up)
+	if (key == A_UP && p->py < HI - SECURE_STEP && data->run.player.dir.left)
 	{
 		p->py += p->dx;
 		p->px += p->dy;
 	}
-	else if (key == A_LEFT && p->px > SECURE_STEP && data->run.player.dir.left)
+	else if (key == A_LEFT && p->px > SECURE_STEP && data->run.player.dir.up)
 	{
 		p->px += p->dx;
 		p->py -= p->dy;
 	}
-	else if (key == A_RIGHT && p->px < WI - SECURE_STEP && data->run.player.dir.right)
+	else if (key == A_RIGHT && p->px < WI - SECURE_STEP && data->run.player.dir.down)
 	{
 		p->px -= p->dx;
 		p->py += p->dy;
 	}
-	else if (key == A_DOWN && p->py > SECURE_STEP && data->run.player.dir.down) 
+	else if (key == A_DOWN && p->py > SECURE_STEP && data->run.player.dir.right) 
 	{
 		p->py -= p->dx;
 		p->px -= p->dy;
 	}
+	printf("Up : %d\nDown : %d\nLeft : %d\nRight : %d\n",
+		data->run.player.dir.up, data->run.player.dir.down, data->run.player.dir.left, data->run.player.dir.right);
 	key_update_direction(key, p, &data->run.map);
 	return (0);
 }
@@ -125,30 +127,32 @@ void	load_length(t_data *data, t_ray *ray, int r)
 	float	distance;
 
 	distance = extract_length(data, (int)ray->rx, (int)ray->ry);
+	//if (r == 0 || r == 90 || r == 200 || r == 290)
+	//	printf("Len : %f\n", distance);
 	if (r == 0)
 	{
-		if (distance <= MOVE_LIMIT - STEP)
+		if (distance < MOVE_LIMIT)
 			data->run.player.dir.right = 0;
 		else
-			data->run.player.dir.down = 1;
+			data->run.player.dir.right = 1;
 	}
-	else if (r >= 90)
+	else if (r == 90)
 	{
-		if (distance <= MOVE_LIMIT - STEP)
+		if (distance < MOVE_LIMIT)
 			data->run.player.dir.up = 0;
 		else
-			data->run.player.dir.down = 1;
+			data->run.player.dir.up = 1;
 	}
 	else if (r == 200)
 	{
-		if (distance <= MOVE_LIMIT - STEP)
+		if (distance < MOVE_LIMIT)
 			data->run.player.dir.left = 0;
 		else
-			data->run.player.dir.down = 1;
+			data->run.player.dir.left = 1;
 	}
 	else if (r == 290)
 	{
-		if (distance <= MOVE_LIMIT - STEP)
+		if (distance < MOVE_LIMIT)
 			data->run.player.dir.down = 0;
 		else
 			data->run.player.dir.down = 1;
@@ -168,16 +172,16 @@ void	check_player_direction(t_data *data)
 		ray.ra = ra;
 		adjust_ray_data(&ray, data);
 		ray.depth = 0;
-		while (ray.depth++ < MOVE_LIMIT)
+		while (ray.depth++ < MOVE_LIMIT + 20)
 		{
 			update_ray_pos(&ray, &data->run.map);
 			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
 				break ;
 		}
 		load_length(data, &ray, r);
-	//	draw_line(data->run.player.px + PSIZE / 2,
-	//	          data->run.player.py + PSIZE / 2,
-	//	          (int)ray.rx, (int)ray.ry, data);
+		draw_line(data->run.player.px + PSIZE / 2,
+		          data->run.player.py + PSIZE / 2,
+		          (int)ray.rx, (int)ray.ry, data);
 		ra += step;
 	}
 }

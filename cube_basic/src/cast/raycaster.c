@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:33:52 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:38:02 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,8 +182,8 @@ static void	adjust_ray_data(t_ray *ray, t_data *data)
 
 static void	update_ray_pos(t_ray *ray, t_map *map)
 {
-	ray->rx += ray->dx;
-	ray->ry += ray->dy;
+	ray->rx += ray->dy;
+	ray->ry += ray->dx;
 	ray->mapXidx = (int)((ray->rx) / map->mapS);
 	ray->mapYidx = (int)((ray->ry) / map->mapS);
 }

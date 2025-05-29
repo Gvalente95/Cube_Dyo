@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:33:41 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:39:42 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,26 @@ int	key_update_position(int key, t_data *data, t_player *p)
 	if (key == A_UP && p->py < HI - SECURE_STEP)
 //		&& !would_wall_hit(data, p->dx + p->dx, p->py + p->dy))
 	{
-		p->px += p->dx;
-		p->py += p->dy;
+		p->py += p->dx;
+		p->px += p->dy;
 	}
-	else if (key == A_RIGHT && p->px > SECURE_STEP)
+	else if (key == A_LEFT && p->px > SECURE_STEP)
 //		&& !would_wall_hit(data, p->dx + p->dx, p->py - p->dy))
 	{
-		p->py += p->dx;
-		p->px -= p->dy;
+		p->px += p->dx;
+		p->py -= p->dy;
 	}
-	else if (key == A_LEFT && p->px < WI - SECURE_STEP)
+	else if (key == A_RIGHT && p->px < WI - SECURE_STEP)
 //		&& !would_wall_hit(data, p->dx - p->dx, p->py + p->dy))
 	{
-		p->py -= p->dx;
-		p->px += p->dy;
+		p->px -= p->dx;
+		p->py += p->dy;
 	}
 	else if (key == A_DOWN && p->py > SECURE_STEP) 
 //		&& !would_wall_hit(data, p->dx - p->dx, p->py - p->dy))
 	{
-		p->px -= p->dx;
-		p->py -= p->dy;
+		p->py -= p->dx;
+		p->px -= p->dy;
 	}
 	key_update_direction(key, p, &data->run.map);
 	return (0);

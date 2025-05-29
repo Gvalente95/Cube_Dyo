@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:52:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 11:12:21 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include "cub.h"
 
-static void	draw_line_(int x0, int y0, int x1, int y1, t_data *data)
+void	draw_line_(int x0, int y0, int x1, int y1, t_data *data)
 {
 	int	dx = abs(x1 - x0);
 	int	dy = abs(y1 - y0);
@@ -214,20 +214,27 @@ void	cast_rays(t_data *data)
 		}
 		distance = extract_length(data, ray.rx, ray.ry);
 		cast_length(data, distance, r--);
+	//	r--;
 		draw_line_(data->run.player.px + PSIZE / 2,
 		          data->run.player.py + PSIZE / 2,
 		          (int)ray.rx, (int)ray.ry, data);
 		ra += step;
 	}
+	(void)distance;
 }
 
 void	compute_raycast(t_data *data)
 {
+//	static int i = 0;
+//
+//	if (i++ > 1)
+//		return ;
 //	printf("a");
 	draw_2Dmap(data);
 //	printf("b");
 	draw_player(data);
 //	printf("c");
 	cast_rays(data);
+	check_player_direction(data);
 //	printf("d");
 }

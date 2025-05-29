@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:49:05 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 11:17:44 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,15 @@ int	key_update_direction(int key, t_player *p, t_map *map)
 }
 
 # define SECURE_STEP 10
-
-int	wall_hit(t_data *data, float dx, float dy)
+static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 {
-	int	mapXidx;
-	int	mapYidx;
-
-	mapXidx = dx / data->run.map.mapS;
-	mapYidx = dy / data->run.map.mapS;
-	if (mapXidx >= 0 
-		&& mapXidx < data->run.map.max.x * SCALE_MAP
-			&& mapYidx >= 0 && mapYidx < data->run.map.max.y * SCALE_MAP)
-		return (1);
+	mapXidx = ray->rx / map->mapS;
+	mapYidx = ray->ry / map->mapS;
+	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
+		if (map->imap[mapYidx][mapXidx] == 1)// || map->imap[mapYidx][mapXidx] == -PLAYER_POS)
+			return (1);
 	return (0);
 }
-
 int	key_update_position(int key, t_data *data, t_player *p)
 {
 	if (data->menu.is_menu)
@@ -106,62 +100,126 @@ static int	key_menu(int key, t_data *data)
 		define_action(data);
 	return (0);
 }
-
-static int	extract_length(t_data *data, int x, int  y)
+// constants
+//#define TWO_PI 6.2831853
+//#define RAY_COUNT 720
+//#define RAY_STEP 1.0
+//
+//static void adjust_ray_data(t_ray *ray, t_data *data)
+//{
+//	ray->rx = data->run.player.px;
+//	ray->ry = data->run.player.py;
+//	ray->dx = cosf(ray->ra) * RAY_STEP;
+//	ray->dy = sinf(ray->ra) * RAY_STEP;
+//}
+//
+//static void update_ray_pos(t_ray *ray, t_map *map)
+//{
+//	ray->rx += ray->dx;
+//	ray->ry += ray->dy;
+//	ray->mapXidx = (int)(ray->rx / map->mapS);
+//	ray->mapYidx = (int)(ray->ry / map->mapS);
+//}
+//
+static void draw_line_(int x0, int y0, int x1, int y1, t_data *data)
 {
-	float	dx;
-	float	dy;
+	int dx = abs(x1 - x0);
+	int dy = abs(y1 - y0);
+	int sx = (x0 < x1) ? 1 : -1;
+	int sy = (y0 < y1) ? 1 : -1;
+	int err = dx - dy;
 
-	dx = x - data->run.player.px;
-	dy = y - data->run.player.py;
-	return (sqrt(dx * dx + dy * dy));
+	while (1)
+	{
+		my_mlx_pixel_put(data, x0, y0, BLUE);
+		if (x0 == x1 && y0 == y1)
+			break;
+		int e2 = 2 * err;
+		if (e2 > -dy)
+		{
+			err -= dy;
+			x0 += sx;
+		}
+		if (e2 < dx)
+		{
+			err += dx;
+			y0 += sy;
+		}
+	}
 }
 
+//void check_player_direction(t_data *data, t_player *player)
+//{
+//	t_ray ray;
+//	float ra;
+//	int i;
+//
+//	for (i = 0; i < RAY_COUNT; i++)
+//	{
+//		ra = ((float)i / (float)RAY_COUNT) * TWO_PI;
+//		ray.ra = ra;
+//		adjust_ray_data(&ray, data);
+//		ray.depth = 0;
+//
+//		while (ray.depth++ < 100)
+//		{
+//			update_ray_pos(&ray, &data->run.map);
+//			if (wall_hit(data, ray.rx, ray.ry))
+//				break;
+//		}
+//
+//		draw_line_(
+//			(int)(data->run.player.px),
+//			(int)(data->run.player.py),
+//			(int)ray.rx,
+//			(int)ray.ry,
+//			data
+//		);
+//	}
+//	(void)player;
+//}
 static void	adjust_ray_data(t_ray *ray, t_data *data)
 {
+//	if (ray->ra > 2 * PI)
+//		ray->ra -= 2 * PI;
 	ray->rx = data->run.player.px;
 	ray->ry = data->run.player.py;
-	ray->dx = -cos(ray->ra) * 3;
-	ray->dy = sin(ray->ra) * 3;
+	ray->dx = cos(ray->ra) * 1;
+	ray->dy = sin(ray->ra) * 1;
 }
 
 static void	update_ray_pos(t_ray *ray, t_map *map)
 {
-	ray->rx += ray->dx;
-	ray->ry += ray->dy;
+	ray->rx += ray->dy;
+	ray->ry += ray->dx;
 	ray->mapXidx = (int)((ray->rx) / map->mapS);
 	ray->mapYidx = (int)((ray->ry) / map->mapS);
 }
 
-void	check_player_direction(t_data *data, t_player *player)
+void	check_player_direction(t_data *data)
 {
 	t_ray	ray;
 	int		r;
-	float	distance;
-	float	step = FOV / NUM_RAYS;
-	float	ra = data->run.player.pa - (FOV / 2);
+	float	step = 6.28 / 360;
+	float	ra = 0;
 
 	r = NUM_RAYS;
-	while (r > 0)
+	while (r-- > 0)
 	{
 		ray.ra = ra;
 		adjust_ray_data(&ray, data);
 		ray.depth = 0;
-		while (ray.depth++ < 50)
+		while (ray.depth++ < 30)
 		{
 			update_ray_pos(&ray, &data->run.map);
-			if (wall_hit(data, ray.rx, ray.ry))
+			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
 				break ;
 		}
-		distance = extract_length(data, ray.rx, ray.ry);
-//		draw_line(data->run.player.px + PSIZE / 2,
-//		          data->run.player.py + PSIZE / 2,
-//		          (int)ray.rx, (int)ray.ry, BLACK, data);
+		draw_line_(data->run.player.px + PSIZE / 2,
+		          data->run.player.py + PSIZE / 2,
+		          (int)ray.rx, (int)ray.ry, data);
 		ra += step;
-		r--;
 	}
-	(void)distance;
-	(void)player;
 }
 
 int	key_update_env(int key, t_data *data)
@@ -175,7 +233,7 @@ int	key_update_env(int key, t_data *data)
 		show_cmds(data);
 	if (key == 'm')
 		data->menu.is_menu = 1;
-//	check_player_direction(data, &player);
+	check_player_direction(data);
 	key_update_position(key, data, &player);
 	data->run.player = player;
 	if (data->menu.is_menu)

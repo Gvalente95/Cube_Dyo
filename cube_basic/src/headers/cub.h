@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:42:47 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 11:08:54 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ typedef struct s_data
 //	SETUP
 void	init_struct(t_data *data);
 void	set_up_loops(t_data *data);
-//void	set_up_env(t_data *data);
 
 //	MAP PARSE
 char	**parse_map(char *doc);
@@ -159,6 +158,7 @@ int		key_update_position(int key, t_data *data, t_player *p);
 int		close_window(void *param);
 int		mouse_move(int x, int y, t_data *data);
 int		compute_frame(void *param);
+void	check_player_direction(t_data *data);
 
 //	UTILS
 void	exit_game(t_data *data);

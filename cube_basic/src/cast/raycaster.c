@@ -6,19 +6,13 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 08:24:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:33:52 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdbool.h>
 #include "cub.h"
-
-#define FOV_ANGLE 60.0
-#define TILE_SIZE 16
-#define FOV 1.0471975512 // 60 degrés en radians
-#define NUM_RAYS WI
-#define PROJECTION_CONSTANT WI * 30
 
 void	draw_line(int x0, int y0, int x1, int y1, t_data *data)
 {
@@ -121,17 +115,7 @@ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 	return (0);
 }
 
-/*static int	wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
-{
-	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP
-			&& mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
-		if (map->imap[mapYidx][mapXidx] == 1)
-			return (1);
-	return (false);
-	(void)ray;
-}*/
-
-int	extract_length(t_data *data, int x, int  y)
+static int	extract_length(t_data *data, int x, int  y)
 {
 	float	dx;
 	float	dy;
@@ -186,7 +170,7 @@ void cast_length(t_data *data, float distance, int ray)
 	draw_vertical_line(data, end_y, HI, ray, distance, GREEN);
 }
 
-void	adjust_ray_data(t_ray *ray, t_data *data)
+static void	adjust_ray_data(t_ray *ray, t_data *data)
 {
 	if (ray->ra > 2 * PI)
 		ray->ra -= 2 * PI;
@@ -196,7 +180,7 @@ void	adjust_ray_data(t_ray *ray, t_data *data)
 	ray->dy = sin(ray->ra) * 1;
 }
 
-void	update_ray_pos(t_ray *ray, t_map *map)
+static void	update_ray_pos(t_ray *ray, t_map *map)
 {
 	ray->rx += ray->dx;
 	ray->ry += ray->dy;

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 05:42:47 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:18:18 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ typedef struct s_bot
 	char		pos[3];
 }	t_bot;
 
+typedef struct s_direction_ok
+{
+	bool	up;
+	bool	down;
+	bool	left;
+	bool	right;
+}	t_dir;
+
 typedef struct s_player
 {
 	short int	speed[3];
@@ -64,7 +72,7 @@ typedef struct s_player
 	float		dx;
 	float		dy;
 	float		pa;
-	char		dir;
+	t_dir		dir;
 	bool		item;
 	bool		gun;
 }	t_player;

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 07:57:08 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/28 13:30:04 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@
 void	set_player_pos(t_data *data)
 {
 	t_point	pos;
+	int		stop;
 
-	for (int i = 0; i < data->run.map.max.y * SCALE_MAP; i++)
+	stop = 0;
+	for (int i = 0; i < data->run.map.max.y * SCALE_MAP && !stop; i++)
+	{
 		for (int j = 0; j < data->run.map.max.x * SCALE_MAP; j++)
 		{
 			if (data->run.map.imap[i][j] == 9)
 			{
 				pos.x = j;
 				pos.y = i;
+				stop = 1;
 				break ;
 			}
 		}
+	}
 	data->run.player.py = pos.y * SCALE_MAP;
 	data->run.player.px = pos.x * SCALE_MAP;
 	printf("pos x : %d\npos y : %d\n", pos.x, pos.y);

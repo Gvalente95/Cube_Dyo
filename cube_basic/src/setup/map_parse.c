@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 08:31:09 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:15:23 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	map_scale_object(int ***scaled_map, char **map, t_point *original)
 		while (iter.x < SCALE_MAP)
 		{
 			if (object == 1 && (iter.x == 0 || iter.x == SCALE_MAP - 1 || iter.y == 0 || iter.y == SCALE_MAP - 1))
-				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = -PLAYER_POS;
+				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
 			else
 				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
 		}

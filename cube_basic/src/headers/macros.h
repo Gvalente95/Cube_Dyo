@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:56:48 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 08:31:58 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 05:20:57 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@
 # define HI 512
 
 # define SCALE_MAP 6
+
+# define FOV_ANGLE 60.0
+# define TILE_SIZE 16
+# define FOV 1.0471975512 // 60 degrés en radians
+# define NUM_RAYS WI
+# define PROJECTION_CONSTANT WI * 30
 
 # define PLAYER_POS 9
 # define WALL 1

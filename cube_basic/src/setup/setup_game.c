@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 07:46:19 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 08:42:02 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,30 @@ void	set_player_pos(t_data *data)
 	printf("x0 : %d\ny0 : %d\n", x0, y0);
 }
 
-//		x0 = x * data->run.map.mapS;
-//		y0 = y * data->run.map.mapS;
+t_texture	load_texture(char *path, t_data *data)
+{
+	t_texture tex;
+	int bpp, sl, endian;
 
+	tex.img = mlx_xpm_file_to_image(data->mlx, path, &tex.wi, &tex.hi);
+	if (!tex.img)
+	{
+		printf("Texture load failed");
+		exit(1);
+	}
+	tex.pixels = (int *)mlx_get_data_addr(tex.img, &bpp, &sl, &endian);
+	return tex;
+}
+
+void init_textures(t_data *data)
+{
+//	mlx_xpm_file_to_image();
+//	mlx_xpm_to_image();
+	data->textures[NORTH] = load_texture("textures/NORTH.xpm", data);
+	data->textures[SOUTH] = load_texture("textures/SOUTH.xpm", data);
+	data->textures[EAST] = load_texture("textures/EAST.xpm", data);
+	data->textures[WEST] = load_texture("textures/WEST.xpm", data);
+}
 
 void	init_mapS(t_map *map)
 {
@@ -73,6 +94,7 @@ void	init_struct(t_data *data)
 	data->run.player.dx = 10;
 	init_mapS(&data->run.map);
 	set_player_pos(data);
+	init_textures(data);
 	printf("map S : %d\n", data->run.map.mapS);
 }
 

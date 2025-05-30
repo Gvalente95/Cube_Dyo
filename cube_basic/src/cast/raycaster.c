@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 07:44:26 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 08:43:50 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,40 @@ static void	update_ray_pos(t_ray *ray, t_map *map)
 	ray->mapYidx = (int)((ray->ry) / map->mapS);
 }
 
-void	cast_rays(t_data *data)
+static t_texture *select_texture(t_data *data, t_ray *ray)
+{
+	if (fabs(ray->dx) > fabs(ray->dy))
+		return (ray->dx > 0 ? &data->textures[WEST] : &data->textures[EAST]);
+	else
+		return (ray->dy > 0 ? &data->textures[NORTH] : &data->textures[SOUTH]);
+}
+
+void draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx)
+{
+	int height = end - start;
+	int ty;
+	float step = (float)tex->hi / height;
+	float tex_pos = 0;
+	int color;
+
+	if (start < 0)
+	{
+		tex_pos = -start * step;
+		start = 0;
+	}
+	if (end > HI)
+		end = HI;
+	for (int y = start; y < end; y++)
+	{
+		ty = (int)tex_pos & (tex->hi - 1);
+		tex_pos += step;
+		color = tex->pixels[ty * tex->wi + tx];
+		my_mlx_pixel_put2(data, ray, y, color);
+	}
+	(void)distance;
+}
+
+/*void	cast_rays(t_data *data)
 {
 	t_ray	ray;
 	int		r;
@@ -214,12 +247,53 @@ void	cast_rays(t_data *data)
 		ra += step;
 	}
 	(void)distance;
+}*/
+
+void cast_rays(t_data *data)
+{
+	t_ray ray;
+	int r;
+	float distance;
+	float step = FOV / NUM_RAYS;
+	float ra = data->run.player.pa - (FOV / 2);
+
+	r = 0;
+	while (r < NUM_RAYS)
+	{
+		if (ra < 0)
+			ra += 2 * PI;
+		else if (ra > 2 * PI)
+			ra -= 2 * PI;
+
+		ray.ra = ra;
+		adjust_ray_data(&ray, data);
+		ray.depth = 0;
+		while (ray.depth++ < 1000)
+		{
+			update_ray_pos(&ray, &data->run.map);
+			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
+				break;
+		}
+		distance = extract_length(data, ray.rx, ray.ry);
+		float wall_height = PROJECTION_CONSTANT / (distance * 3);
+		int start_y = HI / 2 - wall_height / 2;
+		int end_y = HI / 2 + wall_height / 2;
+		t_texture *tex = select_texture(data, &ray);
+		int tx = (fabs(ray.dx) > fabs(ray.dy)) ? (int)ray.ry % tex->wi : (int)ray.rx % tex->wi;
+		draw_textured_line(data, r, start_y, end_y, distance, tex, tx);
+
+		draw_line(data->run.player.px + PSIZE / 2,
+			  data->run.player.py + PSIZE / 2,
+			  (int)ray.rx, (int)ray.ry, data);
+		ra += step;
+		r++;
+	}
 }
 
 void	compute_raycast(t_data *data)
 {
 	draw_2Dmap(data);
 	draw_player(data);
-//	cast_rays(data);
+	cast_rays(data);
 	check_player_direction(data);
 }

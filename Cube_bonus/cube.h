@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:53:43 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 14:05:00 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/30 04:37:45 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define IMG_PATH		"ressources/xpm/"
 # define RESOLUTION		25
 //		SCREEN
-# define SCRN_W			2500
-# define SCRN_H			1800
+# define SCRN_W			800
+# define SCRN_H			600
 //		RAYS
 # define RAY_DEPTH		50
 //		PLR

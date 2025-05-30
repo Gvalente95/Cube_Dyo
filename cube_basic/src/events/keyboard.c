@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 03:14:52 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 07:48:48 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ static void	update_ray_pos(t_ray *ray, t_map *map)
 	ray->mapXidx = (int)((ray->rx) / map->mapS);
 	ray->mapYidx = (int)((ray->ry) / map->mapS);
 }
-
-#define MOVE_LIMIT 2 * STEP
 
 void	load_length(t_data *data, t_ray *ray, int ra)
 {

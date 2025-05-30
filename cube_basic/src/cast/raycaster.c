@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 19:32:47 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 08:52:48 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	draw_2Dmap(t_data *data)
 		{
 			if (data->run.map.imap[y][x] == 1)
 				color = WHITE;
-			else if (data->run.map.imap[y][x] == -PLAYER_POS)
-				color = BLUE;
 			else
 				color = RED;
 			x0 = x * data->run.map.mapS;
@@ -90,16 +88,12 @@ void	draw_player(t_data *data)
 	int	x;
 	int	y;
 
-	if (data->run.player.px == 0 && data->run.player.py == 0)
-	{
-		data->run.player.px = 300;
-		data->run.player.py = 300;
-	}
 	x = data->run.player.px;
-	while (x <= data->run.player.px + PSIZE)
+	printf("draw player X : %i\n", x);
+	while (x <= (data->run.player.px + PSIZE))
 	{
 		y = data->run.player.py;
-		while (y <= data->run.player.py + PSIZE)
+		while (y <= (data->run.player.py + PSIZE))
 			my_mlx_pixel_put(data, x, y++, GREEN);
 		x++;
 	}
@@ -110,7 +104,7 @@ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 	mapXidx = ray->rx / map->mapS;
 	mapYidx = ray->ry / map->mapS;
 	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
-		if (map->imap[mapYidx][mapXidx] == 1)// || map->imap[mapYidx][mapXidx] == -PLAYER_POS)
+		if (map->imap[mapYidx][mapXidx] == 1)
 			return (1);
 	return (0);
 }
@@ -188,16 +182,51 @@ static void	update_ray_pos(t_ray *ray, t_map *map)
 	ray->mapYidx = (int)((ray->ry) / map->mapS);
 }
 
-void	cast_rays(t_data *data)
+static t_texture *select_texture(t_data *data, t_ray *ray)
 {
-	t_ray	ray;
-	int		r;
-	float	distance;
-	float	step = FOV / NUM_RAYS;
-	float	ra = data->run.player.pa - (FOV / 2);
+	if (fabs(ray->dx) > fabs(ray->dy))
+		return (ray->dx > 0 ? &data->textures[WEST] : &data->textures[EAST]);
+	else
+		return (ray->dy > 0 ? &data->textures[NORTH] : &data->textures[SOUTH]);
+}
 
-	r = NUM_RAYS;
-	while (r > 0)
+void draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx)
+{
+	int height = end - start;
+	int ty;
+	float step = (float)tex->hi / height;
+	float tex_pos = 0;
+	int color;
+
+	if (start < 0)
+	{
+		tex_pos = -start * step;
+		start = 0;
+	}
+	if (end > HI)
+		end = HI;
+	for (int y = start; y < end; y++)
+	{
+		ty = (int)tex_pos & (tex->hi - 1);
+		tex_pos += step;
+		color = tex->pixels[ty * tex->wi + tx];
+		my_mlx_pixel_put2(data, ray, y, color);
+	}
+	draw_vertical_line(data, 0, start, ray, distance, BLUE);
+	draw_vertical_line(data, end, HI, ray, distance, GREEN);
+	(void)distance;
+}
+
+void cast_rays(t_data *data)
+{
+	t_ray ray;
+	int r;
+	float distance;
+	float step = FOV / NUM_RAYS;
+	float ra = data->run.player.pa - (FOV / 2);
+
+	r = 0;
+	while (r < NUM_RAYS)
 	{
 		if (ra < 0)
 			ra += 2 * PI;
@@ -210,16 +239,21 @@ void	cast_rays(t_data *data)
 		{
 			update_ray_pos(&ray, &data->run.map);
 			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
-				break ;
+				break;
 		}
 		distance = extract_length(data, ray.rx, ray.ry);
-		cast_length(data, distance, r--);
-	//	draw_line(data->run.player.px + PSIZE / 2,
-	//	          data->run.player.py + PSIZE / 2,
-	//	          (int)ray.rx, (int)ray.ry, data);
+		float wall_height = PROJECTION_CONSTANT / (distance * 3);
+		int start_y = HI / 2 - wall_height / 2;
+		int end_y = HI / 2 + wall_height / 2;
+		t_texture *tex = select_texture(data, &ray);
+		int tx = (fabs(ray.dx) > fabs(ray.dy)) ? (int)ray.ry % tex->wi : (int)ray.rx % tex->wi;
+		draw_textured_line(data, r, start_y, end_y, distance, tex, tx);
+		draw_line(data->run.player.px + PSIZE / 2,
+			  data->run.player.py + PSIZE / 2,
+			  (int)ray.rx, (int)ray.ry, data);
 		ra += step;
+		r++;
 	}
-	(void)distance;
 }
 
 void	compute_raycast(t_data *data)

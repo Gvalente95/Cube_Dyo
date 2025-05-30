@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 11:42:06 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 08:34:34 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,14 @@ typedef struct s_ray
 	float	distance;
 }	t_ray;
 
+typedef struct s_textures
+{
+	void	*img;
+	int		*pixels;
+	int		wi;
+	int		hi;
+}	t_texture;
+
 typedef struct s_engine
 {
 	t_display	frame;
@@ -123,10 +131,21 @@ typedef struct s_menu
 	int		option;
 }	t_menu;
 
+# define NUM_TEXTURES 4
+
+typedef enum e_text_type
+{
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST
+}	t_text_type;
+
 typedef struct s_data
 {
 	t_menu		menu;
 	t_engine	run;
+	t_texture	textures[NUM_TEXTURES];
 	void		*mlx;
 	void		*win;
 	void		*mlx_cast;
@@ -135,47 +154,50 @@ typedef struct s_data
 }	t_data;
 
 //	SETUP
-void	init_struct(t_data *data);
-void	set_up_loops(t_data *data);
+void		init_struct(t_data *data);
+void		set_up_loops(t_data *data);
+void		init_textures(t_data *data);
 
 //	MAP PARSE
-char	**parse_map(char *doc);
-int		**scale_map(char **map, t_data *data);
-bool	check_map(char **map);
+char		**parse_map(char *doc);
+int			**scale_map(char **map, t_data *data);
+bool		check_map(char **map);
 
 //	MOUSE EVENTS
-int		mouse_update_env(int key, int x, int y, t_data *data);
-int		mouse_update_view(int key, int x, int y, t_data *data);
+int			mouse_update_env(int key, int x, int y, t_data *data);
+int			mouse_update_view(int key, int x, int y, t_data *data);
 
 //	KEY EVENTS
-int		key_update_env(int key, t_data *data);
-int		key_update_position(int key, t_data *data, t_player *p);
+int			key_update_env(int key, t_data *data);
+int			key_update_position(int key, t_data *data, t_player *p);
 
 //	GENERAL EVENTS
-int		close_window(void *param);
-int		mouse_move(int x, int y, t_data *data);
-int		compute_frame(void *param);
-void	check_player_direction(t_data *data);
+int			close_window(void *param);
+int			mouse_move(int x, int y, t_data *data);
+int			compute_frame(void *param);
 
 //	UTILS
-void	exit_game(t_data *data);
-void	free_data(t_data *data);
+void		exit_game(t_data *data);
+void		free_data(t_data *data);
 
 //	RAYCASTING
-void	compute_raycast(t_data *data);
+void		compute_raycast(t_data *data);
+void		check_player_direction(t_data *data);
+t_texture	load_texture(char *path, t_data *data);
 
 //	MATH
-int	extract_length(t_data *data, int x, int  y);
+int			extract_length(t_data *data, int x, int  y);
 
 //	DISPLAY
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	my_mlx_pixel_put2(t_data *data, int x, int y, int color);
-void	draw_line(int x0, int y0, int x1, int y1, t_data *data);
-void	draw_2Dwall(t_data *data, int x, int y, int color);
-void	draw_2Dmap(t_data *data);
-void	draw_player(t_data *data);
+void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void		my_mlx_pixel_put2(t_data *data, int x, int y, int color);
+void		draw_line(int x0, int y0, int x1, int y1, t_data *data);
+void		draw_2Dwall(t_data *data, int x, int y, int color);
+void		draw_2Dmap(t_data *data);
+void		draw_player(t_data *data);
+//void	draw_textured_line(t_data *data, t_ray *ray, t_point interval, float distance, a);
 
 //	MENU
-int		cast_menu(t_data *data, char place[MENU_SLOTS]);
+int			cast_menu(t_data *data, char place[MENU_SLOTS]);
 
 #endif

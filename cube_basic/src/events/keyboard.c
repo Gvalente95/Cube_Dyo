@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/23 07:19:46 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 03:14:52 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	show_cmds(t_data *data)
 	(void)data;
 }
 
-int	key_update_direction(int key, t_player *p)
+int	key_update_direction(int key, t_player *p, t_map *map)
 {
 	if (key == 'a')
 	{
-		printf("DIR LEFT\n");
+		printf("DIR s\n");
 		p->pa += 0.2;
 		p->dx = cos(p->pa) * STEP;
 		p->dy = sin(p->pa) * STEP;
@@ -36,88 +36,52 @@ int	key_update_direction(int key, t_player *p)
 		printf("dir : {%lf, %lf}\n", p->dx, p->dy);
 	}
 	return (0);
+	(void)map;
 }
 
-# define SECURE_STEP 11
+# define SECURE_STEP 10
 
-static void	key_correct_path(int key, t_player *p)
-{
-	int	mapXidx, mapYidx;//, mapS = 64, mapX = 8, mapY = 8;
-	int	mapX=15, mapY=8, mapS=64;
-	int	map[]=
-		{
-			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-			1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-			1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-			1,0,1,0,0,0,0,0,0,1,0,0,0,0,1,
-			1,0,1,0,0,0,0,0,0,0,1,0,0,0,1,
-			1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,
-			1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,
-			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		};
-	
-	mapXidx = (int)(p->px / mapS);
-	mapYidx = (int)(p->py / mapS);
-	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
-	{
-		if (map[mapYidx * mapX + mapXidx] == 0)
-			return ;
-	}
-	else
-		return ;
-	if (key == A_DOWN && p->py < HI - SECURE_STEP)
-	{
-		p->px -= p->dy;
-		p->py -= p->dx;
-	}
-	else if (key == A_LEFT && p->px > SECURE_STEP)
-	{
-		p->py -= p->dy;
-		p->px += p->dx;
-	}
-	else if (key == A_RIGHT && p->px < WI - SECURE_STEP)
-	{
-		p->py += p->dy;
-		p->px -= p->dx;
-	}
-	else if (key == A_UP && p->py > SECURE_STEP)
-	{
-		p->px += p->dy;
-		p->py += p->dx;
-	}
+ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
+ {
+	mapXidx = ray->rx / map->mapS;
+	mapYidx = ray->ry / map->mapS;
+	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
+		if (map->imap[mapYidx][mapXidx] == 1)
+			return (1);
+	return (0);
 }
 
 int	key_update_position(int key, t_data *data, t_player *p)
 {
 	if (data->menu.is_menu)
 		return (1);
-	if (key == 'r')
+	if (key == A_UP && p->py < HI && data->run.player.dir.up)
 	{
-		p->px = 0;
-		p->py = 0;
-	}
-	if (key == A_DOWN && p->py < HI - SECURE_STEP)
-	{
-		p->px += p->dy;
+		printf("UP\n");
 		p->py += p->dx;
+		p->px += p->dy;
 	}
-	else if (key == A_LEFT && p->px > SECURE_STEP)
+	else if (key == A_LEFT && p->px > 0 && data->run.player.dir.left)
 	{
-		p->py += p->dy;
-		p->px -= p->dx;
-	}
-	else if (key == A_RIGHT && p->px < WI - SECURE_STEP)
-	{
-		p->py -= p->dy;
+		printf("LEFT\n");
 		p->px += p->dx;
+		p->py -= p->dy;
 	}
-	else if (key == A_UP && p->py > SECURE_STEP)
+	else if (key == A_RIGHT && p->px < WI && data->run.player.dir.right)
 	{
-		p->px -= p->dy;
-		p->py -= p->dx;
+		printf("RIGHT\n");
+		p->px -= p->dx;
+		p->py += p->dy;
 	}
-	key_update_direction(key, p);
-	key_correct_path(key, p);
+	else if (key == A_DOWN && p->py > 0 && data->run.player.dir.down) 
+	{
+		printf("DOWN\n");
+		p->py -= p->dx;
+		p->px -= p->dy;
+	}
+	printf("Up : %d\nDown : %d\nLeft : %d\nRight : %d\n",
+		data->run.player.dir.up, data->run.player.dir.down, data->run.player.dir.left, data->run.player.dir.right);
+	key_update_direction(key, p, &data->run.map);
 	return (0);
 }
 
@@ -144,16 +108,86 @@ static int	key_menu(int key, t_data *data)
 	return (0);
 }
 
-void	black(t_data *data, int win)
+static void	adjust_ray_data(t_ray *ray, t_data *data)
 {
-	for (int i = 0; i < WI; i++)
-		for (int j = 0; j < HI; j++)
+	if (ray->ra > 2 * PI)
+		ray->ra -= 2 * PI;
+	ray->rx = data->run.player.px;
+	ray->ry = data->run.player.py;
+	ray->dx = cos(ray->ra) * 1;
+	ray->dy = sin(ray->ra) * 1;
+}
+
+static void	update_ray_pos(t_ray *ray, t_map *map)
+{
+	ray->rx += ray->dy;
+	ray->ry += ray->dx;
+	ray->mapXidx = (int)((ray->rx) / map->mapS);
+	ray->mapYidx = (int)((ray->ry) / map->mapS);
+}
+
+#define MOVE_LIMIT 2 * STEP
+
+void	load_length(t_data *data, t_ray *ray, int ra)
+{
+	float	distance;
+
+	distance = extract_length(data, (int)ray->rx, (int)ray->ry);
+	if (ra == 0)//(ra >= 0 && ra <= 30) || (ra >= 330 && ra <= 360))
+	{
+		if (distance < MOVE_LIMIT + 10)
+			data->run.player.dir.up = 0;
+		else
+			data->run.player.dir.up = 1;
+	}
+	else if (ra == 90)//ra >= 60 && ra <= 120)
+	{
+		if (distance < MOVE_LIMIT + 10)
+			data->run.player.dir.right = 0;
+		else
+			data->run.player.dir.right = 1;
+	}
+	else if (ra == 200)//ra >= 170 && ra <= 230)
+	{
+		if (distance < MOVE_LIMIT + 10)
+			data->run.player.dir.down = 0;
+		else
+			data->run.player.dir.down = 1;
+	}
+	else if (ra == 290)//ra >= 260 && ra <= 330)
+	{
+		if (distance < MOVE_LIMIT + 10)
+			data->run.player.dir.left = 0;
+		else
+			data->run.player.dir.left = 1;
+	}
+}
+
+void	check_player_direction(t_data *data)
+{
+	t_ray	ray;
+	int		r;
+	float	step = (PI * 2) / 360;
+	float	ra = data->run.player.pa;
+
+	r = 360;
+	while (r-- > 0)
+	{
+		ray.ra = ra;
+		adjust_ray_data(&ray, data);
+		ray.depth = 0;
+		while (ray.depth++ < MOVE_LIMIT + 20)
 		{
-			if (win == 1)
-				my_mlx_pixel_put(data, i, j, BLACK);
-			else
-				my_mlx_pixel_put2(data, i, j, BLACK);
+			update_ray_pos(&ray, &data->run.map);
+			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
+				break ;
 		}
+	//	draw_line(data->run.player.px + PSIZE / 2,
+	//		data->run.player.py + PSIZE / 2,
+	//		(int)ray.rx, (int)ray.ry, data);
+		load_length(data, &ray, r);
+		ra += step;
+	}
 }
 
 int	key_update_env(int key, t_data *data)
@@ -167,6 +201,7 @@ int	key_update_env(int key, t_data *data)
 		show_cmds(data);
 	if (key == 'm')
 		data->menu.is_menu = 1;
+	check_player_direction(data);
 	key_update_position(key, data, &player);
 	data->run.player = player;
 	if (data->menu.is_menu)

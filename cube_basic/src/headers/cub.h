@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 09:06:08 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:58:34 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,26 @@ typedef enum e_text_type
 	WEST
 }	t_text_type;
 
+typedef struct s_color
+{
+	int	R;
+	int	G;
+	int	B;
+}	t_color;
+
+typedef struct s_paint
+{
+	t_color	color_floor;
+	t_color	ground_color;
+	t_color	wall_color;
+}	t_paint;
+
 typedef struct s_data
 {
 	t_menu		menu;
 	t_engine	run;
 	t_texture	textures[NUM_TEXTURES];
+	t_paint		objects;
 	void		*mlx;
 	void		*win;
 	void		*mlx_cast;

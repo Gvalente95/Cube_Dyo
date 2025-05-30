@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 07:16:44 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 10:06:18 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,60 @@ static void	print_map(int **imap)
 	}
 }
 
+char	*copy_from(char **s, int here)
+{
+	size_t	len;
+	char	*copy;
+	char	*new_s;
+
+	len = ft_strlen(*s) - here;
+	copy = malloc((len + 1) * sizeof(char));
+	if (!copy)
+		return (NULL);
+	len = ft_strlen(*s) - len;
+	new_s = malloc((len + 1));
+	if (!new_s)
+		return (free(copy), NULL);
+	len = 0;
+	while (*s[here])
+		copy[len++] = *s[here++];
+	copy[len] = '\0';
+	len = -1;
+	while (++len < here)
+		new_s[len] = *s[len];
+	new_s[len] = '\0';
+	free(*s);
+	*s = new_s;
+	return (copy);
+}
+
+/*	Si la map ne commence pas par 4 * 1, comportement indetermine	*/
+static char	*split_metadata(char **doc)
+{
+	char	*map;
+	int		start;
+	int		i;
+
+	i = 0;
+	start = 0;
+	while (doc && doc[i])
+	{
+		if (doc[i] && doc[i + 1] && doc[i + 2] && doc[i + 3]
+			&& doc[i] != 1 && doc[i + 1] != 1
+			&& doc[i + 2] != 1 && doc[i + 3] != 1)
+			start = i;
+		if (start)
+			break ;
+		i++;
+	}
+	map = copy_from(doc, start);
+	return (map);
+}
+
 static void	gather_data(t_data *data, int ac, char **av)
 {
 	char	*doc;
+	char	*map;
 
 	if (ac != 2 || ft_isempty(av[1]))
 	{
@@ -98,7 +149,9 @@ static void	gather_data(t_data *data, int ac, char **av)
 		printf("File not found\n");
 		exit(1);
 	}
-	data->run.map.map = parse_map(doc);
+	map = split_metadata(&doc);
+	init_metadata(doc)
+	data->run.map.map = parse_map(map);
 	data->run.map.imap = scale_map(data->run.map.map, data);
 	print_map(data->run.map.imap);
 	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 10;

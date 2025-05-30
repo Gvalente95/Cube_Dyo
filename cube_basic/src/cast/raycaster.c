@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 08:43:50 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 08:52:48 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,42 +212,10 @@ void draw_textured_line(t_data *data, int ray, int start, int end, float distanc
 		color = tex->pixels[ty * tex->wi + tx];
 		my_mlx_pixel_put2(data, ray, y, color);
 	}
+	draw_vertical_line(data, 0, start, ray, distance, BLUE);
+	draw_vertical_line(data, end, HI, ray, distance, GREEN);
 	(void)distance;
 }
-
-/*void	cast_rays(t_data *data)
-{
-	t_ray	ray;
-	int		r;
-	float	distance;
-	float	step = FOV / NUM_RAYS;
-	float	ra = data->run.player.pa - (FOV / 2);
-
-	r = NUM_RAYS;
-	while (r > 0)
-	{
-		if (ra < 0)
-			ra += 2 * PI;
-		else if (ra > 2 * PI)
-			ra -= 2 * PI;
-		ray.ra = ra;
-		adjust_ray_data(&ray, data);
-		ray.depth = 0;
-		while (ray.depth++ < 1000)
-		{
-			update_ray_pos(&ray, &data->run.map);
-			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
-				break ;
-		}
-		distance = extract_length(data, ray.rx, ray.ry);
-		cast_length(data, distance, r--);
-		draw_line(data->run.player.px + PSIZE / 2,
-		          data->run.player.py + PSIZE / 2,
-		          (int)ray.rx, (int)ray.ry, data);
-		ra += step;
-	}
-	(void)distance;
-}*/
 
 void cast_rays(t_data *data)
 {
@@ -264,7 +232,6 @@ void cast_rays(t_data *data)
 			ra += 2 * PI;
 		else if (ra > 2 * PI)
 			ra -= 2 * PI;
-
 		ray.ra = ra;
 		adjust_ray_data(&ray, data);
 		ray.depth = 0;
@@ -281,7 +248,6 @@ void cast_rays(t_data *data)
 		t_texture *tex = select_texture(data, &ray);
 		int tx = (fabs(ray.dx) > fabs(ray.dy)) ? (int)ray.ry % tex->wi : (int)ray.rx % tex->wi;
 		draw_textured_line(data, r, start_y, end_y, distance, tex, tx);
-
 		draw_line(data->run.player.px + PSIZE / 2,
 			  data->run.player.py + PSIZE / 2,
 			  (int)ray.rx, (int)ray.ry, data);

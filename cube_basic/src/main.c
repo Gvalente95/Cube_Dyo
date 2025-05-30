@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 10:06:18 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 11:53:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	print_map(int **imap)
 	}
 }
 
-char	*copy_from(char **s, int here)
+/*char	*copy_from(char **s, int here)
 {
 	size_t	len;
 	char	*copy;
@@ -107,56 +107,30 @@ char	*copy_from(char **s, int here)
 	free(*s);
 	*s = new_s;
 	return (copy);
-}
-
-/*	Si la map ne commence pas par 4 * 1, comportement indetermine	*/
-static char	*split_metadata(char **doc)
-{
-	char	*map;
-	int		start;
-	int		i;
-
-	i = 0;
-	start = 0;
-	while (doc && doc[i])
-	{
-		if (doc[i] && doc[i + 1] && doc[i + 2] && doc[i + 3]
-			&& doc[i] != 1 && doc[i + 1] != 1
-			&& doc[i + 2] != 1 && doc[i + 3] != 1)
-			start = i;
-		if (start)
-			break ;
-		i++;
-	}
-	map = copy_from(doc, start);
-	return (map);
-}
+}*/
 
 static void	gather_data(t_data *data, int ac, char **av)
 {
 	char	*doc;
-	char	*map;
 
 	if (ac != 2 || ft_isempty(av[1]))
 	{
 		printf("Executer ./cub3d [map.cub]\n");
 		exit(1);
 	}
-	ft_memset(&data->run, 0, sizeof(t_engine));
 	doc = get_content(av[1]);
 	if (!doc)
 	{
 		printf("File not found\n");
 		exit(1);
 	}
-	map = split_metadata(&doc);
-	init_metadata(doc)
-	data->run.map.map = parse_map(map);
+	parse_metadata(data, &doc);
+	data->run.map.map = parse_map(doc);
 	data->run.map.imap = scale_map(data->run.map.map, data);
 	print_map(data->run.map.imap);
 	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 10;
-	if (!check_map(data->run.map.map))
-		exit_game(data);
+//	if (!check_map(data->run.map.map))
+//		exit_game(data);
 }
 
 int	main(int ac, char **av)

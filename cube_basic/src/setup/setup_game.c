@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 09:44:27 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 11:55:41 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ t_texture	load_texture(char *path, t_data *data)
 
 void init_textures(t_data *data)
 {
-	data->textures[NORTH] = load_texture("textures/NORTH.xpm", data);
-	data->textures[SOUTH] = load_texture("textures/SOUTH.xpm", data);
-	data->textures[EAST] = load_texture("textures/EAST.xpm", data);
-	data->textures[WEST] = load_texture("textures/WEST.xpm", data);
+	data->textures[NORTH] = load_texture(data->tokens.text_path[NORTH], data);
+	data->textures[SOUTH] = load_texture(data->tokens.text_path[SOUTH], data);
+	data->textures[EAST] = load_texture(data->tokens.text_path[EAST], data);
+	data->textures[WEST] = load_texture(data->tokens.text_path[WEST], data);
 }
 
 void	init_mapS(t_map *map)

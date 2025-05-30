@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 12:21:35 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 03:14:52 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,9 @@ int	key_update_direction(int key, t_player *p, t_map *map)
 }
 
 # define SECURE_STEP 10
-static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
-{
+
+ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
+ {
 	mapXidx = ray->rx / map->mapS;
 	mapYidx = ray->ry / map->mapS;
 	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
@@ -49,27 +50,32 @@ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 			return (1);
 	return (0);
 }
+
 int	key_update_position(int key, t_data *data, t_player *p)
 {
 	if (data->menu.is_menu)
 		return (1);
-	if (key == A_UP && p->py < HI - SECURE_STEP && data->run.player.dir.left)
+	if (key == A_UP && p->py < HI && data->run.player.dir.up)
 	{
+		printf("UP\n");
 		p->py += p->dx;
 		p->px += p->dy;
 	}
-	else if (key == A_LEFT && p->px > SECURE_STEP && data->run.player.dir.up)
+	else if (key == A_LEFT && p->px > 0 && data->run.player.dir.left)
 	{
+		printf("LEFT\n");
 		p->px += p->dx;
 		p->py -= p->dy;
 	}
-	else if (key == A_RIGHT && p->px < WI - SECURE_STEP && data->run.player.dir.down)
+	else if (key == A_RIGHT && p->px < WI && data->run.player.dir.right)
 	{
+		printf("RIGHT\n");
 		p->px -= p->dx;
 		p->py += p->dy;
 	}
-	else if (key == A_DOWN && p->py > SECURE_STEP && data->run.player.dir.right) 
+	else if (key == A_DOWN && p->py > 0 && data->run.player.dir.down) 
 	{
+		printf("DOWN\n");
 		p->py -= p->dx;
 		p->px -= p->dy;
 	}
@@ -121,41 +127,39 @@ static void	update_ray_pos(t_ray *ray, t_map *map)
 }
 
 #define MOVE_LIMIT 2 * STEP
-/*	0--> droite || 90 --> en haut || 200 --> a gauche || 290 --> en bas	*/
-void	load_length(t_data *data, t_ray *ray, int r)
+
+void	load_length(t_data *data, t_ray *ray, int ra)
 {
 	float	distance;
 
 	distance = extract_length(data, (int)ray->rx, (int)ray->ry);
-	//if (r == 0 || r == 90 || r == 200 || r == 290)
-	//	printf("Len : %f\n", distance);
-	if (r == 0)
+	if (ra == 0)//(ra >= 0 && ra <= 30) || (ra >= 330 && ra <= 360))
 	{
-		if (distance < MOVE_LIMIT)
-			data->run.player.dir.right = 0;
-		else
-			data->run.player.dir.right = 1;
-	}
-	else if (r == 90)
-	{
-		if (distance < MOVE_LIMIT)
+		if (distance < MOVE_LIMIT + 10)
 			data->run.player.dir.up = 0;
 		else
 			data->run.player.dir.up = 1;
 	}
-	else if (r == 200)
+	else if (ra == 90)//ra >= 60 && ra <= 120)
 	{
-		if (distance < MOVE_LIMIT)
-			data->run.player.dir.left = 0;
+		if (distance < MOVE_LIMIT + 10)
+			data->run.player.dir.right = 0;
 		else
-			data->run.player.dir.left = 1;
+			data->run.player.dir.right = 1;
 	}
-	else if (r == 290)
+	else if (ra == 200)//ra >= 170 && ra <= 230)
 	{
-		if (distance < MOVE_LIMIT)
+		if (distance < MOVE_LIMIT + 10)
 			data->run.player.dir.down = 0;
 		else
 			data->run.player.dir.down = 1;
+	}
+	else if (ra == 290)//ra >= 260 && ra <= 330)
+	{
+		if (distance < MOVE_LIMIT + 10)
+			data->run.player.dir.left = 0;
+		else
+			data->run.player.dir.left = 1;
 	}
 }
 
@@ -163,10 +167,10 @@ void	check_player_direction(t_data *data)
 {
 	t_ray	ray;
 	int		r;
-	float	step = 6.28 / 360;
-	float	ra = PI / 2 - PI / 12;
+	float	step = (PI * 2) / 360;
+	float	ra = data->run.player.pa;
 
-	r = 300;
+	r = 360;
 	while (r-- > 0)
 	{
 		ray.ra = ra;
@@ -178,10 +182,10 @@ void	check_player_direction(t_data *data)
 			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
 				break ;
 		}
+	//	draw_line(data->run.player.px + PSIZE / 2,
+	//		data->run.player.py + PSIZE / 2,
+	//		(int)ray.rx, (int)ray.ry, data);
 		load_length(data, &ray, r);
-		draw_line(data->run.player.px + PSIZE / 2,
-		          data->run.player.py + PSIZE / 2,
-		          (int)ray.rx, (int)ray.ry, data);
 		ra += step;
 	}
 }

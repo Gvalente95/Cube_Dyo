@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 12:03:33 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/29 19:32:47 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,9 +214,9 @@ void	cast_rays(t_data *data)
 		}
 		distance = extract_length(data, ray.rx, ray.ry);
 		cast_length(data, distance, r--);
-		draw_line(data->run.player.px + PSIZE / 2,
-		          data->run.player.py + PSIZE / 2,
-		          (int)ray.rx, (int)ray.ry, data);
+	//	draw_line(data->run.player.px + PSIZE / 2,
+	//	          data->run.player.py + PSIZE / 2,
+	//	          (int)ray.rx, (int)ray.ry, data);
 		ra += step;
 	}
 	(void)distance;

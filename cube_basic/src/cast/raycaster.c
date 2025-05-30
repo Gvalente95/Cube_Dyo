@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 19:32:47 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 07:44:26 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	draw_2Dmap(t_data *data)
 		{
 			if (data->run.map.imap[y][x] == 1)
 				color = WHITE;
-			else if (data->run.map.imap[y][x] == -PLAYER_POS)
-				color = BLUE;
 			else
 				color = RED;
 			x0 = x * data->run.map.mapS;
@@ -90,16 +88,12 @@ void	draw_player(t_data *data)
 	int	x;
 	int	y;
 
-	if (data->run.player.px == 0 && data->run.player.py == 0)
-	{
-		data->run.player.px = 300;
-		data->run.player.py = 300;
-	}
 	x = data->run.player.px;
-	while (x <= data->run.player.px + PSIZE)
+	printf("draw player X : %i\n", x);
+	while (x <= (data->run.player.px + PSIZE))
 	{
 		y = data->run.player.py;
-		while (y <= data->run.player.py + PSIZE)
+		while (y <= (data->run.player.py + PSIZE))
 			my_mlx_pixel_put(data, x, y++, GREEN);
 		x++;
 	}
@@ -110,7 +104,7 @@ static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 	mapXidx = ray->rx / map->mapS;
 	mapYidx = ray->ry / map->mapS;
 	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
-		if (map->imap[mapYidx][mapXidx] == 1)// || map->imap[mapYidx][mapXidx] == -PLAYER_POS)
+		if (map->imap[mapYidx][mapXidx] == 1)
 			return (1);
 	return (0);
 }
@@ -214,9 +208,9 @@ void	cast_rays(t_data *data)
 		}
 		distance = extract_length(data, ray.rx, ray.ry);
 		cast_length(data, distance, r--);
-	//	draw_line(data->run.player.px + PSIZE / 2,
-	//	          data->run.player.py + PSIZE / 2,
-	//	          (int)ray.rx, (int)ray.ry, data);
+		draw_line(data->run.player.px + PSIZE / 2,
+		          data->run.player.py + PSIZE / 2,
+		          (int)ray.rx, (int)ray.ry, data);
 		ra += step;
 	}
 	(void)distance;
@@ -226,6 +220,6 @@ void	compute_raycast(t_data *data)
 {
 	draw_2Dmap(data);
 	draw_player(data);
-	cast_rays(data);
+//	cast_rays(data);
 	check_player_direction(data);
 }

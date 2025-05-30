@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 13:30:04 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 07:46:19 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,52 @@
 
 void	set_player_pos(t_data *data)
 {
-	t_point	pos;
-	int		stop;
+	int	x;
+	int	y;
+	int	x0;
+	int	y0;
 
-	stop = 0;
-	for (int i = 0; i < data->run.map.max.y * SCALE_MAP && !stop; i++)
+	y = 0;
+	while (y < data->run.map.max.y * SCALE_MAP)
 	{
-		for (int j = 0; j < data->run.map.max.x * SCALE_MAP; j++)
+		x = 0;
+		while (x < data->run.map.max.x * SCALE_MAP)
 		{
-			if (data->run.map.imap[i][j] == 9)
-			{
-				pos.x = j;
-				pos.y = i;
-				stop = 1;
+			if (data->run.map.imap[y][x] == PLAYER_POS)
+			{	
+				x0 = x * data->run.map.mapS + MOVE_LIMIT;// * (int)(SCALE_MAP / 2) + 10 * SCALE_MAP;
+				y0 = y * data->run.map.mapS + MOVE_LIMIT;// * (int)(SCALE_MAP / 2) + 10 * SCALE_MAP;
 				break ;
 			}
+			x++;
 		}
+		if (x != data->run.map.max.x * SCALE_MAP)
+			break ;
+		y++;
 	}
-	data->run.player.py = pos.y * SCALE_MAP;
-	data->run.player.px = pos.x * SCALE_MAP;
-	printf("pos x : %d\npos y : %d\n", pos.x, pos.y);
+	data->run.player.py = y0;// + data->run.map.mapS;// - SCALE_MAP * 3;// * data->run.map.mapS;
+	data->run.player.px = x0;// + data->run.map.mapS;// - SCALE_MAP * 3;// + data->run.map.mapS;
+	printf("x0 : %d\ny0 : %d\n", x0, y0);
+}
+
+//		x0 = x * data->run.map.mapS;
+//		y0 = y * data->run.map.mapS;
+
+
+void	init_mapS(t_map *map)
+{
+	// Calculer le nombre de cases max en X et Y
+	int	max_tile_w = (int)(WI / map->max.x);
+	int	max_tile_h = (int)(HI / map->max.y);
+
+	// Choisir la taille de case la plus petite pour s'assurer que tout rentre
+	map->mapS = (max_tile_w < max_tile_h) ? max_tile_w : max_tile_h;
+	map->mapS /= SCALE_MAP;
+	// Pour éviter des bugs graphiques, on peut fixer une taille minimum/maximum
+	if (map->mapS < 4)
+		map->mapS = 4; // trop petit pour être visible
+	else if (map->mapS > 64)
+		map->mapS = 64; // au-delà, trop gros
 }
 
 void	init_struct(t_data *data)
@@ -44,9 +70,9 @@ void	init_struct(t_data *data)
 	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
 	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
-	set_player_pos(data);
 	data->run.player.dx = 10;
-	data->run.map.mapS = (int)(data->run.map.max.x * data->run.map.max.y / SCALE_MAP * 2 / 4);
+	init_mapS(&data->run.map);
+	set_player_pos(data);
 	printf("map S : %d\n", data->run.map.mapS);
 }
 

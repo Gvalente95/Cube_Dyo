@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 07:03:41 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 07:16:44 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	print_map(int **imap)
 	{
 		for (int j = 0; imap[i][j] != INT_MAX; j++)
 			printf("%d ", imap[i][j]);
+		printf("\n");
 	}
 }
 

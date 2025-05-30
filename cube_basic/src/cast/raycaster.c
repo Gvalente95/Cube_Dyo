@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 09:16:16 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:36:54 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	draw_player(t_data *data)
 	int	y;
 
 	x = data->run.player.px;
-	printf("draw player X : %i\n", x);
 	while (x <= (data->run.player.px + PSIZE))
 	{
 		y = data->run.player.py;

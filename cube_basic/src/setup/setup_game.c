@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 09:15:12 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:42:30 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,15 @@ void	set_player_pos(t_data *data)
 
 void	set_player_dir(t_data *data)
 {
+	printf("Start angle : %c\n", data->run.player.start);
 	if (data->run.player.start == 'N')
-		data->run.player.pa = 1;
+		data->run.player.pa = PI;
 	if (data->run.player.start == 'S')
 		data->run.player.pa = 0;
 	if (data->run.player.start == 'E')
-		data->run.player.pa = 0.5;
+		data->run.player.pa = PI / 2;
 	if (data->run.player.start == 'W')
-		data->run.player.pa = -0.5;
+		data->run.player.pa = -PI / 2;
 }
 
 t_texture	load_texture(char *path, t_data *data)
@@ -99,11 +100,10 @@ void	init_struct(t_data *data)
 	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
 	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
-//	data->run.player.dx = 10;
-	set_player_dir(data);
 	init_mapS(&data->run.map);
 	set_player_pos(data);
 	init_textures(data);
+	set_player_dir(data);
 	printf("map S : %d\n", data->run.map.mapS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:15:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:13:21 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,23 @@ int	**allocate_scaled_map(t_point max)
 	return (smap);
 }
 
-void	format_object(char **map, t_point *original, int *object, char current)
+void	format_object(t_data *data, t_point *original, int *object, char current)
 {
 	if (ft_isspace(current))
 		*object = -1;
 	else if (current >= '0' && current <= '9')
 		*object = current - '0';
 	else if (ft_isalpha(current))
+	{
 		*object = PLAYER_POS;
+		data->run.player.start = *object;
+	}
 	else
 		*object = -2;
 	(void)original;
-	(void)map;
 }
 
-void	map_scale_object(int ***scaled_map, char **map, t_point *original)
+void	map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *data)
 {
 	char	current;
 	int		object;
@@ -109,7 +111,7 @@ void	map_scale_object(int ***scaled_map, char **map, t_point *original)
 	scale.x = original->x * SCALE_MAP;
 	scale.y = original->y * SCALE_MAP;
 	current = map[original->y][original->x];
-	format_object(map, original, &object, current);
+	format_object(data, original, &object, current);
 	while (iter.y < SCALE_MAP)
 	{
 		iter.x = 0;
@@ -142,7 +144,7 @@ int	**scale_map(char **map, t_data *data)
 	{
 		iter.x = 0;
 		while (iter.x < max.x)
-			map_scale_object(&scaled_map, map, &iter);
+			map_scale_object(&scaled_map, map, &iter, data);
 		iter.y++;
 	}
 	return (scaled_map);
@@ -167,19 +169,19 @@ char	**parse_map(char *doc)
 	k = 0;
 	y = count_char(doc, '\n');
 	map = malloc(sizeof(char *) * (y + 1));
-	while (doc[i])
+	map[y] = NULL;
+	while (doc && doc[i])
 	{
 		j = 0;
 		y = 0;
 		while (doc[i + j] && doc[i + j] != '\n')
 			j++;
 		map[k] = malloc(j + 1);
-		while (j-- > 0 && doc[i])
+		while (j-- > 0 && doc[i] && map[k])
 			map[k][y++] = doc[i++];
 		map[k++][y] = '\0'; 
 		i++;
 	}
-	map[k] = NULL;
 	free(doc);
 	print_map(map);
 	return (map);

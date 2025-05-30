@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 08:34:34 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:06:08 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_direction_ok
 
 typedef struct s_player
 {
-	short int	speed[3];
+	char		start;
 	float		px;
 	float		py;
 	float		dx;

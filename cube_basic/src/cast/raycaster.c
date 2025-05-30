@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 08:52:48 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:16:16 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,8 +225,8 @@ void cast_rays(t_data *data)
 	float step = FOV / NUM_RAYS;
 	float ra = data->run.player.pa - (FOV / 2);
 
-	r = 0;
-	while (r < NUM_RAYS)
+	r = NUM_RAYS;
+	while (r > 0)
 	{
 		if (ra < 0)
 			ra += 2 * PI;
@@ -252,7 +252,7 @@ void cast_rays(t_data *data)
 			  data->run.player.py + PSIZE / 2,
 			  (int)ray.rx, (int)ray.ry, data);
 		ra += step;
-		r++;
+		r--;
 	}
 }
 

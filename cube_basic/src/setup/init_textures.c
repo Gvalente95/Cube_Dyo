@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:33:25 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:41:54 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 16:59:09 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ t_texture	load_texture(char *path, t_data *data)
 	tex.img = mlx_xpm_file_to_image(data->mlx, path, &tex.wi, &tex.hi);
 	if (!tex.img)
 	{
-		printf("Texture load failed");
+		printf("Error : Texture load failed");
+		free_data(data);
 		exit(1);
 	}
 	tex.pixels = (int *)mlx_get_data_addr(tex.img, &bpp, &sl, &endian);

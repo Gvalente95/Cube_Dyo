@@ -6,13 +6,13 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 16:21:06 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 17:17:53 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-static void	get_color(t_color *object, int *res, char *line, int token)
+static void	get_color(t_color *object, int *res, char *line, t_data *data)
 {
 	char	**color;
 
@@ -21,14 +21,16 @@ static void	get_color(t_color *object, int *res, char *line, int token)
 		return ;
 	color = ft_split(line, ',');
 	if (!color)
-		return (free(line));
+		return (free(line),
+			free_data(data),
+			perror("Error parsing color in file\n"),
+			exit(EXIT_FAILURE));
 	object->r = ft_atohx(color[0]);
 	object->g = ft_atohx(color[1]);
 	object->b = ft_atohx(color[2]);
 	*res = (object->r << 16) | (object->g << 8) | object->b;
 	return (free(color[0]), free(color[1]),
 		free(color[2]), free(color));
-	(void)token;
 }
 
 static void	geters(t_data *data, char *line, int token)
@@ -44,7 +46,7 @@ static void	geters(t_data *data, char *line, int token)
 			&data->tokens.color_objects[token - (NUM_TEXTURES + 1)],
 			&data->tokens.color[token - (NUM_TEXTURES + 1)],
 			line,
-			token);
+			data);
 }
 
 static char	*search_token_line(char *s, const char *token)

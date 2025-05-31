@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:22:36 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:56:33 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 17:27:20 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	gather_data(t_data *data, int ac, char **av)
 {
 	char	*doc;
 
-	if (ac != 2 || ft_isempty(av[1]))
+	if (ac != 2 || ft_isempty(av[1])
+		|| !ft_strnstr(av[1], ".cub", ft_strlen(av[1])))
 	{
 		printf("Argument Error : Executer ./cub3d [map.cub]\n");
 		exit(1);

@@ -6,60 +6,11 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:17:14 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:02:05 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
-
-void	ft_suppress(char **content, char *to_suppress)
-{
-	int		i;
-	char	**split;
-	char	*join;
-
-	i = 2;
-	if (!content || !*content)
-		return ;
-	split = ft_strsplit(*content, to_suppress);
-	if (!split)
-		return ;
-	join = ft_strjoin(split[0], split[1]);
-	while (split[i])
-		join = ft_strjoin(join, split[i++]);
-	free(*content);
-	*content = join;
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
-}
-/*static void	ft_suppress(char **content, char *to_suppress)
-{
-	int		i = 2;
-	char	**split;
-	char	*join;
-
-	if (!content || !*content || !to_suppress || !*to_suppress)
-		return ;
-	split = ft_strsplit(*content, to_suppress);
-	if (!split)
-		return ;
-	join = ft_strdup(split[0]);
-	while (split[i])
-	{
-		char *tmp = ft_strjoin(join, split[i]);
-		free(join);
-		join = tmp;
-		i++;
-	}
-	free(*content);
-	*content = join;
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
-}*/
 
 static void	get_color(t_color *object, int *res, char *line, int token)
 {
@@ -71,46 +22,29 @@ static void	get_color(t_color *object, int *res, char *line, int token)
 	color = ft_split(line, ',');
 	if (!color)
 		return (free(line));
-	printf("Line : %s\n", line);
-	printf("color R : %s\n", color[0]);
-	object->R = ft_atoi(color[0]);
-	printf("color G : %s\n", color[1]);
-	object->G = ft_atoi(color[1]);
-	printf("color B : %s\n", color[2]);
-	object->B = ft_atoi(color[2]);
+	object->R = ft_atohx(color[0]);
+	object->G = ft_atohx(color[1]);
+	object->B = ft_atohx(color[2]);
 	*res = object->R;// + object->G + object->B;
 	return (free(color[0]), free(color[1]),
 		free(color[2]), free(color));
 	(void)token;
 }
 
-static void	get_texture_path(char **path, char *line, int token)
-{
-	printf("duping path\n");
-	if (!line)
-		return ;
-	printf("LINE OK\n");
-	*path = ft_strdup(line);
-	(void)token;
-}
-
 static void	geters(t_data *data, char *line, int token)
 {
 	if (token <= WEST_TEXT)
-		get_texture_path(&data->tokens.text_path[token],
-			line,
-			token);
+	{
+		if (!line)
+			return ;
+		data->tokens.text_path[token] = ft_strdup(line);
+	}
 	else
 		get_color(
 			&data->tokens.color_objects[token - (NUM_TEXTURES + 1)],
 			&data->tokens.color[token - (NUM_TEXTURES + 1)],
 			line,
 			token);
-}
-
-int	ft_isspace(int c)
-{
-	return ((c <= 13 && c >= 9) || c == 32);
 }
 
 static char	*search_token_line(char *s, const char *token)

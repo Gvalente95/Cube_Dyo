@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:28:27 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 08:46:00 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:56:58 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ static void	put_strings(t_data *data)
 		BLACK, options[2]);
 }
 
+void	cast_game(t_data *data)
+{
+	draw_2Dmap(data);
+	draw_player(data);
+	raycasting(data);
+	check_player_direction(data);
+}
+
 int compute_frame(void *param)
 {
 	t_data *data = (t_data *)param;	
@@ -62,7 +70,7 @@ int compute_frame(void *param)
 	if (!data->run.frame2.img)
 			init_display(&data->run.frame2, data->mlx_cast);
 	if (!data->menu.is_menu)
-		compute_raycast(data);
+		cast_game(data);
 	else
 		cast_menu(data, data->menu.slot_menu);
 	mlx_put_image_to_window(data->mlx, data->win,

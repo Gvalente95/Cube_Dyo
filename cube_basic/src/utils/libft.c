@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:55:48 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:02:09 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:07:09 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ft_suppress(char **content, char *to_suppress)
 		free(split[i++]);
 	free(split);
 }
-
 
 int	ft_isspace(int c)
 {

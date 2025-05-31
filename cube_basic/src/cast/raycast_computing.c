@@ -1,0 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycast_computing.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/31 09:51:46 by dyodlm            #+#    #+#             */
+/*   Updated: 2025/05/31 09:58:08 by dyodlm           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub.h"
+
+int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
+{
+	mapXidx = ray->rx / map->mapS;
+	mapYidx = ray->ry / map->mapS;
+	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
+		if (map->imap[mapYidx][mapXidx] == 1)
+			return (1);
+	return (0);
+}
+
+void	adjust_ray_data(t_ray *ray, t_data *data)
+{
+	if (ray->ra > 2 * PI)
+		ray->ra -= 2 * PI;
+	ray->rx = data->run.player.px;
+	ray->ry = data->run.player.py;
+	ray->dx = cos(ray->ra) * 1;
+	ray->dy = sin(ray->ra) * 1;
+}
+
+void	update_ray_pos(t_ray *ray, t_map *map)
+{
+	ray->rx += ray->dy;
+	ray->ry += ray->dx;
+	ray->mapXidx = (int)((ray->rx) / map->mapS);
+	ray->mapYidx = (int)((ray->ry) / map->mapS);
+}
+
+t_texture *select_texture(t_data *data, t_ray *ray)
+{
+	if (fabs(ray->dx) > fabs(ray->dy))
+		return (ray->dx > 0 ? &data->textures[WEST] : &data->textures[EAST]);
+	else
+		return (ray->dy > 0 ? &data->textures[NORTH] : &data->textures[SOUTH]);
+}

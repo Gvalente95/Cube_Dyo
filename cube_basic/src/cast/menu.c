@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:57:51 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/22 06:04:41 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:48:49 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,26 @@
 int	cast_menu(t_data *data, char place[MENU_SLOTS])
 {
 	int	slot;
+	int	i;
+	int	j;
 	
+	j = 0;
 	slot = data->menu.option * 1000 / (HI / 20) + HI / 2 + 40;
-	for (int j = 0; j < HI; j++)
-		for (int i = 0; i < WI; i++)
-			my_mlx_pixel_put(data, i, j, WHITE);	
-	for (int j = slot; j < slot + 40 && j < HI; j++)
-		for (int i = WI / 2 - WI / 8; i < WI / 2 + WI / 8; i++)
-			my_mlx_pixel_put(data, i, j, GREEN);
+	while (j < HI)
+	{
+		i = 0;
+		while (i < WI)
+			my_mlx_pixel_put(data, i++, j, WHITE);
+		j++;
+	}
+	j = slot;
+	while (j < slot + 40 && j < HI)
+	{
+		i = HI / 2 - WI / 8;
+		while (i < WI / 2 + WI / 8)
+			my_mlx_pixel_put(data, i++, j, GREEN);
+		j++;
+	}
 	return (1);
 	(void)place;
 }

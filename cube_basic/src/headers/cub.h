@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:17:00 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:02:11 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,16 +218,23 @@ void		exit_game(t_data *data);
 void		free_data(t_data *data);
 
 //	RAYCASTING
-void		compute_raycast(t_data *data);
+void		raycasting(t_data *data);
 void		check_player_direction(t_data *data);
 t_texture	load_texture(char *path, t_data *data);
 
+//	RAYCASTING COMPUTING
+void		adjust_ray_data(t_ray *ray, t_data *data);
+void		update_ray_pos(t_ray *ray, t_map *map);
+t_texture 	*select_texture(t_data *data, t_ray *ray);
+int			wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map);
 //	MATH
 int			extract_length(t_data *data, int x, int  y);
 
 //	DISPLAY
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		my_mlx_pixel_put2(t_data *data, int x, int y, int color);
+void		draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx);
+void		draw_vertical_line(t_data *data, int start, int end, int ray, int distance, int color);
 void		draw_line(int x0, int y0, int x1, int y1, t_data *data);
 void		draw_2Dwall(t_data *data, int x, int y, int color);
 void		draw_2Dmap(t_data *data);
@@ -236,9 +243,12 @@ void		draw_player(t_data *data);
 
 //	MENU
 int			cast_menu(t_data *data, char place[MENU_SLOTS]);
+void		cast_rays(t_data *data);
 
 //	UTILS
 char		**ft_strsplit(char *str, char *sep);
 int			ft_isspace(int c);
+void		ft_suppress(char **content, char *to_suppress);
+int			ft_atohx(char *n);
 
 #endif

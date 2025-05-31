@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 07:48:48 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:58:05 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,6 @@ int	key_update_direction(int key, t_player *p, t_map *map)
 }
 
 # define SECURE_STEP 10
-
- static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
- {
-	mapXidx = ray->rx / map->mapS;
-	mapYidx = ray->ry / map->mapS;
-	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
-		if (map->imap[mapYidx][mapXidx] == 1)
-			return (1);
-	return (0);
-}
 
 int	key_update_position(int key, t_data *data, t_player *p)
 {
@@ -108,51 +98,33 @@ static int	key_menu(int key, t_data *data)
 	return (0);
 }
 
-static void	adjust_ray_data(t_ray *ray, t_data *data)
-{
-	if (ray->ra > 2 * PI)
-		ray->ra -= 2 * PI;
-	ray->rx = data->run.player.px;
-	ray->ry = data->run.player.py;
-	ray->dx = cos(ray->ra) * 1;
-	ray->dy = sin(ray->ra) * 1;
-}
-
-static void	update_ray_pos(t_ray *ray, t_map *map)
-{
-	ray->rx += ray->dy;
-	ray->ry += ray->dx;
-	ray->mapXidx = (int)((ray->rx) / map->mapS);
-	ray->mapYidx = (int)((ray->ry) / map->mapS);
-}
-
 void	load_length(t_data *data, t_ray *ray, int ra)
 {
 	float	distance;
 
 	distance = extract_length(data, (int)ray->rx, (int)ray->ry);
-	if (ra == 0)//(ra >= 0 && ra <= 30) || (ra >= 330 && ra <= 360))
+	if (ra == 0)
 	{
 		if (distance < MOVE_LIMIT + 10)
 			data->run.player.dir.up = 0;
 		else
 			data->run.player.dir.up = 1;
 	}
-	else if (ra == 90)//ra >= 60 && ra <= 120)
+	else if (ra == 90)
 	{
 		if (distance < MOVE_LIMIT + 10)
 			data->run.player.dir.right = 0;
 		else
 			data->run.player.dir.right = 1;
 	}
-	else if (ra == 200)//ra >= 170 && ra <= 230)
+	else if (ra == 200)
 	{
 		if (distance < MOVE_LIMIT + 10)
 			data->run.player.dir.down = 0;
 		else
 			data->run.player.dir.down = 1;
 	}
-	else if (ra == 290)//ra >= 260 && ra <= 330)
+	else if (ra == 290)
 	{
 		if (distance < MOVE_LIMIT + 10)
 			data->run.player.dir.left = 0;

@@ -23,7 +23,7 @@ UTILS = $(U)libft.c $(U)string_array_dup.c $(U)string_array_find_last.c \
 		$(U)string_array_find.c $(U)string_array_join.c $(U)string_array_match.c \
 		$(U)string_array_slice.c $(U)string_array_sort.c $(U)string_array.c $(U)string.c \
 		$(U)ft_split_str.c
-CHECKER = $(A)check_data.c $(A)check_colors.c $(A)check_textures.c $(A)check_map.c
+CHECKER = $(A)check_data.c $(A)check_colors.c $(A)check_map.c
 DISPLAY = $(D)pixel_put.c
 EVENTS = $(E)keyboard.c $(E)mouse.c $(E)engine.c $(E)menu.c $(E)events_checkers.c
 SETUP = $(S)setup_game.c $(S)exit.c $(S)map_parse.c \

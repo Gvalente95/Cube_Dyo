@@ -3,14 +3,12 @@ NO ./textures/NORTH.xpm
 SO ./textures/SOUTH.xpm
 
 
-KAKA ./textures/WEST.xpm
+WE ./textures/WEST.xpm
 EA ./textures/EAST.xpm
 
 F 220,100,0
 C 225,30,0
-W 255, 255, 255
-
-
+W 1,1,1
 
 111111111111111
 101100100000001

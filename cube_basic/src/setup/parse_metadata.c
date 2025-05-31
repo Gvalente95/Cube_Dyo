@@ -6,25 +6,27 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 17:17:53 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 17:46:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
-
+/*	LEAKS ON DOC IF QUIT HERE	*/
 static void	get_color(t_color *object, int *res, char *line, t_data *data)
 {
 	char	**color;
 
-	printf("getting color\n");
 	if (!line)
 		return ;
 	color = ft_split(line, ',');
-	if (!color)
+	if (!color || !color[0] || !color[1] || !color[2])
+	{
+		string_array_free(&color);
 		return (free(line),
 			free_data(data),
 			perror("Error parsing color in file\n"),
 			exit(EXIT_FAILURE));
+	}
 	object->r = ft_atohx(color[0]);
 	object->g = ft_atohx(color[1]);
 	object->b = ft_atohx(color[2]);
@@ -103,7 +105,7 @@ void	parse_metadata(t_data *data, char **doc)
 	int			i;
 	char		*line;
 	char		*content;
-	static char	*tokens[] = {"NO", "SO", "EA", "KAKA", "W", "F", "C", NULL};
+	static char	*tokens[] = {"NO", "SO", "EA", "WE", "W", "F", "C", NULL};
 
 	i = 0;
 	while (i < NO_TOKEN)

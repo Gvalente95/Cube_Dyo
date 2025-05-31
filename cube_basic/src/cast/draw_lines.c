@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:04:53 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:10:31 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_line(t_point p0, t_point p1, t_data *data)
 
 static int	get_shaded_color(int base_color, int distance)
 {
-	int shade;
+	int	shade;
 
 	shade = 255 - (distance * 255 / NUM_RAYS);
 	if (shade < 0)
@@ -70,7 +70,7 @@ static int	get_shaded_color(int base_color, int distance)
 
 void	draw_vertical_line(t_column_draw *cd, int start, int end)
 {
-	int shaded_color;
+	int	shaded_color;
 
 	shaded_color = cd->color;
 	if (cd->color == WHITE)

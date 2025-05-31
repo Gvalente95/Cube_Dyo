@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:00:17 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:18:41 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 	int			end_y;
 	t_texdraw	d;
 
+	ft_memset(&d, 0, sizeof(t_texdraw));
 	ray->distance = extract_length(data, ray->rx, ray->ry);
 	if (ray->distance == 0)
 		ray->distance = 1;
@@ -68,9 +69,11 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 	d.end = end_y;
 	d.distance = ray->distance;
 	d.tex = select_texture(data, ray);
-	d.tx = (fabs(ray->dx) > fabs(ray->dy)) ? (int)ray->ry % d.tex->wi : (int)ray->rx % d.tex->wi;
-
-draw_textured_line(&d);
+	if (fabs(ray->dx) > fabs(ray->dy))
+		d.tx = (int)ray->ry % d.tex->wi;
+	else
+		d.tx = (int)ray->rx % d.tex->wi;
+	draw_textured_line(&d);
 }
 
 static void	trace_single_ray(t_data *data, t_ray *ray, float angle)
@@ -86,7 +89,7 @@ static void	trace_single_ray(t_data *data, t_ray *ray, float angle)
 	{
 		update_ray_pos(ray, &data->run.map);
 		if (wall_hit(ray->mapx_idx, ray->mapy_idx, ray, &data->run.map))
-			break;
+			break ;
 	}
 }
 
@@ -95,7 +98,7 @@ void	raycasting(t_data *data)
 	t_ray	ray;
 	t_point	p0;
 	t_point	p1;
-	int	r;
+	int		r;
 	float	ra;
 
 	r = NUM_RAYS;

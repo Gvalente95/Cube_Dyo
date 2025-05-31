@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 14:58:46 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:16:05 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_textures
 {
 	void	*img;
 	int		*pixels;
+	float	pos;
 	int		wi;
 	int		hi;
 }	t_texture;
@@ -206,6 +207,8 @@ typedef struct s_texdraw
 	float		distance;
 	t_texture	*tex;
 	int			tx;
+	int			ty;
+	int			color;
 }	t_texdraw;
 
 //	SETUP

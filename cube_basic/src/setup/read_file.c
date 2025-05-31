@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:22:36 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:26:46 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:56:33 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,14 @@ void	gather_data(t_data *data, int ac, char **av)
 
 	if (ac != 2 || ft_isempty(av[1]))
 	{
-		printf("Executer ./cub3d [map.cub]\n");
+		printf("Argument Error : Executer ./cub3d [map.cub]\n");
 		exit(1);
 	}
 	doc = get_content(av[1]);
+	data->file = ft_strdup(doc);
 	if (!doc)
 	{
-		printf("File not found\n");
+		printf("File Error : File not found\n");
 		exit(1);
 	}
 	parse_metadata(data, &doc);

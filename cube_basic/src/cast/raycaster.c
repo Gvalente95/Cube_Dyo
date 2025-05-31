@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:13:40 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:19:23 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,101 +14,7 @@
 #include <stdbool.h>
 #include "cub.h"
 
-void	draw_line(int x0, int y0, int x1, int y1, t_data *data)
-{
-	int	dx = abs(x1 - x0);
-	int	dy = abs(y1 - y0);
-	int	sx = x0 < x1 ? 1 : -1;
-	int	sy = y0 < y1 ? 1 : -1;
-	int	err = dx - dy;	
-	
-	while (1)
-	{
-		my_mlx_pixel_put(data, x0, y0, GREEN);
-		if (x0 == x1 && y0 == y1)
-			break;
-		int e2 = 2 * err;
-		if (e2 > -dy)
-		{
-			err -= dy;
-			x0 += sx;
-		}
-		if (e2 < dx)
-		{
-			err += dx;
-			y0 += sy;
-		}
-	}
-}
-
-void	draw_2Dwall(t_data *data, int x, int y, int color)
-{
-	int	i;
-	int	j;
-
-	i = x + 1;
-	while (i < x + data->run.map.mapS - 1)
-	{
-		j = y + 1;
-		while (j < y + data->run.map.mapS - 1)
-			my_mlx_pixel_put(data, i, j++, color);
-		i++;
-	}
-}
-
-void	draw_2Dmap(t_data *data)
-{
-	int	x;
-	int	y;
-	int	x0;
-	int	y0;
-	int	color;
-
-	y = 0;
-	while (y < data->run.map.max.y * SCALE_MAP)
-	{
-		x = 0;
-		while (x < data->run.map.max.x * SCALE_MAP)
-		{
-			if (data->run.map.imap[y][x] == 1)
-				color = WHITE;
-			else
-				color = RED;
-			x0 = x * data->run.map.mapS;
-			y0 = y * data->run.map.mapS;
-			draw_2Dwall(data, x0, y0, color);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	draw_player(t_data *data)
-{
-	int	x;
-	int	y;
-
-	x = data->run.player.px;
-	while (x <= (data->run.player.px + PSIZE))
-	{
-		y = data->run.player.py;
-		while (y <= (data->run.player.py + PSIZE))
-			my_mlx_pixel_put(data, x, y++, GREEN);
-		x++;
-	}
-}
-
-static int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
-{
-	mapXidx = ray->rx / map->mapS;
-	mapYidx = ray->ry / map->mapS;
-	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
-		if (map->imap[mapYidx][mapXidx] == 1)
-			return (1);
-	return (0);
-}
-
-int	extract_length(t_data *data, int x, int  y)
+int	extract_length(t_data *data, int x, int y)
 {
 	float	dx;
 	float	dy;
@@ -118,34 +24,7 @@ int	extract_length(t_data *data, int x, int  y)
 	return (sqrt(dx * dx + dy * dy));
 }
 
-void	draw_vertical_line(t_data *data, int start, int end, int ray, int distance, int color)
-{
-	int		shade;
-	int		shaded_color;
-
-	if (color == WHITE)
-	{
-		shade = 255 - (distance * 255 / NUM_RAYS);
-		if (shade < 0)
-			shade = 0;
-		if (shade > 255)
-			shade = 255;
-	}
-	else
-		shaded_color = color;
-	while (start < end)
-	{
-		if (start >= 0 && start < HI)
-		{
-			if (color == WHITE)
-				shaded_color = (shade << 16) | (shade << 8) | shade;
-			my_mlx_pixel_put2(data, ray, start, shaded_color);
-		}
-		start++;
-	}
-}
-
-void cast_length(t_data *data, float distance, int ray)
+/*void cast_length(t_data *data, float distance, int ray)
 {
     float	wall_height;
     int		start_y;
@@ -161,106 +40,78 @@ void cast_length(t_data *data, float distance, int ray)
 	draw_vertical_line(data, 0, start_y, ray, distance, BLUE);
 	draw_vertical_line(data, start_y, end_y, ray, distance, WHITE);
 	draw_vertical_line(data, end_y, HI, ray, distance, GREEN);
+}*/
+static void	assign_values(t_data *data, t_ray *ray, t_point *p0, t_point *p1)
+{
+	p0->x = data->run.player.px + PSIZE / 2;
+	p0->y = data->run.player.py + PSIZE / 2;
+	p1->x = (int)ray->rx;
+	p1->y = (int)ray->ry;
 }
 
-static void	adjust_ray_data(t_ray *ray, t_data *data)
+static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 {
-	if (ray->ra > 2 * PI)
-		ray->ra -= 2 * PI;
-	ray->rx = data->run.player.px;
-	ray->ry = data->run.player.py;
-	ray->dx = cos(ray->ra) * 1;
-	ray->dy = sin(ray->ra) * 1;
-}
+	float		wall_height;
+	int			start_y;
+	int			end_y;
+	t_texdraw	d;
 
-static void	update_ray_pos(t_ray *ray, t_map *map)
-{
-	ray->rx += ray->dy;
-	ray->ry += ray->dx;
-	ray->mapXidx = (int)((ray->rx) / map->mapS);
-	ray->mapYidx = (int)((ray->ry) / map->mapS);
-}
-
-static t_texture *select_texture(t_data *data, t_ray *ray)
-{
+	ft_memset(&d, 0, sizeof(t_texdraw));
+	ray->distance = extract_length(data, ray->rx, ray->ry);
+	if (ray->distance == 0)
+		ray->distance = 1;
+	wall_height = PROJECTION_CONSTANT / (ray->distance * 3);
+	start_y = HI / 2 - wall_height / 2;
+	end_y = HI / 2 + wall_height / 2;
+	d.data = data;
+	d.ray = ray_id;
+	d.start = start_y;
+	d.end = end_y;
+	d.distance = ray->distance;
+	d.tex = select_texture(data, ray);
 	if (fabs(ray->dx) > fabs(ray->dy))
-		return (ray->dx > 0 ? &data->textures[WEST] : &data->textures[EAST]);
+		d.tx = (int)ray->ry % d.tex->wi;
 	else
-		return (ray->dy > 0 ? &data->textures[NORTH] : &data->textures[SOUTH]);
+		d.tx = (int)ray->rx % d.tex->wi;
+	draw_textured_line(&d);
 }
 
-void draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx)
+static void	trace_single_ray(t_data *data, t_ray *ray, float angle)
 {
-	int height = end - start;
-	int ty;
-	float step = (float)tex->hi / height;
-	float tex_pos = 0;
-	int color;
-
-	if (start < 0)
+	if (angle < 0)
+		angle += 2 * PI;
+	else if (angle > 2 * PI)
+		angle -= 2 * PI;
+	ray->ra = angle;
+	adjust_ray_data(ray, data);
+	ray->depth = 0;
+	while (ray->depth++ < 1000)
 	{
-		tex_pos = -start * step;
-		start = 0;
+		update_ray_pos(ray, &data->run.map);
+		if (wall_hit(ray->mapx_idx, ray->mapy_idx, ray, &data->run.map))
+			break ;
 	}
-	if (end > HI)
-		end = HI;
-	for (int y = start; y < end; y++)
-	{
-		ty = (int)tex_pos & (tex->hi - 1);
-		tex_pos += step;
-		color = tex->pixels[ty * tex->wi + tx];
-		my_mlx_pixel_put2(data, ray, y, color);
-	}
-	draw_vertical_line(data, 0, start, ray, distance,
-		data->tokens.color[C_COLOR]);
-	draw_vertical_line(data, end, HI, ray, distance,
-		data->tokens.color[F_COLOR]);
-	(void)distance;
 }
 
-void cast_rays(t_data *data)
+void	raycasting(t_data *data)
 {
-	t_ray ray;
-	int r;
-	float distance;
-	float step = FOV / NUM_RAYS;
-	float ra = data->run.player.pa - (FOV / 2);
+	t_ray	ray;
+	t_point	p0;
+	t_point	p1;
+	int		r;
+	float	ra;
 
 	r = NUM_RAYS;
+	ra = data->run.player.pa - (FOV / 2);
+	ft_bzero(&p0, sizeof(t_point));
+	ft_bzero(&p1, sizeof(t_point));
 	while (r > 0)
 	{
-		if (ra < 0)
-			ra += 2 * PI;
-		else if (ra > 2 * PI)
-			ra -= 2 * PI;
-		ray.ra = ra;
-		adjust_ray_data(&ray, data);
-		ray.depth = 0;
-		while (ray.depth++ < 1000)
-		{
-			update_ray_pos(&ray, &data->run.map);
-			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
-				break;
-		}
-		distance = extract_length(data, ray.rx, ray.ry);
-		float wall_height = PROJECTION_CONSTANT / (distance * 3);
-		int start_y = HI / 2 - wall_height / 2;
-		int end_y = HI / 2 + wall_height / 2;
-		t_texture *tex = select_texture(data, &ray);
-		int tx = (fabs(ray.dx) > fabs(ray.dy)) ? (int)ray.ry % tex->wi : (int)ray.rx % tex->wi;
-		draw_textured_line(data, r, start_y, end_y, distance, tex, tx);
-		draw_line(data->run.player.px + PSIZE / 2,
-			  data->run.player.py + PSIZE / 2,
-			  (int)ray.rx, (int)ray.ry, data);
-		ra += step;
+		trace_single_ray(data, &ray, ra);
+		render_wall_column(data, &ray, r);
+		assign_values(data, &ray, &p0, &p1);
+		draw_line(p0, p1, data);
+		ra += FOV / NUM_RAYS;
 		r--;
 	}
-}
-
-void	compute_raycast(t_data *data)
-{
-	draw_2Dmap(data);
-	draw_player(data);
-	cast_rays(data);
-	check_player_direction(data);
 }

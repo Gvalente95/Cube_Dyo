@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 12:48:55 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:58:33 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		my_mlx_pixel_put2(t_data *data, int x, int y, int color);
 void		draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx);
 void		draw_vertical_line(t_data *data, int start, int end, int ray, int distance, int color);
-void		draw_line(int x0, int y0, int x1, int y1, t_data *data);
+void		draw_line(t_point p0, t_point p1, t_data *data);
 void		draw_2Dwall(t_data *data, int x, int y, int color);
 void		draw_2Dmap(t_data *data);
 void		draw_player(t_data *data);

@@ -28,7 +28,8 @@ DISPLAY = $(D)pixel_put.c
 EVENTS = $(E)keyboard.c $(E)mouse.c $(E)engine.c $(E)menu.c $(E)events_checkers.c
 SETUP = $(S)setup_game.c $(S)exit.c $(S)map_parse.c \
 		$(S)parse_metadata.c $(S)map_parse_utils.c $(S)init_textures.c
-CASTING = $(R)raycaster.c $(R)draw_lines.c $(R)menu.c $(R)draw_shapes.c $(R)raycast_computing.c
+CASTING = $(R)raycaster.c $(R)draw_lines.c $(R)menu.c $(R)draw_shapes.c \
+		$(R)raycast_computing.c $(R)draw_textures.c
 
 INCLUDES = -I$(LDIR) -I$(HDIR) -I$(MDIR)
 

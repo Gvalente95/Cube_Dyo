@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:00:34 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:04:53 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,40 +85,4 @@ void	draw_vertical_line(t_column_draw *cd, int start, int end)
 		}
 		start++;
 	}
-}
-
-static void	init_tex_drawing(int *start, int *end, float *tex_pos, float step)
-{
-	if (*start < 0)
-	{
-		*tex_pos = -*start * step;
-		*start = 0;
-	}
-	if (*end > HI)
-		*end = HI;
-}
-
-void	draw_textured_line(t_texdraw *d)
-{
-	float	tex_pos = 0;
-	float	step;
-	int		height;
-	int		y;
-
-	height = d->end - d->start;
-	step = (float)d->tex->hi / height;
-	init_tex_drawing(&d->start, &d->end, &tex_pos, step);
-	for (y = d->start; y < d->end; y++)
-	{
-		int ty = (int)tex_pos & (d->tex->hi - 1);
-		int color = d->tex->pixels[ty * d->tex->wi + d->tx];
-		tex_pos += step;
-		my_mlx_pixel_put2(d->data, d->ray, y, color);
-	}
-
-	t_column_draw top = {d->data, d->ray, d->distance, d->data->tokens.color[C_COLOR]};
-	t_column_draw bot = {d->data, d->ray, d->distance, d->data->tokens.color[F_COLOR]};
-	draw_vertical_line(&top, 0, d->start);
-	draw_vertical_line(&bot, d->end, HI);
-	(void)d->distance;
 }

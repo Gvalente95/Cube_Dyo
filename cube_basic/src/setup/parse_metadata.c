@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 08:12:42 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:28:23 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static void	get_texture_path(char **path, char *line, int token)
 	printf("duping path\n");
 	if (!line)
 		return ;
+	printf("LINE OK\n");
 	*path = ft_strdup(line);
 	(void)token;
 }
@@ -105,57 +106,35 @@ static void	geters(t_data *data, char *line, int token)
 			token);
 }
 
-static int	ft_isspace(int c)
+int	ft_isspace(int c)
 {
 	return ((c <= 13 && c >= 9) || c == 32);
 }
 
-static char *search_token_line(char *s, const char *token)
+static char	*search_token_line(char *s, const char *token)
 {
-    char	*cursor;
-    char	*next_line;
-    size_t	token_len;
-	char	*result;
+	char	*cursor;
+	char	*next_line;
+	size_t	token_len;
+	char	*result;	
 
 	cursor = s;
 	token_len = ft_strlen(token);
-    while (cursor && *cursor)
-    {
-        next_line = ft_strchr(cursor, '\n');
-
-        if (ft_strncmp(cursor, token, token_len) == 0
+	while (cursor && *cursor)
+	{
+		next_line = ft_strchr(cursor, '\n');	
+		if (ft_strncmp(cursor, token, token_len) == 0
 			&& ft_isspace(cursor[token_len]))
 		{
-            result = cursor + token_len;
-            while (*result && ft_isspace(*result))
-                result++;
-            return result;
-        }
-
-        if (!next_line)
-            break;
-        cursor = next_line + 1;
-    }
-    return NULL;
-}
-
-static char	*search_token(char *s, int token)
-{
-
-	if (token == NORTH_TEXT)
-		return (search_token_line(s, "NO"));
-	else if (token == SOUTH_TEXT)
-		return (search_token_line(s, "SO"));
-	else if (token == EAST_TEXT)
-		return (search_token_line(s, "EA"));
-	else if (token == WEST_TEXT)
-		return (search_token_line(s, "KAKA"));
-	else if (token == FLOOR_COLOR)
-		return (search_token_line(s, "W"));
-	else if (token == SKY_COLOR)
-		return (search_token_line(s, "F"));
-	else if (token == WALL_COLOR)
-		return (search_token_line(s, "C"));
+			result = cursor + token_len;
+			while (*result && ft_isspace(*result))
+				result++;
+			return result;
+		}	
+		if (!next_line)
+			break;
+		cursor = next_line + 1;
+	}
 	return (NULL);
 }
 
@@ -186,15 +165,17 @@ void	parse_metadata(t_data *data, char **doc)
 	int			i;
 	char		*line;
 	char		*content;
+	static char	*tokens[] = {"NO", "SO", "EA", "KAKA", "W", "F", "C", NULL};
 
 	i = 0;
 	while (i < NO_TOKEN)
 	{
-		content = search_token(*doc, i);
+		content = search_token_line(*doc, tokens[i]);
 		line = trim_content(content);
-		geters(data, line, i++);
+		geters(data, line, i);
 		ft_suppress(doc, line);
 		free(line);
 		line = NULL;
+		i++;
 	}
 }

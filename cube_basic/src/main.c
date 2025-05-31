@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 12:09:39 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:40:46 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,32 +82,47 @@ static void	print_map(int **imap)
 	}
 }
 
-/*char	*copy_from(char **s, int here)
+char	*copy_from(char **s, size_t here)
 {
 	size_t	len;
 	char	*copy;
 	char	*new_s;
 
-	len = ft_strlen(*s) - here;
-	copy = malloc((len + 1) * sizeof(char));
+	if (!s || !*s || here >= ft_strlen(*s))
+		return (NULL);
+	copy = ft_strdup(*s + here - 1);
 	if (!copy)
 		return (NULL);
-	len = ft_strlen(*s) - len;
-	new_s = malloc((len + 1));
+	new_s = malloc(here + 1);
 	if (!new_s)
-		return (free(copy), NULL);
-	len = 0;
-	while (*s[here])
-		copy[len++] = *s[here++];
-	copy[len] = '\0';
-	len = -1;
-	while (++len < here)
-		new_s[len] = *s[len];
-	new_s[len] = '\0';
+	{
+		free(copy);
+		return (NULL);
+	}
+	for (len = 0; len < here; len++)
+		new_s[len] = (*s)[len];
+	new_s[here] = '\0';
 	free(*s);
 	*s = new_s;
 	return (copy);
-}*/
+}
+
+void	extract_map(char **doc)
+{
+	int		i;
+	char	*map;
+
+	i = 0;
+	if (!doc || !*doc)
+		return ;
+	while ((*doc)[i] && (ft_isalpha((*doc)[i]) || ft_isspace((*doc)[i])))
+		i++;
+	while ((*doc)[i] != '\n')
+		i--;
+	map = copy_from(doc, i);
+	free(*doc);
+	*doc = map;
+}
 
 static void	gather_data(t_data *data, int ac, char **av)
 {
@@ -125,6 +140,8 @@ static void	gather_data(t_data *data, int ac, char **av)
 		exit(1);
 	}
 	parse_metadata(data, &doc);
+	printf("Meta data parsed\n");
+	extract_map(&doc);
 	data->run.map.map = parse_map(doc);
 	data->run.map.imap = scale_map(data->run.map.map, data);
 	free_data(data);

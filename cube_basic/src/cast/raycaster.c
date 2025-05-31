@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 06:58:22 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:13:51 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ void draw_textured_line(t_data *data, int ray, int start, int end, float distanc
 //	draw_vertical_line(data, 0, start, ray, distance,
 //		data->tokens.colors[SKY_COLOR]);
 //	draw_vertical_line(data, end, HI, ray, distance,
-//		data->tokens.colors[FLOOR_COLOR]);				//	ASSIGNER COULEURS DU PARSING
+//		data->tokens.colors[FLOOR_COLOR]);				//	ASSIGNE
 	(void)distance;
 }
 

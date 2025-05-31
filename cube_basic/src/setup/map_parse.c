@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 05:41:01 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:31:10 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ static int	count_char(char *doc, int c)
 		if (doc[i++] == c)
 			count++;
 	return (count);
-}
-
-int	ft_isspace(int c)
-{
-	return ((c == 32 || (c >= 9 && c <= 13)));
 }
 
 void	map_get_format(char **map, t_data *data)

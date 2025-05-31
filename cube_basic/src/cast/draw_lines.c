@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 13:36:00 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:00:34 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,58 +55,70 @@ void	draw_line(t_point p0, t_point p1, t_data *data)
 	}
 }
 
-void	draw_vertical_line(t_data *data, int start, int end, int ray, int distance, int color)
+static int	get_shaded_color(int base_color, int distance)
 {
-	int		shade;
-	int		shaded_color;
+	int shade;
 
-	if (color == WHITE)
-	{
-		shade = 255 - (distance * 255 / NUM_RAYS);
-		if (shade < 0)
-			shade = 0;
-		if (shade > 255)
-			shade = 255;
-	}
-	else
-		shaded_color = color;
+	shade = 255 - (distance * 255 / NUM_RAYS);
+	if (shade < 0)
+		shade = 0;
+	if (shade > 255)
+		shade = 255;
+	return ((shade << 16) | (shade << 8) | shade);
+	(void)base_color;
+}
+
+void	draw_vertical_line(t_column_draw *cd, int start, int end)
+{
+	int shaded_color;
+
+	shaded_color = cd->color;
+	if (cd->color == WHITE)
+		shaded_color = get_shaded_color(cd->color, cd->distance);
 	while (start < end)
 	{
 		if (start >= 0 && start < HI)
 		{
-			if (color == WHITE)
-				shaded_color = (shade << 16) | (shade << 8) | shade;
-			my_mlx_pixel_put2(data, ray, start, shaded_color);
+			if (cd->color == WHITE)
+				shaded_color = get_shaded_color(cd->color, cd->distance);
+			my_mlx_pixel_put2(cd->data, cd->ray, start, shaded_color);
 		}
 		start++;
 	}
 }
 
-void draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx)
+static void	init_tex_drawing(int *start, int *end, float *tex_pos, float step)
 {
-	int height = end - start;
-	int ty;
-	float step = (float)tex->hi / height;
-	float tex_pos = 0;
-	int color;
+	if (*start < 0)
+	{
+		*tex_pos = -*start * step;
+		*start = 0;
+	}
+	if (*end > HI)
+		*end = HI;
+}
 
-	if (start < 0)
+void	draw_textured_line(t_texdraw *d)
+{
+	float	tex_pos = 0;
+	float	step;
+	int		height;
+	int		y;
+
+	height = d->end - d->start;
+	step = (float)d->tex->hi / height;
+	init_tex_drawing(&d->start, &d->end, &tex_pos, step);
+	for (y = d->start; y < d->end; y++)
 	{
-		tex_pos = -start * step;
-		start = 0;
-	}
-	if (end > HI)
-		end = HI;
-	for (int y = start; y < end; y++)
-	{
-		ty = (int)tex_pos & (tex->hi - 1);
+		int ty = (int)tex_pos & (d->tex->hi - 1);
+		int color = d->tex->pixels[ty * d->tex->wi + d->tx];
 		tex_pos += step;
-		color = tex->pixels[ty * tex->wi + tx];
-		my_mlx_pixel_put2(data, ray, y, color);
+		my_mlx_pixel_put2(d->data, d->ray, y, color);
 	}
-	draw_vertical_line(data, 0, start, ray, distance,
-		data->tokens.color[C_COLOR]);
-	draw_vertical_line(data, end, HI, ray, distance,
-		data->tokens.color[F_COLOR]);
-	(void)distance;
+
+	t_column_draw top = {d->data, d->ray, d->distance, d->data->tokens.color[C_COLOR]};
+	t_column_draw bot = {d->data, d->ray, d->distance, d->data->tokens.color[F_COLOR]};
+	draw_vertical_line(&top, 0, d->start);
+	draw_vertical_line(&bot, d->end, HI);
+	(void)d->distance;
 }

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 13:28:25 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 14:58:46 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,25 @@ typedef struct s_data
 	int			key;
 }	t_data;
 
+typedef struct s_column_draw
+{
+	t_data		*data;
+	int			ray;
+	int			distance;
+	int			color;
+}	t_column_draw;
+
+typedef struct s_texdraw
+{
+	t_data		*data;
+	int			ray;
+	int			start;
+	int			end;
+	float		distance;
+	t_texture	*tex;
+	int			tx;
+}	t_texdraw;
+
 //	SETUP
 void		init_struct(t_data *data);
 void		set_up_loops(t_data *data);
@@ -245,8 +264,8 @@ int			extract_length(t_data *data, int x, int y);
 //	DISPLAY
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		my_mlx_pixel_put2(t_data *data, int x, int y, int color);
-void		draw_textured_line(t_data *data, int ray, int start, int end, float distance, t_texture *tex, int tx);
-void		draw_vertical_line(t_data *data, int start, int end, int ray, int distance, int color);
+void		draw_vertical_line(t_column_draw *cd, int start, int end);
+void		draw_textured_line(t_texdraw *d);
 void		draw_line(t_point p0, t_point p1, t_data *data);
 void		draw_2d_wall(t_data *data, int x, int y, int color);
 void		draw_2d_map(t_data *data);

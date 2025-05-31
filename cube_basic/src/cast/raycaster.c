@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 13:25:11 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:00:17 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	extract_length(t_data *data, int x, int y)
 	draw_vertical_line(data, start_y, end_y, ray, distance, WHITE);
 	draw_vertical_line(data, end_y, HI, ray, distance, GREEN);
 }*/
-
 static void	assign_values(t_data *data, t_ray *ray, t_point *p0, t_point *p1)
 {
 	p0->x = data->run.player.px + PSIZE / 2;
@@ -55,8 +54,7 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 	float		wall_height;
 	int			start_y;
 	int			end_y;
-	t_texture	*tex;
-	int			tx;
+	t_texdraw	d;
 
 	ray->distance = extract_length(data, ray->rx, ray->ry);
 	if (ray->distance == 0)
@@ -64,15 +62,18 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 	wall_height = PROJECTION_CONSTANT / (ray->distance * 3);
 	start_y = HI / 2 - wall_height / 2;
 	end_y = HI / 2 + wall_height / 2;
-	tex = select_texture(data, ray);
-	if (fabs(ray->dx) > fabs(ray->dy))
-		tx = (int)ray->ry % tex->wi;
-	else
-		tx = (int)ray->rx % tex->wi;
-	draw_textured_line(data, ray_id, start_y, end_y, ray->distance, tex, tx);
+	d.data = data;
+	d.ray = ray_id;
+	d.start = start_y;
+	d.end = end_y;
+	d.distance = ray->distance;
+	d.tex = select_texture(data, ray);
+	d.tx = (fabs(ray->dx) > fabs(ray->dy)) ? (int)ray->ry % d.tex->wi : (int)ray->rx % d.tex->wi;
+
+draw_textured_line(&d);
 }
 
-static void	race_single_ray(t_data *data, t_ray *ray, float angle)
+static void	trace_single_ray(t_data *data, t_ray *ray, float angle)
 {
 	if (angle < 0)
 		angle += 2 * PI;
@@ -85,7 +86,7 @@ static void	race_single_ray(t_data *data, t_ray *ray, float angle)
 	{
 		update_ray_pos(ray, &data->run.map);
 		if (wall_hit(ray->mapx_idx, ray->mapy_idx, ray, &data->run.map))
-			break ;
+			break;
 	}
 }
 
@@ -94,7 +95,7 @@ void	raycasting(t_data *data)
 	t_ray	ray;
 	t_point	p0;
 	t_point	p1;
-	int		r;
+	int	r;
 	float	ra;
 
 	r = NUM_RAYS;
@@ -103,7 +104,7 @@ void	raycasting(t_data *data)
 	ft_bzero(&p1, sizeof(t_point));
 	while (r > 0)
 	{
-		race_single_ray(data, &ray, ra);
+		trace_single_ray(data, &ray, ra);
 		render_wall_column(data, &ray, r);
 		assign_values(data, &ray, &p0, &p1);
 		draw_line(p0, p1, data);

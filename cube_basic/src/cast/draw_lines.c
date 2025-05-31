@@ -6,40 +6,51 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 12:52:35 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 13:36:00 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	draw_line(t_point p0, t_point p1, t_data *data)//int x0, int y0, int x1, int y1, t_data *data)
+static void	define_scale(t_point *scale, t_point p0, t_point p1)
 {
-//	t_point	dir;
-//	t_point	scale;
-	int	dx = abs(p1.x - p0.x);
-	int	dy = abs(p1.y - p0.y);
-	int	sx = p0.x < p1.x ? 1 : -1;
-	int	sy = p0.y < p1.y ? 1 : -1;
-	int	err = dx - dy;	
-	
-//	ft_bzero(&dir, sizeof(t_point));
-//	ft_bzero(&scale, sizeof(t_point));
-//	assign_values(dir, )
+	if (p0.x < p1.x)
+		scale->x = 1;
+	else
+		scale->x = -1;
+	if (p0.y < p1.y)
+		scale->y = 1;
+	else
+		scale->y = -1;
+}
+
+void	draw_line(t_point p0, t_point p1, t_data *data)
+{
+	t_point	dir;
+	t_point	scale;
+	int		err;
+	int		e2;
+
+	dir.x = abs(p1.x - p0.x);
+	dir.y = abs(p1.y - p0.y);
+	err = dir.x - dir.y;
+	ft_bzero(&scale, sizeof(t_point));
+	define_scale(&scale, p0, p1);
 	while (1)
 	{
 		my_mlx_pixel_put(data, p0.x, p0.y, GREEN);
 		if (p0.x == p1.x && p0.y == p1.y)
-			break;
-		int e2 = 2 * err;
-		if (e2 > -dy)
+			break ;
+		e2 = 2 * err;
+		if (e2 > -dir.y)
 		{
-			err -= dy;
-			p0.x += sx;
+			err -= dir.y;
+			p0.x += scale.x;
 		}
-		if (e2 < dx)
+		if (e2 < dir.x)
 		{
-			err += dx;
-			p0.y += sy;
+			err += dir.x;
+			p0.y += scale.y;
 		}
 	}
 }

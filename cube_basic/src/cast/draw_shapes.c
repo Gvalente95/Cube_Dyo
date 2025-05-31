@@ -6,13 +6,13 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 08:50:56 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 12:44:33 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 13:28:52 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	draw_2Dwall(t_data *data, int x, int y, int color)
+void	draw_2d_wall(t_data *data, int x, int y, int color)
 {
 	int	i;
 	int	j;
@@ -27,7 +27,7 @@ void	draw_2Dwall(t_data *data, int x, int y, int color)
 	}
 }
 
-void	draw_2Dmap(t_data *data)
+void	draw_2d_map(t_data *data)
 {
 	int	x;
 	int	y;
@@ -47,7 +47,7 @@ void	draw_2Dmap(t_data *data)
 				color = RED;
 			x0 = x * data->run.map.map_s;
 			y0 = y * data->run.map.map_s;
-			draw_2Dwall(data, x0, y0, color);
+			draw_2d_wall(data, x0, y0, color);
 			x++;
 		}
 		y++;

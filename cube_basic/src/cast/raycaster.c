@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 13:22:41 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 13:25:11 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdbool.h>
 #include "cub.h"
 
-int	extract_length(t_data *data, int x, int  y)
+int	extract_length(t_data *data, int x, int y)
 {
 	float	dx;
 	float	dy;
@@ -57,12 +57,11 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 	int			end_y;
 	t_texture	*tex;
 	int			tx;
-	float		distance;
 
-	distance = extract_length(data, ray->rx, ray->ry);
-	if (distance == 0)
-		distance = 1;
-	wall_height = PROJECTION_CONSTANT / (distance * 3);
+	ray->distance = extract_length(data, ray->rx, ray->ry);
+	if (ray->distance == 0)
+		ray->distance = 1;
+	wall_height = PROJECTION_CONSTANT / (ray->distance * 3);
 	start_y = HI / 2 - wall_height / 2;
 	end_y = HI / 2 + wall_height / 2;
 	tex = select_texture(data, ray);
@@ -70,7 +69,7 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 		tx = (int)ray->ry % tex->wi;
 	else
 		tx = (int)ray->rx % tex->wi;
-	draw_textured_line(data, ray_id, start_y, end_y, distance, tex, tx);
+	draw_textured_line(data, ray_id, start_y, end_y, ray->distance, tex, tx);
 }
 
 static void	race_single_ray(t_data *data, t_ray *ray, float angle)
@@ -86,7 +85,7 @@ static void	race_single_ray(t_data *data, t_ray *ray, float angle)
 	{
 		update_ray_pos(ray, &data->run.map);
 		if (wall_hit(ray->mapx_idx, ray->mapy_idx, ray, &data->run.map))
-			break;
+			break ;
 	}
 }
 
@@ -96,11 +95,9 @@ void	raycasting(t_data *data)
 	t_point	p0;
 	t_point	p1;
 	int		r;
-	float	step;
 	float	ra;
 
 	r = NUM_RAYS;
-	step = FOV / NUM_RAYS;
 	ra = data->run.player.pa - (FOV / 2);
 	ft_bzero(&p0, sizeof(t_point));
 	ft_bzero(&p1, sizeof(t_point));
@@ -110,7 +107,7 @@ void	raycasting(t_data *data)
 		render_wall_column(data, &ray, r);
 		assign_values(data, &ray, &p0, &p1);
 		draw_line(p0, p1, data);
-		ra += step;
+		ra += FOV / NUM_RAYS;
 		r--;
 	}
 }

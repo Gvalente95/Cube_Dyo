@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:28:27 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:47:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 13:28:44 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	put_strings(t_data *data)
 
 void	cast_game(t_data *data)
 {
-	draw_2Dmap(data);
+	draw_2d_map(data);
 	draw_player(data);
 	raycasting(data);
 	check_player_direction(data);

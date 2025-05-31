@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 11:56:16 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 06:44:52 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,5 +235,8 @@ void		draw_player(t_data *data);
 
 //	MENU
 int			cast_menu(t_data *data, char place[MENU_SLOTS]);
+
+//	UTILS
+char	**ft_strsplit(char *str, char *sep);
 
 #endif

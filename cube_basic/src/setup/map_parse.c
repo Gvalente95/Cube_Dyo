@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 10:42:50 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 05:41:01 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,10 @@ void	format_object(t_data *data, t_point *original, int *object, char current)
 	{
 		*object = PLAYER_POS;
 		data->run.player.start = current;
-		printf("OBJECT : %c\n", *object);
 	}
 	else
 		*object = -2;
 	(void)original;
-	printf("OBJECT : %c\n", current);
 }
 
 void	map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *data)
@@ -150,13 +148,6 @@ int	**scale_map(char **map, t_data *data)
 		iter.y++;
 	}
 	return (scaled_map);
-}
-
-
-bool	check_map(char **map)
-{
-	(void)map;
-	return (OK);
 }
 
 char	**parse_map(char *doc)

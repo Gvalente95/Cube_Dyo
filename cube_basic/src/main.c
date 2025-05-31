@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 11:53:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/30 12:09:39 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ static void	gather_data(t_data *data, int ac, char **av)
 	parse_metadata(data, &doc);
 	data->run.map.map = parse_map(doc);
 	data->run.map.imap = scale_map(data->run.map.map, data);
+	free_data(data);
+	exit(1);
 	print_map(data->run.map.imap);
 	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 10;
 //	if (!check_map(data->run.map.map))

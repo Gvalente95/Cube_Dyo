@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:26:42 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 16:21:06 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	get_color(t_color *object, int *res, char *line, int token)
 	object->r = ft_atohx(color[0]);
 	object->g = ft_atohx(color[1]);
 	object->b = ft_atohx(color[2]);
-	*res = object->r;// + object->g + object->b;
+	*res = (object->r << 16) | (object->g << 8) | object->b;
 	return (free(color[0]), free(color[1]),
 		free(color[2]), free(color));
 	(void)token;

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 08:40:46 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:51:16 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,28 +82,21 @@ static void	print_map(int **imap)
 	}
 }
 
-char	*copy_from(char **s, size_t here)
+char	*copy_from(char **str, size_t here)
 {
-	size_t	len;
 	char	*copy;
-	char	*new_s;
+	size_t	len;
+	size_t	i;
 
-	if (!s || !*s || here >= ft_strlen(*s))
-		return (NULL);
-	copy = ft_strdup(*s + here - 1);
-	if (!copy)
-		return (NULL);
-	new_s = malloc(here + 1);
-	if (!new_s)
+	i = 0;
+	len = ft_strlen(*str) - here + 1;
+	copy = malloc(len);
+	while ((*str)[i + here])
 	{
-		free(copy);
-		return (NULL);
+		copy[i] = (*str)[i + here];
+		i++;
 	}
-	for (len = 0; len < here; len++)
-		new_s[len] = (*s)[len];
-	new_s[here] = '\0';
-	free(*s);
-	*s = new_s;
+	copy[i] = '\0';
 	return (copy);
 }
 
@@ -140,7 +133,6 @@ static void	gather_data(t_data *data, int ac, char **av)
 		exit(1);
 	}
 	parse_metadata(data, &doc);
-	printf("Meta data parsed\n");
 	extract_map(&doc);
 	data->run.map.map = parse_map(doc);
 	data->run.map.imap = scale_map(data->run.map.map, data);
@@ -148,8 +140,6 @@ static void	gather_data(t_data *data, int ac, char **av)
 	exit(1);
 	print_map(data->run.map.imap);
 	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 10;
-//	if (!check_map(data->run.map.map))
-//		exit_game(data);
 }
 
 int	main(int ac, char **av)

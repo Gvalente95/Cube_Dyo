@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 08:31:10 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:56:53 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #define OK true
 #define KO false
 
+bool	no_char_in_line(char *doc, int start, int end)
+{
+	while (start < end)
+	{
+		if (ft_isalpha(doc[start]) || ft_isalnum(doc[start]))
+			return (false);
+		start++;
+	}
+	return (true);
+}
 static void	print_map(char **map)
 {
 	int	i = 0;
@@ -155,22 +165,28 @@ char	**parse_map(char *doc)
 
 	i = 0;
 	k = 0;
-	y = count_char(doc, '\n');
+	y = count_char(doc, '\n') - 1;
 	map = malloc(sizeof(char *) * (y + 1));
-	map[y] = NULL;
+	i++;
 	while (doc && doc[i])
 	{
 		j = 0;
 		y = 0;
 		while (doc[i + j] && doc[i + j] != '\n')
 			j++;
+		if (no_char_in_line(doc, i, i + j))
+			break ;
 		map[k] = malloc(j + 1);
 		while (j-- > 0 && doc[i] && map[k])
 			map[k][y++] = doc[i++];
 		map[k++][y] = '\0'; 
 		i++;
 	}
+	free(map[k]);
+	map[k] = NULL;
 	free(doc);
+	printf("UIUIU\n");
 	print_map(map);
+	printf("MAP PRINTED\n");
 	return (map);
 }

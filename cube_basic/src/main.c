@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 07:16:44 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:05:45 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,41 @@ static void	print_map(int **imap)
 	}
 }
 
+char	*copy_from(char **str, size_t here)
+{
+	char	*copy;
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = ft_strlen(*str) - here + 1;
+	copy = malloc(len);
+	while ((*str)[i + here])
+	{
+		copy[i] = (*str)[i + here];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
+}
+
+void	extract_map(char **doc)
+{
+	int		i;
+	char	*map;
+
+	i = 0;
+	if (!doc || !*doc)
+		return ;
+	while ((*doc)[i] && (ft_isalpha((*doc)[i]) || ft_isspace((*doc)[i])))
+		i++;
+	while ((*doc)[i] != '\n')
+		i--;
+	map = copy_from(doc, i);
+	free(*doc);
+	*doc = map;
+}
+
 static void	gather_data(t_data *data, int ac, char **av)
 {
 	char	*doc;
@@ -91,19 +126,20 @@ static void	gather_data(t_data *data, int ac, char **av)
 		printf("Executer ./cub3d [map.cub]\n");
 		exit(1);
 	}
-	ft_memset(&data->run, 0, sizeof(t_engine));
 	doc = get_content(av[1]);
 	if (!doc)
 	{
 		printf("File not found\n");
 		exit(1);
 	}
+	parse_metadata(data, &doc);
+	extract_map(&doc);
 	data->run.map.map = parse_map(doc);
 	data->run.map.imap = scale_map(data->run.map.map, data);
+//	// free_data(data);
+//	// exit(1);
 	print_map(data->run.map.imap);
 	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 10;
-	if (!check_map(data->run.map.map))
-		exit_game(data);
 }
 
 int	main(int ac, char **av)

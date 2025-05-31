@@ -21,11 +21,12 @@ R = src/cast/
 
 UTILS = $(U)libft.c $(U)string_array_dup.c $(U)string_array_find_last.c \
 		$(U)string_array_find.c $(U)string_array_join.c $(U)string_array_match.c \
-		$(U)string_array_slice.c $(U)string_array_sort.c $(U)string_array.c $(U)string.c
+		$(U)string_array_slice.c $(U)string_array_sort.c $(U)string_array.c $(U)string.c \
+		$(U)ft_split_str.c
 ANIMATION = $(A)philos.c
 DISPLAY = $(D)pixel_put.c
 EVENTS = $(E)keyboard.c $(E)mouse.c $(E)engine.c $(E)events_menu.c
-SETUP = $(S)setup_game.c $(S)exit.c $(S)map_parse.c $(S)text_walls.c $(S)text_ground.c
+SETUP = $(S)setup_game.c $(S)exit.c $(S)map_parse.c $(S)text_walls.c $(S)text_ground.c $(S)parse_metadata.c
 CASTING = $(R)raycaster.c $(R)geometry_helpers.c $(R)menu.c $(R)draw.c
 
 INCLUDES = -I$(LDIR) -I$(HDIR) -I$(MDIR)

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 08:52:48 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:13:40 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	draw_player(t_data *data)
 	int	y;
 
 	x = data->run.player.px;
-	printf("draw player X : %i\n", x);
 	while (x <= (data->run.player.px + PSIZE))
 	{
 		y = data->run.player.py;
@@ -212,8 +211,10 @@ void draw_textured_line(t_data *data, int ray, int start, int end, float distanc
 		color = tex->pixels[ty * tex->wi + tx];
 		my_mlx_pixel_put2(data, ray, y, color);
 	}
-	draw_vertical_line(data, 0, start, ray, distance, BLUE);
-	draw_vertical_line(data, end, HI, ray, distance, GREEN);
+	draw_vertical_line(data, 0, start, ray, distance,
+		data->tokens.color[C_COLOR]);
+	draw_vertical_line(data, end, HI, ray, distance,
+		data->tokens.color[F_COLOR]);
 	(void)distance;
 }
 
@@ -225,8 +226,8 @@ void cast_rays(t_data *data)
 	float step = FOV / NUM_RAYS;
 	float ra = data->run.player.pa - (FOV / 2);
 
-	r = 0;
-	while (r < NUM_RAYS)
+	r = NUM_RAYS;
+	while (r > 0)
 	{
 		if (ra < 0)
 			ra += 2 * PI;
@@ -252,7 +253,7 @@ void cast_rays(t_data *data)
 			  data->run.player.py + PSIZE / 2,
 			  (int)ray.rx, (int)ray.ry, data);
 		ra += step;
-		r++;
+		r--;
 	}
 }
 

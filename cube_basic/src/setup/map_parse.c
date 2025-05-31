@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 05:15:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:59:46 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 #define OK true
 #define KO false
 
+bool	no_char_in_line(char *doc, int start, int end)
+{
+	while (start < end)
+	{
+		if (ft_isalpha(doc[start]) || ft_isalnum(doc[start]))
+			return (false);
+		start++;
+	}
+	return (true);
+}
 static void	print_map(char **map)
 {
 	int	i = 0;
@@ -36,11 +46,6 @@ static int	count_char(char *doc, int c)
 		if (doc[i++] == c)
 			count++;
 	return (count);
-}
-
-int	ft_isspace(int c)
-{
-	return ((c == 32 || (c >= 9 && c <= 13)));
 }
 
 void	map_get_format(char **map, t_data *data)
@@ -84,21 +89,23 @@ int	**allocate_scaled_map(t_point max)
 	return (smap);
 }
 
-void	format_object(char **map, t_point *original, int *object, char current)
+void	format_object(t_data *data, t_point *original, int *object, char current)
 {
 	if (ft_isspace(current))
 		*object = -1;
 	else if (current >= '0' && current <= '9')
 		*object = current - '0';
 	else if (ft_isalpha(current))
+	{
 		*object = PLAYER_POS;
+		data->run.player.start = current;
+	}
 	else
 		*object = -2;
 	(void)original;
-	(void)map;
 }
 
-void	map_scale_object(int ***scaled_map, char **map, t_point *original)
+void	map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *data)
 {
 	char	current;
 	int		object;
@@ -109,7 +116,7 @@ void	map_scale_object(int ***scaled_map, char **map, t_point *original)
 	scale.x = original->x * SCALE_MAP;
 	scale.y = original->y * SCALE_MAP;
 	current = map[original->y][original->x];
-	format_object(map, original, &object, current);
+	format_object(data, original, &object, current);
 	while (iter.y < SCALE_MAP)
 	{
 		iter.x = 0;
@@ -142,17 +149,10 @@ int	**scale_map(char **map, t_data *data)
 	{
 		iter.x = 0;
 		while (iter.x < max.x)
-			map_scale_object(&scaled_map, map, &iter);
+			map_scale_object(&scaled_map, map, &iter, data);
 		iter.y++;
 	}
 	return (scaled_map);
-}
-
-
-bool	check_map(char **map)
-{
-	(void)map;
-	return (OK);
 }
 
 char	**parse_map(char *doc)
@@ -165,22 +165,30 @@ char	**parse_map(char *doc)
 
 	i = 0;
 	k = 0;
-	y = count_char(doc, '\n');
+	y = count_char(doc, '\n') - 1;
 	map = malloc(sizeof(char *) * (y + 1));
-	while (doc[i])
+	i++;
+	while (doc && doc[i])
 	{
 		j = 0;
 		y = 0;
 		while (doc[i + j] && doc[i + j] != '\n')
 			j++;
+		if (no_char_in_line(doc, i, i + j))
+			break ;
 		map[k] = malloc(j + 1);
-		while (j-- > 0 && doc[i])
+		while (j-- > 0 && doc[i] && map[k])
 			map[k][y++] = doc[i++];
 		map[k++][y] = '\0'; 
 		i++;
 	}
+	if (map[k])
+		free(map[k]);
 	map[k] = NULL;
-	free(doc);
+	if (doc)
+		free(doc);
+	printf("UIUIU\n");
 	print_map(map);
+	printf("MAP PRINTED\n");
 	return (map);
 }

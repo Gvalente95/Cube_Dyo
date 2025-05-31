@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/30 08:34:34 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:17:00 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_direction_ok
 
 typedef struct s_player
 {
-	short int	speed[3];
+	char		start;
 	float		px;
 	float		py;
 	float		dx;
@@ -139,12 +139,48 @@ typedef enum e_text_type
 	SOUTH,
 	EAST,
 	WEST
-}	t_text_type;
+}	e_text_type;
+
+typedef struct s_color
+{
+	int	R;
+	int	G;
+	int	B;
+}	t_color;
+
+typedef enum e_tokens
+{
+	NORTH_TEXT,
+	SOUTH_TEXT,
+	EAST_TEXT,
+	WEST_TEXT,
+	FLOOR_COLOR,
+	SKY_COLOR,
+	WALL_COLOR,
+	NO_TOKEN
+}	e_tokens;
+
+typedef enum e_object_to_paint
+{
+	F_COLOR,
+	C_COLOR,
+	W_COLOR
+}	e_topaint;
+
+# define OBJS_TO_PAINT 3
+
+typedef struct s_tokens
+{
+	t_color		color_objects[OBJS_TO_PAINT];
+	int			color[OBJS_TO_PAINT];
+	char		*text_path[NUM_TEXTURES];	
+}	t_tokens;
 
 typedef struct s_data
 {
 	t_menu		menu;
 	t_engine	run;
+	t_tokens	tokens;
 	t_texture	textures[NUM_TEXTURES];
 	void		*mlx;
 	void		*win;
@@ -158,7 +194,8 @@ void		init_struct(t_data *data);
 void		set_up_loops(t_data *data);
 void		init_textures(t_data *data);
 
-//	MAP PARSE
+//	FILE PARSE
+void		parse_metadata(t_data *data, char **doc);
 char		**parse_map(char *doc);
 int			**scale_map(char **map, t_data *data);
 bool		check_map(char **map);
@@ -199,5 +236,9 @@ void		draw_player(t_data *data);
 
 //	MENU
 int			cast_menu(t_data *data, char place[MENU_SLOTS]);
+
+//	UTILS
+char		**ft_strsplit(char *str, char *sep);
+int			ft_isspace(int c);
 
 #endif

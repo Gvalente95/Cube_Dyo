@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:16:05 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:24:44 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ typedef struct s_texdraw
 void		init_struct(t_data *data);
 void		set_up_loops(t_data *data);
 void		init_textures(t_data *data);
+void		gather_data(t_data *data, int ac, char **av);
 
 //	FILE PARSE
 void		parse_metadata(t_data *data, char **doc);
@@ -285,5 +286,6 @@ char		**ft_strsplit(char *str, char *sep);
 int			ft_isspace(int c);
 void		ft_suppress(char **content, char *to_suppress);
 int			ft_atohx(char *n);
+char		*copy_from(char **str, size_t here);
 
 #endif

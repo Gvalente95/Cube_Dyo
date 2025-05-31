@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:57:51 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:48:49 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:20:32 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	cast_menu(t_data *data, char place[MENU_SLOTS])
 	int	slot;
 	int	i;
 	int	j;
-	
+
 	j = 0;
 	slot = data->menu.option * 1000 / (HI / 20) + HI / 2 + 40;
 	while (j < HI)

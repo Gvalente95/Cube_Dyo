@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:55:48 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:07:09 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:21:58 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,24 @@ void	ft_suppress(char **content, char *to_suppress)
 	while (split[i])
 		free(split[i++]);
 	free(split);
+}
+
+char	*copy_from(char **str, size_t here)
+{
+	char	*copy;
+	size_t	len;
+	size_t	i;
+
+	i = 0;
+	len = ft_strlen(*str) - here + 1;
+	copy = malloc(len);
+	while ((*str)[i + here])
+	{
+		copy[i] = (*str)[i + here];
+		i++;
+	}
+	copy[i] = '\0';
+	return (copy);
 }
 
 int	ft_isspace(int c)

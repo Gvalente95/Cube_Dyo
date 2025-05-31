@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:02:11 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:30:42 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,13 @@ void		parse_metadata(t_data *data, char **doc);
 char		**parse_map(char *doc);
 int			**scale_map(char **map, t_data *data);
 bool		check_map(char **map);
+
+//	PARSE UTILS
+bool		no_char_in_line(char *doc, int start, int end);
+void		print_map(char **map);
+int			count_char(char *doc, int c);
+void		map_get_format(char **map, t_data *data);
+int			**allocate_scaled_map(t_point max);
 
 //	MOUSE EVENTS
 int			mouse_update_env(int key, int x, int y, t_data *data);

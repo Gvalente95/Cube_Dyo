@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:05:45 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:31:07 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,6 @@ static char	*get_content(char *file)
 	return (content);
 }
 
-static void	print_map(int **imap)
-{
-	for (int i = 0; imap && imap[i]; i++)
-	{
-		for (int j = 0; imap[i][j] != INT_MAX; j++)
-			printf("%d ", imap[i][j]);
-		printf("\n");
-	}
-}
-
 char	*copy_from(char **str, size_t here)
 {
 	char	*copy;
@@ -138,7 +128,7 @@ static void	gather_data(t_data *data, int ac, char **av)
 	data->run.map.imap = scale_map(data->run.map.map, data);
 //	// free_data(data);
 //	// exit(1);
-	print_map(data->run.map.imap);
+//	print_map(data->run.map.imap);
 	data->run.map.mapS = data->run.map.max.x * data->run.map.max.y / 10;
 }
 

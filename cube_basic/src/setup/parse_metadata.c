@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:02:05 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:49:28 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	get_color(t_color *object, int *res, char *line, int token)
 	color = ft_split(line, ',');
 	if (!color)
 		return (free(line));
-	object->R = ft_atohx(color[0]);
-	object->G = ft_atohx(color[1]);
-	object->B = ft_atohx(color[2]);
-	*res = object->R;// + object->G + object->B;
+	object->r = ft_atohx(color[0]);
+	object->g = ft_atohx(color[1]);
+	object->b = ft_atohx(color[2]);
+	*res = object->r;// + object->g + object->b;
 	return (free(color[0]), free(color[1]),
 		free(color[2]), free(color));
 	(void)token;
@@ -58,17 +58,17 @@ static char	*search_token_line(char *s, const char *token)
 	token_len = ft_strlen(token);
 	while (cursor && *cursor)
 	{
-		next_line = ft_strchr(cursor, '\n');	
+		next_line = ft_strchr(cursor, '\n');
 		if (ft_strncmp(cursor, token, token_len) == 0
 			&& ft_isspace(cursor[token_len]))
 		{
 			result = cursor + token_len;
 			while (*result && ft_isspace(*result))
 				result++;
-			return result;
-		}	
+			return (result);
+		}
 		if (!next_line)
-			break;
+			break ;
 		cursor = next_line + 1;
 	}
 	return (NULL);

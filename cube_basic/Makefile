@@ -25,9 +25,9 @@ UTILS = $(U)libft.c $(U)string_array_dup.c $(U)string_array_find_last.c \
 		$(U)ft_split_str.c
 ANIMATION = $(A)philos.c
 DISPLAY = $(D)pixel_put.c
-EVENTS = $(E)keyboard.c $(E)mouse.c $(E)engine.c $(E)events_menu.c
+EVENTS = $(E)keyboard.c $(E)mouse.c $(E)engine.c $(E)menu.c $(E)events_checkers.c
 SETUP = $(S)setup_game.c $(S)exit.c $(S)map_parse.c \
-		$(S)parse_metadata.c $(S)map_parse_utils.c
+		$(S)parse_metadata.c $(S)map_parse_utils.c $(S)init_textures.c
 CASTING = $(R)raycaster.c $(R)draw_lines.c $(R)menu.c $(R)draw_shapes.c $(R)raycast_computing.c
 
 INCLUDES = -I$(LDIR) -I$(HDIR) -I$(MDIR)

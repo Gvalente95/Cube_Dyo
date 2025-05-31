@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 10:00:32 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/21 13:24:30 by dyodlm           ###   ########.fr       */
+/*   Created: 2025/05/31 10:42:41 by dyodlm            #+#    #+#             */
+/*   Updated: 2025/05/31 10:44:31 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 		return ;
 	dst = data->run.frame.addr
 		+ (y * data->run.frame.offset + x * (data->run.frame.bpp / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 
 void	my_mlx_pixel_put2(t_data *data, int x, int y, int color)
 {
-    char *dst;
+	char	*dst;
 
-    if (x < 0 || y < 0 || x >= WI || y >= HI)
-        return ;
-    if (!data || !data->run.frame2.addr)
-        return ;
-    dst = data->run.frame2.addr
-        + (y * data->run.frame2.offset + x * (data->run.frame2.bpp / 8));
-    *(unsigned int*)dst = color;
+	if (x < 0 || y < 0 || x >= WI || y >= HI)
+		return ;
+	if (!data || !data->run.frame2.addr)
+		return ;
+	dst = data->run.frame2.addr
+		+ (y * data->run.frame2.offset + x * (data->run.frame2.bpp / 8));
+	*(unsigned int *)dst = color;
 }

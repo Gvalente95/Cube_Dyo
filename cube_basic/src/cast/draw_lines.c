@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:46:02 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:37:51 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,17 @@
 
 void	draw_line(int x0, int y0, int x1, int y1, t_data *data)
 {
+//	t_point	dir;
+//	t_point	scale;
 	int	dx = abs(x1 - x0);
 	int	dy = abs(y1 - y0);
 	int	sx = x0 < x1 ? 1 : -1;
 	int	sy = y0 < y1 ? 1 : -1;
 	int	err = dx - dy;	
 	
+//	ft_bzero(&dir, sizeof(t_point));
+//	ft_bzero(&scale, sizeof(t_point));
+//	assign_values(dir, )
 	while (1)
 	{
 		my_mlx_pixel_put(data, x0, y0, GREEN);

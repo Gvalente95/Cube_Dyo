@@ -6,13 +6,14 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:30:39 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:39:49 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	format_object(t_data *data, t_point *original, int *object, char current)
+void	format_object(
+	t_data *data, t_point *original, int *object, char current)
 {
 	if (ft_isspace(current))
 		*object = -1;
@@ -28,7 +29,8 @@ void	format_object(t_data *data, t_point *original, int *object, char current)
 	(void)original;
 }
 
-void	map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *data)
+void	map_scale_object(
+	int ***scaled_map, char **map, t_point *original, t_data *data)
 {
 	char	current;
 	int		object;
@@ -45,7 +47,8 @@ void	map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *
 		iter.x = 0;
 		while (iter.x < SCALE_MAP)
 		{
-			if (object == 1 && (iter.x == 0 || iter.x == SCALE_MAP - 1 || iter.y == 0 || iter.y == SCALE_MAP - 1))
+			if (object == 1 && (iter.x == 0 || iter.x == SCALE_MAP - 1
+					|| iter.y == 0 || iter.y == SCALE_MAP - 1))
 				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
 			else
 				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
@@ -86,11 +89,10 @@ char	**parse_map(char *doc)
 	int		y;
 	char	**map;
 
-	i = 0;
+	i = 1;
 	k = 0;
 	y = count_char(doc, '\n') - 1;
 	map = malloc(sizeof(char *) * (y + 1));
-	i++;
 	while (doc && doc[i])
 	{
 		j = 0;
@@ -102,7 +104,7 @@ char	**parse_map(char *doc)
 		map[k] = malloc(j + 1);
 		while (j-- > 0 && doc[i] && map[k])
 			map[k][y++] = doc[i++];
-		map[k++][y] = '\0'; 
+		map[k++][y] = '\0';
 		i++;
 	}
 	if (map[k])
@@ -110,8 +112,6 @@ char	**parse_map(char *doc)
 	map[k] = NULL;
 	if (doc)
 		free(doc);
-	printf("UIUIU\n");
 	print_map(map);
-	printf("MAP PRINTED\n");
 	return (map);
 }

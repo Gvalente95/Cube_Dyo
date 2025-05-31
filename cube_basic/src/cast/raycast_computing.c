@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:51:46 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:58:08 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:49:49 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map)
 {
-	mapXidx = ray->rx / map->mapS;
-	mapYidx = ray->ry / map->mapS;
+	mapXidx = ray->rx / map->map_s;
+	mapYidx = ray->ry / map->map_s;
 	if (mapXidx >= 0 && mapXidx < map->max.x * SCALE_MAP && mapYidx >= 0 && mapYidx < map->max.y * SCALE_MAP)
 		if (map->imap[mapYidx][mapXidx] == 1)
 			return (1);
@@ -36,8 +36,8 @@ void	update_ray_pos(t_ray *ray, t_map *map)
 {
 	ray->rx += ray->dy;
 	ray->ry += ray->dx;
-	ray->mapXidx = (int)((ray->rx) / map->mapS);
-	ray->mapYidx = (int)((ray->ry) / map->mapS);
+	ray->mapx_idx = (int)((ray->rx) / map->map_s);
+	ray->mapy_idx = (int)((ray->ry) / map->map_s);
 }
 
 t_texture *select_texture(t_data *data, t_ray *ray)

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:59:08 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:49:39 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void raycasting(t_data *data)
 		while (ray.depth++ < 1000)
 		{
 			update_ray_pos(&ray, &data->run.map);
-			if (wall_hit(ray.mapXidx, ray.mapYidx, &ray, &data->run.map))
+			if (wall_hit(ray.mapx_idx, ray.mapy_idx, &ray, &data->run.map))
 				break;
 		}
 		distance = extract_length(data, ray.rx, ray.ry);

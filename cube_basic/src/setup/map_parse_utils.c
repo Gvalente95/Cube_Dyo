@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:28:27 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:30:29 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:37:16 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ bool	no_char_in_line(char *doc, int start, int end)
 
 void	print_map(char **map)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (map && map[i])
 	{
 		printf("y : %d : %s\n", i, map[i]);
@@ -38,7 +39,7 @@ int	count_char(char *doc, int c)
 {
 	int	i;
 	int	count;
-	
+
 	i = 0;
 	count = 0;
 	while (doc[i])

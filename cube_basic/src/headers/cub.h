@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:30:42 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:48:55 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_map
 {
 	char	**map;
 	int		**imap;
-	int		mapS;
+	int		map_s;
 	t_point	max;
 }	t_map;
 
@@ -96,8 +96,8 @@ typedef struct s_ray
 	float	ra;
 	float	rx;
 	float	ry;
-	int		mapXidx;
-	int		mapYidx;
+	int		mapx_idx;
+	int		mapy_idx;
 	float	fx_idx;
 	float	fy_idx;
 	float	dx;
@@ -133,19 +133,19 @@ typedef struct s_menu
 
 # define NUM_TEXTURES 4
 
-typedef enum e_text_type
+typedef enum s_text_type
 {
 	NORTH,
 	SOUTH,
 	EAST,
 	WEST
-}	e_text_type;
+}	t_text_type;
 
 typedef struct s_color
 {
-	int	R;
-	int	G;
-	int	B;
+	int	r;
+	int	g;
+	int	b;
 }	t_color;
 
 typedef enum e_tokens
@@ -158,14 +158,14 @@ typedef enum e_tokens
 	SKY_COLOR,
 	WALL_COLOR,
 	NO_TOKEN
-}	e_tokens;
+}	t_etokens;
 
 typedef enum e_object_to_paint
 {
 	F_COLOR,
 	C_COLOR,
 	W_COLOR
-}	e_topaint;
+}	t_topaint;
 
 # define OBJS_TO_PAINT 3
 
@@ -220,6 +220,10 @@ int			close_window(void *param);
 int			mouse_move(int x, int y, t_data *data);
 int			compute_frame(void *param);
 
+//	EVENTS CHECKERS
+void		load_length(t_data *data, t_ray *ray, int ra);
+void		check_player_direction(t_data *data);
+
 //	UTILS
 void		exit_game(t_data *data);
 void		free_data(t_data *data);
@@ -232,10 +236,11 @@ t_texture	load_texture(char *path, t_data *data);
 //	RAYCASTING COMPUTING
 void		adjust_ray_data(t_ray *ray, t_data *data);
 void		update_ray_pos(t_ray *ray, t_map *map);
-t_texture 	*select_texture(t_data *data, t_ray *ray);
+t_texture	*select_texture(t_data *data, t_ray *ray);
 int			wall_hit(int mapXidx, int mapYidx, t_ray *ray, t_map *map);
+
 //	MATH
-int			extract_length(t_data *data, int x, int  y);
+int			extract_length(t_data *data, int x, int y);
 
 //	DISPLAY
 void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -246,11 +251,12 @@ void		draw_line(int x0, int y0, int x1, int y1, t_data *data);
 void		draw_2Dwall(t_data *data, int x, int y, int color);
 void		draw_2Dmap(t_data *data);
 void		draw_player(t_data *data);
-//void	draw_textured_line(t_data *data, t_ray *ray, t_point interval, float distance, a);
 
 //	MENU
 int			cast_menu(t_data *data, char place[MENU_SLOTS]);
-void		cast_rays(t_data *data);
+int			key_menu(int key, t_data *data);
+void		define_action(t_data *data);
+void		show_cmds(t_data *data);
 
 //	UTILS
 char		**ft_strsplit(char *str, char *sep);

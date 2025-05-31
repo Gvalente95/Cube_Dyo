@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:28:27 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 09:56:58 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 10:47:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	mouse_move(int x, int y, t_data *data)
 	return (0);
 }
 
-void init_display(t_display *frame, void *mlx)
+void	init_display(t_display *frame, void *mlx)
 {
 	frame->img = mlx_new_image(mlx, WI, HI);
 	if (!frame->img)
@@ -28,7 +28,8 @@ void init_display(t_display *frame, void *mlx)
 		perror("mlx_new_image failed");
 		exit(EXIT_FAILURE);
 	}
-	frame->addr = mlx_get_data_addr(frame->img, &frame->bpp, &frame->offset, &frame->endian);
+	frame->addr = mlx_get_data_addr(
+			frame->img, &frame->bpp, &frame->offset, &frame->endian);
 	if (!frame->addr)
 	{
 		perror("mlx_get_data_addr failed");
@@ -38,7 +39,8 @@ void init_display(t_display *frame, void *mlx)
 
 static void	put_strings(t_data *data)
 {
-	static char	*options[] = {"RESUME GAME", "SHOW COMMANDS", "EXIT GAME", NULL};
+	static char	*options[] = {
+		"RESUME GAME", "SHOW COMMANDS", "EXIT GAME", NULL};
 
 	mlx_string_put(data->mlx,
 		data->win, WI / 2 - WI / 8, 3000 / (HI / 20) + HI / 2 - 15,
@@ -59,16 +61,17 @@ void	cast_game(t_data *data)
 	check_player_direction(data);
 }
 
-int compute_frame(void *param)
+int	compute_frame(void *param)
 {
-	t_data *data = (t_data *)param;	
-	
+	t_data	*data;
+
+	data = (t_data *)param;
 	if (!data || !data->mlx || !data->win)
 		return (1);
 	if (!data->run.frame.img)
-			init_display(&data->run.frame, data->mlx);
+		init_display(&data->run.frame, data->mlx);
 	if (!data->run.frame2.img)
-			init_display(&data->run.frame2, data->mlx_cast);
+		init_display(&data->run.frame2, data->mlx_cast);
 	if (!data->menu.is_menu)
 		cast_game(data);
 	else

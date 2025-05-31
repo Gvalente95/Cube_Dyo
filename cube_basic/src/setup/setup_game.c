@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 05:21:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:44:12 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	set_player_pos(t_data *data)
 		while (x < data->run.map.max.x * SCALE_MAP)
 		{
 			if (data->run.map.imap[y][x] >= PLAYER_POS)
-			{	
-				x0 = x * data->run.map.mapS + MOVE_LIMIT + 10;
-				y0 = y * data->run.map.mapS + MOVE_LIMIT + 10;
+			{
+				x0 = x * data->run.map.map_s + MOVE_LIMIT + 10;
+				y0 = y * data->run.map.map_s + MOVE_LIMIT + 10;
 				break ;
 			}
 			x++;
@@ -55,42 +55,22 @@ void	set_player_dir(t_data *data)
 		data->run.player.pa = -PI / 2;
 }
 
-t_texture	load_texture(char *path, t_data *data)
-{
-	t_texture tex;
-	int bpp, sl, endian;
-
-	tex.img = mlx_xpm_file_to_image(data->mlx, path, &tex.wi, &tex.hi);
-	if (!tex.img)
-	{
-		printf("Texture load failed");
-		exit(1);
-	}
-	tex.pixels = (int *)mlx_get_data_addr(tex.img, &bpp, &sl, &endian);
-	return tex;
-}
-
-void init_textures(t_data *data)
-{
-	data->textures[NORTH] = load_texture(data->tokens.text_path[NORTH], data);
-	data->textures[SOUTH] = load_texture(data->tokens.text_path[SOUTH], data);
-	data->textures[EAST] = load_texture(data->tokens.text_path[EAST], data);
-	data->textures[WEST] = load_texture(data->tokens.text_path[WEST], data);
-}
-
-void	init_mapS(t_map *map)
+void	init_map_scale(t_map *map)
 {
 	int	max_tile_w;
 	int	max_tile_h;
 
 	max_tile_w = (int)(WI / map->max.x);
 	max_tile_h = (int)(HI / map->max.y);
-	map->mapS = (max_tile_w < max_tile_h) ? max_tile_w : max_tile_h;
-	map->mapS /= SCALE_MAP;
-	if (map->mapS < 4)
-		map->mapS = 4;
-	else if (map->mapS > 64)
-		map->mapS = 64;
+	if (max_tile_w < max_tile_h)
+		map->map_s = max_tile_w;
+	else
+		map->map_s = max_tile_h;
+	map->map_s /= SCALE_MAP;
+	if (map->map_s < 4)
+		map->map_s = 4;
+	else if (map->map_s > 64)
+		map->map_s = 64;
 }
 
 void	init_struct(t_data *data)
@@ -100,11 +80,11 @@ void	init_struct(t_data *data)
 	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
 	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
-	init_mapS(&data->run.map);
+	init_map_scale(&data->run.map);
 	set_player_pos(data);
 	init_textures(data);
 	set_player_dir(data);
-	printf("map S : %d\n", data->run.map.mapS);
+	printf("map S : %d\n", data->run.map.map_s);
 }
 
 void	set_up_loops(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 08:28:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:17:14 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_suppress(char **content, char *to_suppress)
 	free(split);
 }*/
 
-static void	get_color(t_color *object, char *line, int token)
+static void	get_color(t_color *object, int *res, char *line, int token)
 {
 	char	**color;
 
@@ -78,6 +78,7 @@ static void	get_color(t_color *object, char *line, int token)
 	object->G = ft_atoi(color[1]);
 	printf("color B : %s\n", color[2]);
 	object->B = ft_atoi(color[2]);
+	*res = object->R;// + object->G + object->B;
 	return (free(color[0]), free(color[1]),
 		free(color[2]), free(color));
 	(void)token;
@@ -102,6 +103,7 @@ static void	geters(t_data *data, char *line, int token)
 	else
 		get_color(
 			&data->tokens.color_objects[token - (NUM_TEXTURES + 1)],
+			&data->tokens.color[token - (NUM_TEXTURES + 1)],
 			line,
 			token);
 }

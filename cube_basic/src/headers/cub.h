@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 08:28:36 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 09:17:00 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ typedef enum e_object_to_paint
 typedef struct s_tokens
 {
 	t_color		color_objects[OBJS_TO_PAINT];
+	int			color[OBJS_TO_PAINT];
 	char		*text_path[NUM_TEXTURES];	
 }	t_tokens;
 

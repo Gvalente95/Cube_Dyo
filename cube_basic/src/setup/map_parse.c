@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 08:56:53 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 08:59:46 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,9 +182,11 @@ char	**parse_map(char *doc)
 		map[k++][y] = '\0'; 
 		i++;
 	}
-	free(map[k]);
+	if (map[k])
+		free(map[k]);
 	map[k] = NULL;
-	free(doc);
+	if (doc)
+		free(doc);
 	printf("UIUIU\n");
 	print_map(map);
 	printf("MAP PRINTED\n");

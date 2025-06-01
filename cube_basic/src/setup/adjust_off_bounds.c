@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 08:47:40 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:00:31 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	print_imap(int **imap, t_point max)
 		printf("Map vide ou non initialisée.\n");
 		return;
 	}
-
 	for (int y = 0; y < max.y + 1; y++)
 	{
 		for (int x = 0; x < max.x + 1; x++)
@@ -50,7 +49,7 @@ static int **adjustment(int **map, t_point max)
 			free(nmap);
 			return (NULL);
 		}
-		for (iter.x = 0; iter.x < max.x + 3; iter.x++)
+		for (iter.x = 0; iter.x < max.x + 2; iter.x++)
 		{
 			if (iter.y == 0 || iter.y == max.y + 1 || iter.x == 0 || iter.x == max.x + 1)
 				nmap[iter.y][iter.x] = -1;
@@ -64,12 +63,8 @@ static int **adjustment(int **map, t_point max)
 void	adjust_off_bounds(int ***map, t_point max)
 {
 	int	**new_map;
-	int	i;
 
-	i = 0;
 	new_map = adjustment(*map, max);
-	while (i < max.y + 2)
-		new_map[i++][max.x + 1] = -1;
 	printf("max x : %d\nmax y : %d\n", max.x, max.y);
 	print_imap(new_map, max);
 	int_array_free(*map);

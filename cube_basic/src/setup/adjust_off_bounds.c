@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 07:56:31 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 08:17:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	print_imap(int **imap, t_point max)
 		return;
 	}
 
-	for (int y = 0; y < max.y; y++)
+	for (int y = 0; y < max.y + 1; y++)
 	{
-		for (int x = 0; x < max.x; x++)
+		for (int x = 0; x < max.x + 1; x++)
 		{
 			printf("%3d", imap[y][x]);
 		}
@@ -39,7 +39,6 @@ static int **adjustment(int **map, t_point max)
 	nmap = malloc((max.y + 2) * sizeof(int *));
 	if (!nmap)
 		return (NULL);
-
 	for (iter.y = 0; iter.y < max.y + 2; iter.y++)
 	{
 		nmap[iter.y] = malloc((max.x + 2) * sizeof(int));
@@ -58,15 +57,19 @@ static int **adjustment(int **map, t_point max)
 				nmap[iter.y][iter.x] = map[iter.y - 1][iter.x - 1];
 		}
 	}
-	print_imap(nmap, max);
 	return (nmap);
 }
 
 void	adjust_off_bounds(int ***map, t_point max)
 {
 	int	**new_map;
+	int	i;
 
+	i = 0;
 	new_map = adjustment(*map, max);
+	while (new_map[i])
+		new_map[i++][max.x] = -1;
+	print_imap(new_map, max);
 	int_array_free(*map);
 	*map = new_map;
 }

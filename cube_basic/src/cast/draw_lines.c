@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:10:31 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:46:00 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,34 +24,41 @@ static void	define_scale(t_point *scale, t_point p0, t_point p1)
 		scale->y = -1;
 }
 
+static void	update_error_and_point(
+	t_point *p, t_point dir, t_point scale, int *err)
+{
+	int	e2;
+
+	e2 = 2 * (*err);
+	if (e2 > -dir.y)
+	{
+		*err -= dir.y;
+		p->x += scale.x;
+	}
+	if (e2 < dir.x)
+	{
+		*err += dir.x;
+		p->y += scale.y;
+	}
+}
+
 void	draw_line(t_point p0, t_point p1, t_data *data)
 {
 	t_point	dir;
 	t_point	scale;
 	int		err;
-	int		e2;
 
 	dir.x = abs(p1.x - p0.x);
 	dir.y = abs(p1.y - p0.y);
 	err = dir.x - dir.y;
 	ft_bzero(&scale, sizeof(t_point));
 	define_scale(&scale, p0, p1);
-	while (1)
+	while (true)
 	{
 		my_mlx_pixel_put(data, p0.x, p0.y, GREEN);
 		if (p0.x == p1.x && p0.y == p1.y)
 			break ;
-		e2 = 2 * err;
-		if (e2 > -dir.y)
-		{
-			err -= dir.y;
-			p0.x += scale.x;
-		}
-		if (e2 < dir.x)
-		{
-			err += dir.x;
-			p0.y += scale.y;
-		}
+		update_error_and_point(&p0, dir, scale, &err);
 	}
 }
 

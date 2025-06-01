@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:09 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:20:24 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:33:26 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	close_window(void *param)
 	return (0);
 }
 
-static void	int_array_free(int **array)
+void	int_array_free(int **array)
 {
 	int	i;
 
@@ -45,6 +45,8 @@ void	free_data(t_data *data)
 	i = 0;
 	string_array_free(&data->run.map.map);
 	int_array_free(data->run.map.imap);
+	if (data->file)
+		free(data->file);
 	if (data->run.frame.img)
 		mlx_destroy_image(data->mlx, data->run.frame.img);
 	if (data->run.frame2.img)

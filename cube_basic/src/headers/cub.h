@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:24:44 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:37:23 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 
 # include "macros.h"
 # include "test.h"
+
+# define OK 1
+# define KO 0
 
 typedef struct s_display
 {
@@ -177,12 +180,27 @@ typedef struct s_tokens
 	char		*text_path[NUM_TEXTURES];	
 }	t_tokens;
 
+typedef struct s_check_list
+{
+	bool	map;
+	bool	tex_no;
+	bool	tex_so;
+	bool	tex_ea;
+	bool	tex_we;
+	bool	col_floor;
+	bool	col_sky;
+}	t_check;
+
 typedef struct s_data
 {
 	t_menu		menu;
 	t_engine	run;
 	t_tokens	tokens;
 	t_texture	textures[NUM_TEXTURES];
+	bool		check_list[NO_TOKEN];
+	char		**error;
+	char		*file;
+	char		*trimed_file;
 	void		*mlx;
 	void		*win;
 	void		*mlx_cast;
@@ -216,12 +234,18 @@ void		init_struct(t_data *data);
 void		set_up_loops(t_data *data);
 void		init_textures(t_data *data);
 void		gather_data(t_data *data, int ac, char **av);
+void		check_data(t_data *data);
+void		adjust_off_bounds(int ***map, t_point max);
+
+//	CHECKER
+bool		check_map(t_data *data);
+bool		check_text_path(t_data *data);
+bool		check_color_config(t_data *data);
 
 //	FILE PARSE
 void		parse_metadata(t_data *data, char **doc);
 char		**parse_map(char *doc);
 int			**scale_map(char **map, t_data *data);
-bool		check_map(char **map);
 
 //	PARSE UTILS
 bool		no_char_in_line(char *doc, int start, int end);
@@ -250,6 +274,7 @@ void		check_player_direction(t_data *data);
 //	UTILS
 void		exit_game(t_data *data);
 void		free_data(t_data *data);
+void		int_array_free(int **array);
 
 //	RAYCASTING
 void		raycasting(t_data *data);
@@ -287,5 +312,7 @@ int			ft_isspace(int c);
 void		ft_suppress(char **content, char *to_suppress);
 int			ft_atohx(char *n);
 char		*copy_from(char **str, size_t here);
+char		*ft_strstr(char *str, char *to_find, size_t len);
+char		*ft_strrstr(char *str, char *to_find, size_t len);
 
 #endif

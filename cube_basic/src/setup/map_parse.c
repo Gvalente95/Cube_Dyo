@@ -6,31 +6,43 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:39:49 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:41:18 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
 void	format_object(
-	t_data *data, t_point *original, int *object, char current)
+	t_data *data,
+	t_point *original,
+	int *object,
+	char current
+	)
 {
+	if (!data || !object)
+		return ;
 	if (ft_isspace(current))
 		*object = -1;
 	else if (current >= '0' && current <= '9')
 		*object = current - '0';
-	else if (ft_isalpha(current))
+	else if (current == 'N' || current == 'S'
+		|| current == 'E' || current == 'W')
 	{
 		*object = PLAYER_POS;
-		data->run.player.start = current;
+		if (data)
+			data->run.player.start = current;
 	}
 	else
-		*object = -2;
+		*object = -1;
 	(void)original;
 }
 
 void	map_scale_object(
-	int ***scaled_map, char **map, t_point *original, t_data *data)
+	int ***scaled_map,
+	char **map,
+	t_point *original,
+	t_data *data
+	)
 {
 	char	current;
 	int		object;
@@ -38,21 +50,16 @@ void	map_scale_object(
 	t_point	iter;
 
 	ft_bzero(&iter, sizeof(t_point));
-	scale.x = original->x * SCALE_MAP;
-	scale.y = original->y * SCALE_MAP;
+	if (!scaled_map || !*scaled_map || !map || !original || !data)
+		return ;
 	current = map[original->y][original->x];
+	scale = (t_point){original->x * SCALE_MAP, original->y * SCALE_MAP};
 	format_object(data, original, &object, current);
 	while (iter.y < SCALE_MAP)
 	{
 		iter.x = 0;
 		while (iter.x < SCALE_MAP)
-		{
-			if (object == 1 && (iter.x == 0 || iter.x == SCALE_MAP - 1
-					|| iter.y == 0 || iter.y == SCALE_MAP - 1))
-				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
-			else
-				(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
-		}
+			(*scaled_map)[scale.y + iter.y][scale.x + iter.x++] = object;
 		iter.y++;
 	}
 	original->x++;
@@ -60,10 +67,12 @@ void	map_scale_object(
 
 int	**scale_map(char **map, t_data *data)
 {
-	int		**scaled_map;
 	t_point	max;
 	t_point	iter;
+	int		**scaled_map;
 
+	if (!map || !data)
+		return (NULL);
 	ft_bzero(&iter, sizeof(t_point));
 	ft_bzero(&max, sizeof(t_point));
 	map_get_format(map, data);
@@ -81,37 +90,47 @@ int	**scale_map(char **map, t_data *data)
 	return (scaled_map);
 }
 
-char	**parse_map(char *doc)
+static char	**alloc_map(char *doc, int line_count)
 {
 	int		i;
-	int		j;
 	int		k;
+	int		j;
 	int		y;
 	char	**map;
 
+	map = malloc(sizeof(char *) * (line_count + 1));
 	i = 1;
 	k = 0;
-	y = count_char(doc, '\n') - 1;
-	map = malloc(sizeof(char *) * (y + 1));
-	while (doc && doc[i])
+	while (doc[i] && k < line_count)
 	{
 		j = 0;
-		y = 0;
 		while (doc[i + j] && doc[i + j] != '\n')
 			j++;
 		if (no_char_in_line(doc, i, i + j))
 			break ;
 		map[k] = malloc(j + 1);
-		while (j-- > 0 && doc[i] && map[k])
+		y = 0;
+		while (j-- > 0 && doc[i])
 			map[k][y++] = doc[i++];
 		map[k++][y] = '\0';
 		i++;
 	}
-	if (map[k])
-		free(map[k]);
 	map[k] = NULL;
-	if (doc)
-		free(doc);
+	return (map);
+}
+
+char	**parse_map(char *doc)
+{
+	int		line_count;
+	char	**map;
+
+	if (!doc)
+		return (NULL);
+	line_count = count_char(doc, '\n') - 1;
+	map = alloc_map(doc, line_count);
+	if (!map)
+		return (NULL);
 	print_map(map);
+	free(doc);
 	return (map);
 }

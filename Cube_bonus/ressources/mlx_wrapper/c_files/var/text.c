@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   text.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 06:30:21 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/26 20:51:48 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ int	render_text(t_md *md, t_txtd data, const char *format, ...)
 	va_start(args, format);
 	vsnprintf(buff, sizeof(buff), format, args);
 	va_end(args);
-	if (!data.onto && md->menu.active && md->menu.freeze_frame)
-		data.onto = md->menu.freeze_frame;
+	if (!data.onto && md->menu.active && md->menu.ui_overlay)
+		data.onto = md->menu.ui_overlay;
 	if (!data.onto)
 		data.onto = md->screen;
 	txt_width = display_text(md, buff, data);

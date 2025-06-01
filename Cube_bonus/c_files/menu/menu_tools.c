@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:50:28 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/26 22:03:08 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	render_logo_cube(t_md *md, t_menu *menu)
 	int				color;
 
 	color = _NULL;
-	draw_cube(md->menu.freeze_frame, v3(pos.x, pos.y, color), size, \
+	draw_cube(md->menu.ui_overlay, v3(pos.x, pos.y, color), size, \
 		menu->cube_logo_rot);
 }
 

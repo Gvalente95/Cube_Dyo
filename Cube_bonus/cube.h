@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:53:43 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 14:05:00 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 15:37:32 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # define IMG_PATH		"ressources/xpm/"
 # define RESOLUTION		25
 //		SCREEN
-# define SCRN_W			2500
-# define SCRN_H			1800
+# define SCRN_W			2800
+# define SCRN_H			2000
 //		RAYS
 # define RAY_DEPTH		50
 //		PLR
@@ -48,7 +48,7 @@
 # define ENNEMY_SPEED	.1
 # define RAY_ZOOM		50
 
-# define THREADS_BATCH	16
+# define THREADS_BATCH	8
 # define FLOOR_WORKERS	4
 # define FE_PER_TILE	50
 # define REVEAL_DISTANCE 5
@@ -197,7 +197,7 @@ int		set_menu_mode(t_md *md, t_menu *menu, int mode);
 int		update_and_render(t_md *md);
 
 //	update/movement.c
-void	move_ent_to_target(t_md *md, t_ent *e, t_vec3f target_p);
+void	move_ent_to_target(t_md *md, t_ent *e);
 void	update_mob_actions(t_md *md, t_ent *e);
 
 //	update/update_menu.c
@@ -363,5 +363,6 @@ void	draw_grad_pxls(t_image *dst, t_vec2 pos, t_vec2 sz, t_vec3 clr);
 void	draw_from_pos(t_image *src, t_image *dst, t_vec2 pos, t_vec2 draw_strt);
 void	init_ent_pkteam(t_md *md, t_ent *e, int team_size);
 float	get_pitch_offset(t_md *md);
+void	update_sliders(t_md *md, t_menu *menu, t_vec2 sz);
 
 #endif

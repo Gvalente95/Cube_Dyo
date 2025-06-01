@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_pixels.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:55:24 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/05 11:07:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/26 22:20:01 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,24 @@ int	put_pxl_if_vis(t_draw_d *dd, int overlap, int blend, float opacty)
 	return (dst->src[dst_i] = clr, 1);
 }
 
-int	draw_pixel(t_image *texture, t_vec2 pos, int color, float opacity)
+int	draw_pixel(t_image *dst, t_vec2 pos, int color, float opacity)
 {
 	int	index;
 
-	if (!texture || !texture->src)
+	if (!dst || !dst->src)
 		return (0);
-	if (pos.x < 0 || pos.x >= texture->size.x || \
-		pos.y < 0 || pos.y >= texture->size.y)
+	if (pos.x < 0 || pos.x >= dst->size.x || \
+		pos.y < 0 || pos.y >= dst->size.y)
 		return (0);
-	index = pos.y * (texture->size_line / 4) + pos.x;
+	index = pos.y * (dst->size_line / 4) + pos.x;
 	if (opacity < 0.0f)
-		texture->src[index] = color;
+		dst->src[index] = color;
 	else
-		texture->src[index] = blend_color(texture->src[index], color, opacity);
+		dst->src[index] = blend_color(dst->src[index], color, opacity);
 	return (1);
 }
 
-int	draw_pixels(t_image *txtr, t_vec2 pos, t_vec2 draw_size, int color)
+int	draw_pixels(t_image *dst, t_vec2 pos, t_vec2 draw_size, int color)
 {
 	int		idx;
 	int		line_size;
@@ -66,14 +66,12 @@ int	draw_pixels(t_image *txtr, t_vec2 pos, t_vec2 draw_size, int color)
 	t_vec2	limit;
 	float	alpha;
 
-	if (pos.x < 0 || pos.y < 0)
+	if (pos.x + draw_size.x < 0 || pos.y + draw_size.y < 0)
 		return (0);
-	line_size = txtr->size_line / 4;
-	alpha = 1.0f - ((float)((color >> 24) & 0xFF) / 255.0f);
-	if (alpha < 0.2f)
-		alpha = 0.2f;
-	limit.x = min(txtr->size.x, pos.x + draw_size.x);
-	limit.y = min(txtr->size.y, pos.y + draw_size.y);
+	line_size = dst->size_line / 4;
+	alpha = maxf(0.2f, 1.0f - ((float)((color >> 24) & 0xFF) / 255.0f));
+	limit.x = min(dst->size.x, pos.x + draw_size.x);
+	limit.y = min(dst->size.y, pos.y + draw_size.y);
 	p.y = pos.y - 1;
 	while (++p.y < limit.y)
 	{
@@ -81,7 +79,7 @@ int	draw_pixels(t_image *txtr, t_vec2 pos, t_vec2 draw_size, int color)
 		while (++p.x < limit.x)
 		{
 			idx = p.y * line_size + p.x;
-			txtr->src[idx] = blend_color(txtr->src[idx], color, alpha);
+			dst->src[idx] = blend_color(dst->src[idx], color, alpha);
 		}
 	}
 	return (1);

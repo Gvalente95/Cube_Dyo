@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:30:54 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 10:48:45 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/26 20:50:50 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@ typedef struct s_inventory
 typedef struct s_menu
 {
 	t_image			*overlay;
-	t_image			*freeze_frame;
+	t_image			*bgr_overlay;
+	t_image			*ui_overlay;
 	t_button		buttons[50];
 	t_slider		sliders[50];
 	t_slider		*selected_slider;

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:32:42 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/24 13:59:47 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 15:37:51 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ typedef struct s_parameters
 	float			txt_sc;
 	float			zoom;
 	float			floor_glide;
+	float			mov_drift;
 	float			fov;
 	float			win_x;
 	float			floor_fov;
@@ -317,6 +318,8 @@ int		free_menu(t_md *md, t_menu *menu);
 int		free_ents(t_md *md);
 int		free_inv(t_md *md, t_inventory *inv);
 int		free_env(t_md *md, t_env_manager *env);
+int		free_battle_data(t_md *md, t_battle_d *bd);
+
 //		free/free.c
 int		safe_free(void *item);
 int		free_void_array(void **elements);
@@ -406,5 +409,9 @@ void	flush_gradient(t_image *src, int color_a, int color_b, float transp);
 void	lock_mouse_center(t_md *md);
 void	show_cursor(t_md *md);
 void	hide_cursor(t_md *md);
+void	draw_img_except(t_image *src, t_image *dst, t_vec2 pos, int excpt);
+int		draw_smooth_rec(t_image *dst, t_vec2 pos, t_vec2 draw_size, int color);
+void	randomize_sliders(t_md *md, t_menu *menu, int is_reset);
+int		update_slider(t_md *md, t_slider *sld);
 
 #endif

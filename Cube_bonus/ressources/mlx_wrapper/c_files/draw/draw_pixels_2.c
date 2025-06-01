@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_pixels_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 13:54:58 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/05 13:58:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/06/01 15:25:00 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ void	draw_grad_pxls(t_image *dst, t_vec2 pos, t_vec2 sz, t_vec3 clr)
 		while (++p.x < sz.x)
 		{
 			t = get_grad_t(dir, p, sz);
+			if (clr.y == _NULL)
+			{
+				draw_pixel(dst, add_vec2(pos, p), clr.x, t);
+				continue ;
+			}
 			grad_color = blend_color(clr.x, clr.y, t);
 			draw_pixel(dst, add_vec2(pos, p), grad_color, 1);
 		}
@@ -70,6 +75,34 @@ void	draw_from_pos(t_image *src, t_image *dst, t_vec2 pos, t_vec2 draw_start)
 				(src->size_line / 4) + draw_d.pos.x] == _NULL)
 				continue ;
 			put_pxl_if_vis(&draw_d, -1, 0, 0);
+		}
+	}
+}
+
+void	draw_img_except(t_image *src, t_image *dst, t_vec2 pos, int excpt)
+{
+	t_vec2	draw_p;
+	t_vec2	dst_p;
+	t_vec2	lim;
+	int		src_c;
+	int		dst_i;
+
+	lim.x = min(src->size.x, dst->size.x - pos.x);
+	lim.y = min(src->size.y, dst->size.y - pos.y);
+	draw_p.y = -1;
+	while (++draw_p.y < lim.y)
+	{
+		draw_p.x = -1;
+		while (++draw_p.x < lim.x)
+		{
+			dst_p.x = pos.x + draw_p.x;
+			dst_p.y = pos.y + draw_p.y;
+			src_c = src->src[draw_p.y * (src->size_line / 4) + draw_p.x];
+			if (src_c == excpt)
+				continue ;
+			dst_i = dst_p.y * (dst->size_line / 4) + dst_p.x;
+			dst->src[dst_i] = blend_color(src_c, dst->src[dst_i], \
+				((src_c >> 24) & 0xFF) / 255.0f);
 		}
 	}
 }

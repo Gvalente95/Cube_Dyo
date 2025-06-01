@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 20:49:05 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/06 12:13:15 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:40:36 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@
 # define RGTCMD_KEY	260
 # define LFTOPT_KEY	261
 # define RGTOPT_KEY	262
-# define TAB_KEY		48
+# define TAB_KEY	48
 
 # define MOUSE_NOPRESS	0
 # define MOUSE_PRESS 	1

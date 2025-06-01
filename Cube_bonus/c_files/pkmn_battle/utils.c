@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:28:59 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 13:25:07 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/06/01 15:06:17 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,16 @@ t_ent	*get_valid_pkmn(t_ent **team, int team_size)
 			return (team[i]);
 	}
 	return (NULL);
+}
+
+int	free_battle_data(t_md *md, t_battle_d *bd)
+{
+	int	fa;
+	int	i;
+
+	fa = free_image_data(md, bd->overlay);
+	i = -1;
+	while (++i < 4)
+		fa = free_image_data(md, bd->buttons[i]);
+	return (fa);
 }

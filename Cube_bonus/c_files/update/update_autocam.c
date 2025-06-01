@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 22:58:02 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 14:07:44 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:57:21 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ static int	exit_autocam(t_md *md, t_autocam *autocam)
 	md->key_click = -1;
 	md->hud.fog_color = _BLACK;
 	md->prm.ent_mode = 1;
-	md->prm.alternate_draw = 1;
 	md->prm.fly_cam = 0;
 	md->prm.super_view = 0;
 	md->prm.show_ceiling = 1;
 	md->hud.fog_color = v4_to_color(10, 10, 10, 255);
+	md->prm.ray_mod = 5;
 	md->fx.fog = .8f;
+	md->prm.alternate_draw = 0;
 	autocam->active = 0;
 	autocam->quitting = 0;
 	return (1);
@@ -53,7 +54,7 @@ static void	init_autocam(t_md *md, t_autocam *autocam)
 	autocam->map_diag = map_diag;
 	autocam->quitting = 0;
 	autocam->acc_spd = 0.0f;
-	autocam->base_y = 80 - md->map.size.y * .5f;
+	autocam->base_y = 80 - md->map.size.y;
 	md->plr.angle = M_PI_2;
 	md->plr.pos.z = -md->t_len * minf(8, (md->map.size.y * .5f));
 	md->prm.fly_cam = 1;
@@ -61,9 +62,9 @@ static void	init_autocam(t_md *md, t_autocam *autocam)
 	md->prm.show_grass = 1;
 	md->fx.fog = .01f;
 	md->prm.super_view = 1;
-	md->prm.alternate_draw = 0;
-	md->prm.ray_mod = 2.5f;
-	md->hud.floor_start = md->win_sz.y * .25;
+	md->prm.ray_mod = 2.1;
+	md->prm.alternate_draw = 1;
+	md->hud.floor_start = 0;
 	md->timer.time = 10;
 }
 

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 20:39:27 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/06 14:25:18 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:46:02 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,14 @@ static int	init_screen(t_md *md, t_vec2 win_sz, int resolution, char *win_name)
 
 static int	init_md(t_md *md)
 {
-	int	i;
-
-	i = -1;
-	while (++i < 65536)
-		md->key_prs[i] = 0;
-	md->win_sz = _v2(0);
-	md->cam.ofst = v3f(0);
-	md->cam.input_mov = v3f(0);
-	md->cam.wrd_mv_offst = v3f(0);
-	md->cam.plr_wrd_mv = v3f(0);
-	md->cam.input_mov = v3f(0);
+	memset(md, 0, sizeof(t_md));
 	md->mlx = mlx_init();
 	md->win = NULL;
 	md->txd.wall_img = NULL;
 	md->mouse.locked = 1;
-	md->mouse.pressed = 0;
-	md->mouse.click = 0;
 	md->key_click = -1;
 	md->t_len = 60;
-	md->init_steps = 0;
-	md->prm.txt_sc = max(14, md->win_sz.x / 150);
+	md->prm.txt_sc = max(20, md->win_sz.x / 150);
 	md->mouse.hide = 1;
 	return (1);
 }

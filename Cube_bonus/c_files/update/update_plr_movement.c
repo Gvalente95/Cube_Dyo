@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_plr_movement.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 11:45:19 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/04/22 23:54:55 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/26 20:10:18 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	move_player(t_md *md, t_ent *e)
 
 	speed = md->prm.plr_speed / RESOLUTION;
 	sign_mv = scale_vec3f(e->mov, speed);
-	decc = scale_vec3f(e->mov, ACCSPD);
+	decc = scale_vec3f(e->mov, md->prm.mov_drift);
 	if (!md->prm.fly_cam && e->pos.z + sign_mv.z > 0)
 	{
 		e->pos.z = 0;
@@ -68,7 +68,7 @@ static t_vec3f	set_input_mov(t_md *md)
 	t_vec3f	for_dir;
 	t_vec3f	rgt_dir;
 
-	spd = 1;
+	spd = 1 + md->prm.mov_drift;
 	if (md->key_prs[SHIFT_KEY])
 		spd *= 2;
 	if (md->prm.fly_cam)

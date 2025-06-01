@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_minimap_cmp.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/28 09:54:23 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:32 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/26 18:50:27 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	show_mmap_ent(t_md *md, t_ent *e, t_vec3f cosin, t_vec2 center)
 	if (dist > cosin.z * md->t_len)
 		return ;
 	color = (md->rgb[e->type]);
+	if (e->type == nt_mob)
+		color = _RED;
 	pos.z = minmaxf(0.0f, 1.0f, dist / (cosin.z * md->t_len));
 	pos.z = 1.0f - powf(1.0f - pos.z, 3.0f);
 	color = set_alpha(color, 1.0f - pos.z);

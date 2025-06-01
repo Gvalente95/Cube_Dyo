@@ -3,65 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   menu_update.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:33:17 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:51:04 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/06/01 15:35:44 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cube.h"
-
-int	update_slider(t_md *md, t_slider *sld)
-{
-	int		x_pos;
-	t_vec2	sz;
-
-	sz = sld->size;
-	x_pos = sld->base_point;
-	if (!md->key_prs[CTRL_KEY])
-		x_pos = ((md->mouse.real.x - sld->pos.x) * (sld->steps - 1)) / sz.x;
-	if (x_pos == sld->point)
-		return (0);
-	sld->point = minmax(0, sld->steps - 1, x_pos);
-	*sld->value = sld->limits.x + ((sld->limits.z - sld->limits.x) * \
-		((float)sld->point / (sld->steps - 1)));
-	if (md->prm.fov <= 0)
-		md->prm.fov = 1;
-	md->plr.pos.z = -md->prm.height;
-	md->cam.pos.z = md->plr.pos.z - md->prm.height;
-	if (!ft_strncmp(sld->label, "win", 3))
-		return (replace_window(md, md->prm.win_x, md->prm.win_y));
-	render(md);
-	return (1);
-}
-
-void	update_sliders(t_md *md, t_menu *menu, t_vec2 sz)
-{
-	t_slider		*sld;
-	int				i;
-	int				cur_hov;
-
-	cur_hov = -1;
-	i = -1;
-	while (menu->sliders[++i].active)
-	{
-		sld = &menu->sliders[i];
-		if (!v2_bounds(md->mouse.real, sld->pos, v2(sz.x, sz.y * 1.3)))
-			continue ;
-		cur_hov = i;
-		if (menu->slider_hov != cur_hov)
-		{
-			menu->slider_hov = i;
-			menu->refresh_ui = 1;
-			menu->refresh_bg = 1;
-		}
-		if (md->mouse.pressed == MOUSE_PRESS)
-			menu->selected_slider = sld;
-		return ;
-	}
-	update_menu_element_end(menu, &menu->slider_hov, cur_hov);
-}
 
 void	update_buttons(t_md *md, t_menu *menu, t_vec2 size)
 {
@@ -135,12 +84,11 @@ int	update_menu(t_md *md, t_menu *menu)
 		else
 			menu->refresh_bg = update_slider(md, menu->selected_slider);
 	}
-	else
+	else if (menu->slider_hov == -1)
 	{
 		update_color_wheels(md, menu);
 		update_buttons(md, menu, \
 			v2(md->prm.txt_sc * 15, md->prm.txt_sc + 10));
-		update_logo_cube(md, md->mouse, menu);
 	}
 	return (render_menu(md, menu), reset_mlx_values(md), 1);
 }

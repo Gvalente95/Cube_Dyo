@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 21:26:11 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/24 13:47:11 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 15:32:42 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ void	cast_ray_threads_lp(t_md *md)
 {
 	t_thrd_manager	*rm;
 
+	if (!md->prm.use_thrd)
+	{
+		cast_rays(md);
+		return ;
+	}
 	md->env.overlay_y_start = md->win_sz.y;
 	rm = &md->thrd_manager;
 	rm->ray_visu_offset = get_2d_ray_pos(md);

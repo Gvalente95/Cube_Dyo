@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:23:31 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 12:03:17 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/26 22:56:55 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 void	set_menu_pos(t_md *md, t_menu *menu, \
 	t_vec3 sldr_offst, t_vec3 but_ofst)
 {
-	int			i;
-	t_vec2		pos;
-	t_vec2		win_sz;
-	t_slider	*slider;
-	t_button	*button;
+	int				i;
+	t_vec2			pos;
+	const t_vec2	win_sz = md->win_sz;
+	t_slider		*slider;
+	t_button		*button;
 
-	win_sz = md->win_sz;
 	i = -1;
 	while (menu->sliders[++i].active)
 	{
 		slider = &menu->sliders[i];
+		slider->size = v2(md->win_sz.x / 6, sldr_offst.z);
 		pos.x = md->win_sz.x / 4 + sldr_offst.x;
-		pos.y = ((slider->size.y + sldr_offst.z) \
-			* i) + win_sz.y * .2 + sldr_offst.y;
+		pos.y = ((slider->size.y + sldr_offst.y) * i) + win_sz.y * .2;
 		slider->pos = pos;
 	}
 	i = -1;
@@ -36,8 +35,7 @@ void	set_menu_pos(t_md *md, t_menu *menu, \
 	{
 		button = &menu->buttons[i];
 		pos.x = md->win_sz.x - md->win_sz.x / 4 - but_ofst.x;
-		pos.y = ((md->prm.txt_sc + but_ofst.z) \
-			* i) + win_sz.y * .2 + but_ofst.y;
+		pos.y = ((slider->size.y + sldr_offst.y) * i) + win_sz.y * .2;
 		button->pos = pos;
 	}
 }
@@ -46,6 +44,8 @@ static void	init_menu_overlay(t_md *md, t_menu *menu)
 {
 	menu->bgr_color = _BLACK;
 	menu->overlay = init_img(md, md->win_sz, NULL, menu->bgr_color);
+	menu->ui_overlay = init_img(md, md->win_sz, NULL, -1);
+	menu->bgr_overlay = init_img(md, md->win_sz, NULL, -1);
 }
 
 static void	set_clr_pck(t_md *md, t_clrp *clrP, int *value, const char *lbl)
@@ -84,7 +84,7 @@ void	init_menu(t_md *md, t_menu *menu)
 	md->fx.hue = get_v4f(1, 1, 1, 0);
 	init_menu_overlay(md, menu);
 	init_menu_elements(md, menu);
-	set_menu_pos(md, menu, v3(50, 50, 1), v3(100, 50, 10));
+	set_menu_pos(md, menu, v3(50, 2, 40), v3(100, 2, 40));
 	set_color_pickers(md, menu);
 	menu->refresh_ui = 0;
 	menu->refresh_bg = 0;

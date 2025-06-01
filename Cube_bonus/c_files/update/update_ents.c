@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_ents.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 17:57:44 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/01 14:31:16 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/05/26 18:29:56 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

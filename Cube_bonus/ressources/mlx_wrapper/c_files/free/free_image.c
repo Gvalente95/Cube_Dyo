@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 18:46:54 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/24 13:21:04 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:51:08 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	free_menu(t_md *md, t_menu *menu)
 
 	fa = 0;
 	fa += free_image_data(md, menu->overlay);
-	fa += free_image_data(md, menu->freeze_frame);
+	fa += free_image_data(md, menu->bgr_overlay);
+	fa += free_image_data(md, menu->ui_overlay);
 	i = -1;
 	while (++i < 3)
 		fa += free_image_data(md, menu->clrp[i].img);

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 23:43:58 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 13:55:11 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	update_player(t_md *md, t_ent *plr)
 		md->plr_in_house = 0;
 	else if (md->out_map[map_i] != 'D')
 		md->plr_in_house = char_in_str(md->out_map[map_i], "I");
-	md->cam.plr_map_i = map_i;
+	md->cam.plr_map_i = minmax(0, md->map.len - 1, map_i);
 	if (!md->inv.active)
 		update_player_rot(md);
 	update_player_mov(md, plr);

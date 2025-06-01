@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 23:46:39 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/03 11:54:11 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/06/01 15:33:47 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,10 +114,7 @@ void	render(t_md *md)
 {
 	if (md->prm.show_sky && !cmp_vec2(md->mouse.delta_raw, _v2(0)))
 		render_sky(md);
-	if (md->prm.use_thrd)
-		cast_ray_threads_lp(md);
-	else
-		cast_rays(md);
+	cast_ray_threads_lp(md);
 	if (md->prm.view_2d)
 		render_2d_entities(md);
 	if (md->prm.show_hud)
@@ -126,9 +123,6 @@ void	render(t_md *md)
 		render_held_item(md, &md->inv, md->inv.held_i);
 	if (md->inv.active)
 		render_inventory(md, &md->inv);
-	else
-		rnd_fast_txt(md, (t_txtd){md->win_sz.x - 100, md->win_sz.y - 30, \
-		_BLUE, md->prm.txt_sc, md->screen}, "I");
 	render_minimap(md, &md->mmap);
 	render_time_logs(md, &md->timer);
 	if (md->prm.debug_mode)
@@ -136,5 +130,9 @@ void	render(t_md *md)
 	if (md->prm.show_fps)
 		show_fps(md, v2(0, md->win_sz.y - (md->prm.txt_sc * 1.5)));
 	apply_fx(md, md->screen, &md->fx);
-	mlx_put_image_to_window(md->mlx, md->win, md->screen->img, 0, 0);
+	if (md->menu.active)
+		draw_smooth_rec(md->screen, _v2(100), \
+		sub_vec2(md->win_sz, _v2(200)), 0xEE000000);
+	else
+		mlx_put_image_to_window(md->mlx, md->win, md->screen->img, 0, 0);
 }

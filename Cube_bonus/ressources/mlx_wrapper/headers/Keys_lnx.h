@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 20:49:05 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/06 12:12:50 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:42:50 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,23 @@
 # define DOT_KEY	47
 # define TIRET_KEY	44
 # define DEL_KEY	51
-// # define ENTER_KEY	36
-// # define CTRL_KEY	256
-// # define SHIFT_KEY	257
+
 # define LFTCMD_KEY	259
 # define RGTCMD_KEY	260
 # define LFTOPT_KEY	261
 # define RGTOPT_KEY	262
 
-# define ESC_KEY         65307   // ASCII de ESC
+# define ESC_KEY         65307
 
 # define LEFT_KEY       65361
 # define RIGHT_KEY      65363
 # define DOWN_KEY       65364
 # define UP_KEY         65362
 
-# define SPACE_KEY       ' '   // ASCII de l'espace
-# define ENTER_KEY       13   // ASCII de Return (ou '\n' = 10 selon config)
-# define BACKSPACE_KEY   8    // ASCII de Backspace (ou 127 selon config)
-# define TAB_KEY         9    // ASCII de Tabulation
+# define SPACE_KEY       ' '
+# define ENTER_KEY       13
+# define BACKSPACE_KEY   8
+# define TAB_KEY         65289
 # define SHIFT_KEY      65505
 # define CTRL_KEY       256
 # define ALT_KEY        261

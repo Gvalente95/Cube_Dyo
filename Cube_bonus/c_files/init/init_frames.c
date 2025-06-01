@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_frames.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 11:57:39 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 09:50:52 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/06/01 15:00:32 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

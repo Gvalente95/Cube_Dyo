@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:14:54 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/23 17:07:36 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:37:01 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,14 @@ int	free_md(t_md *md, int quit)
 	fa += free_inv(md, &md->inv);
 	fa += free_env(md, &md->env);
 	if (md->init_steps < 2)
-		return (free_void(md->mlx), \
-			mlx_destroy_window(md->mlx, md->win), fa + 2);
+		return (mlx_destroy_window(md->mlx, md->win), \
+		mlx_destroy_display(md->mlx), free_void(md->mlx), fa + 2);
 	printf("[PART 1] total: %d\n", fa);
 	fa += free_ents(md);
+	fa += free_battle_data(md, &md->battle_d);
 	fa += free_txd(md, &md->txd);
 	fa += mlx_destroy_window(md->mlx, md->win) + 1;
+	fa += mlx_destroy_display(md->mlx);
 	fa += free_void(md->mlx);
 	ft_printf("Freed: %d elements\n", fa);
 	return (fa);

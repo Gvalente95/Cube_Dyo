@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 00:11:00 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/23 18:10:07 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:14:52 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,13 @@ t_ent	*init_ent(t_md *md, char c, t_vec2 pos, int map_index)
 	t_ent	*e;
 
 	e = malloc(sizeof(t_ent));
+	memset(e, 0, sizeof(t_ent));
 	set_ent_values(md, e, c, pos);
 	e->cam_distance = 99999;
 	e->map_index = map_index;
 	e->screen_p = _v2(-1);
 	e->screen_sz = _v2(-1);
+	e->target_pos = v3f(0);
 	e->pk_team = NULL;
 	set_type_specifics(md, e, e->type);
 	if (pos.x > -1 && pos.y > -1)

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:11:44 by gvalente          #+#    #+#             */
-/*   Updated: 2025/05/24 13:59:32 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/01 14:01:57 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	hide_cursor(t_md *md)
 	Display	*dsp;
 	Window	win;
 
+	memset(&dum, 0, sizeof(XColor));
 	dsp = mlx_get_display(md->mlx);
 	win = mlx_get_window(md->mlx, md->win);
 	data[0] = 0;

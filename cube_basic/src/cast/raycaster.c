@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/23 07:58:27 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 15:19:23 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,100 +14,7 @@
 #include <stdbool.h>
 #include "cub.h"
 
-int	mapX=15, mapY=8, mapS=64;
-int	map[]=
-	{
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-		1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-		1,0,1,0,0,1,0,0,0,0,0,0,0,0,1,
-		1,0,1,0,0,0,0,0,0,1,0,0,0,0,1,
-		1,0,1,0,0,0,0,0,0,0,1,0,0,0,1,
-		1,0,0,0,0,1,0,0,0,0,0,1,0,0,1,
-		1,0,0,0,0,0,0,0,1,0,0,0,0,0,1,
-		1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-	};
-
-#define FOV_ANGLE 60.0
-#define TILE_SIZE 16
-#define FOV 1.0471975512 // 60 degrés en radians
-#define NUM_RAYS WI
-
-void	draw_line(int x0, int y0, int x1, int y1, t_data *data)
-{
-	int	dx = abs(x1 - x0);
-	int	dy = abs(y1 - y0);
-	int	sx = x0 < x1 ? 1 : -1;
-	int	sy = y0 < y1 ? 1 : -1;
-	int	err = dx - dy;	
-	
-	while (1)
-	{
-		my_mlx_pixel_put(data, x0, y0, GREEN);
-		if (x0 == x1 && y0 == y1)
-			break;
-		int e2 = 2 * err;
-		if (e2 > -dy)
-		{
-			err -= dy;
-			x0 += sx;
-		}
-		if (e2 < dx)
-		{
-			err += dx;
-			y0 += sy;
-		}
-	}
-}
-
-void	draw_2Dwall(t_data *data, int x, int y, int color)
-{
-	for (int i = x + 1; i < x + mapS - 1; i++)
-		for (int j = y + 1; j < y + mapS - 1; j++)
-			my_mlx_pixel_put(data, i, j, color);
-}
-
-void	draw_2Dmap(t_data *data)
-{
-	int	x, y, x0, y0, color;
-
-	for (y = 0; y < mapY; y++)
-	{
-		for (x = 0; x < mapX; x++)
-		{
-			if (map[y * mapX + x] == 1)
-				color = WHITE;
-			else
-				color = RED;
-			x0 = x * mapS;
-			y0 = y * mapS;
-			draw_2Dwall(data, x0, y0, color);
-		}
-	}
-}
-
-void	draw_player(t_data *data)
-{
-	if (data->run.player.px == 0)
-	{
-		data->run.player.px = 300;
-		data->run.player.py = 300;
-	}
-	for (int x = data->run.player.px; x <= data->run.player.px + PSIZE; x++)
-		for (int y = data->run.player.py; y <= data->run.player.py + PSIZE; y++)
-			my_mlx_pixel_put(data, x, y, BLUE);
-}
-
-bool	wall_hit(int mapXidx, int mapYidx)
-{
-	if (mapXidx >= 0 && mapXidx < mapX && mapYidx >= 0 && mapYidx < mapY)
-	{
-		if (map[mapYidx * mapX + mapXidx] == 1)
-			return (true);
-	}
-	return (false);
-}
-
-int	extract_length(t_data *data, int x, int  y)
+int	extract_length(t_data *data, int x, int y)
 {
 	float	dx;
 	float	dy;
@@ -117,77 +24,94 @@ int	extract_length(t_data *data, int x, int  y)
 	return (sqrt(dx * dx + dy * dy));
 }
 
-
-void cast_length(t_data *data, float distance, int r)
+/*void cast_length(t_data *data, float distance, int ray)
 {
-    float	projection_constant = WI * 30;
-    float	wall_height = (projection_constant / distance);
-    int		start_y = (HI / 2) - (wall_height / 2);
-    int		end_y = (HI / 2) + (wall_height / 2);
+    float	wall_height;
+    int		start_y;
+    int		end_y;
 
+	wall_height = PROJECTION_CONSTANT / (distance * 3);
+	start_y = HI / 2 - wall_height / 2;
+	end_y = HI / 2 + wall_height / 2;
 	if (start_y < 0)
 		start_y = 0;
 	if (end_y > HI)
 	    end_y = HI;
-	for (int y = 0; y < start_y; y++)
-        if (y >= 0 && y < HI)
-            my_mlx_pixel_put2(data, r, y, BLUE);
-	for (int y = start_y; y < end_y; y++)
-        if (y >= 0 && y < HI)
-            my_mlx_pixel_put2(data, r, y, WHITE);
-	for (int y = end_y; y < HI; y++)
-		if (y >= 0 && y < HI)
-			my_mlx_pixel_put2(data, r, y, GREEN);
+	draw_vertical_line(data, 0, start_y, ray, distance, BLUE);
+	draw_vertical_line(data, start_y, end_y, ray, distance, WHITE);
+	draw_vertical_line(data, end_y, HI, ray, distance, GREEN);
+}*/
+static void	assign_values(t_data *data, t_ray *ray, t_point *p0, t_point *p1)
+{
+	p0->x = data->run.player.px + PSIZE / 2;
+	p0->y = data->run.player.py + PSIZE / 2;
+	p1->x = (int)ray->rx;
+	p1->y = (int)ray->ry;
 }
 
-void	adjust_ray_data(t_ray *ray, t_data *data)
+static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 {
-	if (ray->ra > 2 * PI)
-		ray->ra -= 2 * PI;
-	ray->rx = data->run.player.px;
-	ray->ry = data->run.player.py;
-	ray->dx = -cos(ray->ra) * 1;
-	ray->dy = sin(ray->ra) * 1;
+	float		wall_height;
+	int			start_y;
+	int			end_y;
+	t_texdraw	d;
+
+	ft_memset(&d, 0, sizeof(t_texdraw));
+	ray->distance = extract_length(data, ray->rx, ray->ry);
+	if (ray->distance == 0)
+		ray->distance = 1;
+	wall_height = PROJECTION_CONSTANT / (ray->distance * 3);
+	start_y = HI / 2 - wall_height / 2;
+	end_y = HI / 2 + wall_height / 2;
+	d.data = data;
+	d.ray = ray_id;
+	d.start = start_y;
+	d.end = end_y;
+	d.distance = ray->distance;
+	d.tex = select_texture(data, ray);
+	if (fabs(ray->dx) > fabs(ray->dy))
+		d.tx = (int)ray->ry % d.tex->wi;
+	else
+		d.tx = (int)ray->rx % d.tex->wi;
+	draw_textured_line(&d);
 }
 
-void	update_ray_pos(t_ray *ray)
+static void	trace_single_ray(t_data *data, t_ray *ray, float angle)
 {
-	ray->rx += ray->dx;
-	ray->ry += ray->dy;
-	ray->mapXidx = (int)(ray->rx / mapS);
-	ray->mapYidx = (int) (ray->ry / mapS);
-}
-
-void	cast_rays(t_data *data)
-{
-	t_ray	ray;
-
-	ray.step = FOV / NUM_RAYS;
-	ray.ra = (data->run.player.pa - PI / 2 - (FOV / 2));
-	if (ray.ra < 0)
-		ray.ra += 2 * PI;
-	for (int r = NUM_RAYS; r > 0; r--)
+	if (angle < 0)
+		angle += 2 * PI;
+	else if (angle > 2 * PI)
+		angle -= 2 * PI;
+	ray->ra = angle;
+	adjust_ray_data(ray, data);
+	ray->depth = 0;
+	while (ray->depth++ < 1000)
 	{
-		adjust_ray_data(&ray, data);
-//		float	slope = ray.dx / ray.dy;
-//		printf("Slope is : %f\n", slope);
-		for (ray.depth = 0; ray.depth < 500; ray.depth++)
-		{
-			update_ray_pos(&ray);
-			if (wall_hit(ray.mapXidx, ray.mapYidx))
-				break ;
-		}
-		float distance = extract_length(data, ray.rx, ray.ry);
-		cast_length(data, distance, r);
-		draw_line(data->run.player.px + PSIZE / 2,
-			data->run.player.py + PSIZE / 2, (int)ray.rx, (int)ray.ry, data);
-		ray.ra += ray.step;
+		update_ray_pos(ray, &data->run.map);
+		if (wall_hit(ray->mapx_idx, ray->mapy_idx, ray, &data->run.map))
+			break ;
 	}
 }
 
-void	compute_raycast(t_data *data)
+void	raycasting(t_data *data)
 {
-	draw_2Dmap(data);
-	draw_player(data);
-	cast_rays(data);
+	t_ray	ray;
+	t_point	p0;
+	t_point	p1;
+	int		r;
+	float	ra;
+
+	r = NUM_RAYS;
+	ra = data->run.player.pa - (FOV / 2);
+	ft_bzero(&p0, sizeof(t_point));
+	ft_bzero(&p1, sizeof(t_point));
+	while (r > 0)
+	{
+		trace_single_ray(data, &ray, ra);
+		render_wall_column(data, &ray, r);
+		assign_values(data, &ray, &p0, &p1);
+		draw_line(p0, p1, data);
+		ra += FOV / NUM_RAYS;
+		r--;
+	}
 }

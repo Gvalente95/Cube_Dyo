@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   map_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 07:48:31 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:25:15 by dyodlm           ###   ########.fr       */
+/*   Created: 2025/05/30 07:51:23 by dyodlm            #+#    #+#             */
+/*   Updated: 2025/05/31 10:20:31 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-int	main(int ac, char **av)
+/*int	is_map_ok(char **map)
 {
-	t_data	data;
-
-	ft_memset(&data, 0, sizeof(t_data));
-	gather_data(&data, ac, av);
-	init_struct(&data);
-	set_up_loops(&data);
-	mlx_loop(data.mlx);
-	return (0);
-}
+	if (map)	//	map ouverte ?
+		return (false);
+	if (map)	//	s;
+		return (false);
+	return (true);
+}*/

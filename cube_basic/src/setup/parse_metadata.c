@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 17:46:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 03:59:13 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	get_color(t_color *object, int *res, char *line, t_data *data)
 	if (!color || !color[0] || !color[1] || !color[2])
 	{
 		string_array_free(&color);
+		free(data->trimed_file);
 		return (free(line),
 			free_data(data),
 			perror("Error parsing color in file\n"),
@@ -112,6 +113,7 @@ void	parse_metadata(t_data *data, char **doc)
 	{
 		content = search_token_line(*doc, tokens[i]);
 		line = trim_content(content);
+		data->trimed_file = *doc;
 		geters(data, line, i);
 		ft_suppress(doc, line);
 		free(line);

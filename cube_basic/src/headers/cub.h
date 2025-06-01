@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 16:25:27 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 03:58:30 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ typedef struct s_data
 	t_check		check_list;
 	char		**error;
 	char		*file;
+	char		*trimed_file;
 	void		*mlx;
 	void		*win;
 	void		*mlx_cast;

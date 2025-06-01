@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:09 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 04:00:20 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 07:18:02 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	close_window(void *param)
 	return (0);
 }
 
-static void	int_array_free(int **array)
+void	int_array_free(int **array)
 {
 	int	i;
 

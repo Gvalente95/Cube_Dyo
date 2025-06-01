@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 04:47:34 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 07:31:48 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,11 +235,12 @@ void		set_up_loops(t_data *data);
 void		init_textures(t_data *data);
 void		gather_data(t_data *data, int ac, char **av);
 void		check_data(t_data *data);
+void		adjust_off_bounds(int ***map, t_point max);
 
 //	CHECKER
-bool	check_map(t_data *data);
-bool	check_text_path(t_data *data);
-bool	check_color_config(t_data *data);
+bool		check_map(t_data *data);
+bool		check_text_path(t_data *data);
+bool		check_color_config(t_data *data);
 
 //	FILE PARSE
 void		parse_metadata(t_data *data, char **doc);
@@ -273,6 +274,7 @@ void		check_player_direction(t_data *data);
 //	UTILS
 void		exit_game(t_data *data);
 void		free_data(t_data *data);
+void		int_array_free(int **array);
 
 //	RAYCASTING
 void		raycasting(t_data *data);

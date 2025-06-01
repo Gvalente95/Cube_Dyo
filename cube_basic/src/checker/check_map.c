@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:48:45 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 06:40:16 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 07:15:44 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static bool	closed(t_point max, int **imap, int x, int y)
 {
 	if (imap[y][x] == WALL)
 		return (true);
-	if (imap[y][x] == 0)
+	else if (imap[y][x] == 0)
 	{
 		if (y - 1 > 0)
 			if (imap[y - 1][x] == -1)

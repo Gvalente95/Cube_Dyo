@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:37:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 17:57:09 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # include "macros.h"
 # include "test.h"
+# include "../../cube.h"
 
 # define OK 1
 # define KO 0
@@ -65,9 +66,9 @@ typedef struct s_direction_ok
 	bool	down;
 	bool	left;
 	bool	right;
-}	t_dir;
+}	t_dir_;
 
-typedef struct s_player
+typedef struct s_player_
 {
 	char		start;
 	float		px;
@@ -78,7 +79,7 @@ typedef struct s_player
 	t_dir		dir;
 	bool		item;
 	bool		gun;
-}	t_player;
+}	t_player_;
 
 typedef struct s_poinst
 {
@@ -86,15 +87,15 @@ typedef struct s_poinst
 	int	y;
 }	t_point;
 
-typedef struct s_map
+typedef struct s_map_
 {
 	char	**map;
 	int		**imap;
 	int		map_s;
 	t_point	max;
-}	t_map;
+}	t_map_;
 
-typedef struct s_ray
+typedef struct s_ray_
 {
 	float	ra;
 	float	rx;
@@ -108,7 +109,7 @@ typedef struct s_ray
 	int		depth;
 	float	step;
 	float	distance;
-}	t_ray;
+}	t_ray_;
 
 typedef struct s_textures
 {
@@ -123,26 +124,26 @@ typedef struct s_engine
 {
 	t_display	frame;
 	t_display	frame2;
-	t_player	player;
+	t_player_	player;
 	t_bot		*bots;
 	t_map		map;
 }	t_engine;
 
-typedef struct s_menu
+typedef struct s_menu_
 {
 	bool	is_menu;
 	char	slot_menu[MENU_SLOTS];
 	int		option;
-}	t_menu;
+}	t_menu_;
 
 # define NUM_TEXTURES 4
 
 typedef enum s_text_type
 {
-	NORTH,
-	SOUTH,
-	EAST,
-	WEST
+	NORTH_,
+	SOUTH_,
+	EAST_,
+	WEST_
 }	t_text_type;
 
 typedef struct s_color
@@ -193,7 +194,8 @@ typedef struct s_check_list
 
 typedef struct s_data
 {
-	t_menu		menu;
+	t_md		md;
+	t_menu_		menu;
 	t_engine	run;
 	t_tokens	tokens;
 	t_texture	textures[NUM_TEXTURES];
@@ -260,10 +262,10 @@ int			mouse_update_view(int key, int x, int y, t_data *data);
 
 //	KEY EVENTS
 int			key_update_env(int key, t_data *data);
-int			key_update_position(int key, t_data *data, t_player *p);
+int			key_update_position(int key, t_data *data, t_player_ *p);
 
 //	GENERAL EVENTS
-int			close_window(void *param);
+int			close_window_(void *param);
 int			mouse_move(int x, int y, t_data *data);
 int			compute_frame(void *param);
 
@@ -295,7 +297,7 @@ void		my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void		my_mlx_pixel_put2(t_data *data, int x, int y, int color);
 void		draw_vertical_line(t_column_draw *cd, int start, int end);
 void		draw_textured_line(t_texdraw *d);
-void		draw_line(t_point p0, t_point p1, t_data *data);
+void		draw_line_(t_point p0, t_point p1, t_data *data);
 void		draw_2d_wall(t_data *data, int x, int y, int color);
 void		draw_2d_map(t_data *data);
 void		draw_player(t_data *data);

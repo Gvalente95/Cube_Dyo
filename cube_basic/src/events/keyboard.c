@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   keyboard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 10:03:03 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 11:01:17 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 17:56:04 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-int	key_update_direction(int key, t_player *p, t_map *map)
+int	key_update_direction(int key, t_player_ *p, t_map *map)
 {
 	if (key == 'a')
 	{
@@ -36,26 +36,26 @@ int	key_update_direction(int key, t_player *p, t_map *map)
 
 #define SECURE_STEP 10
 
-int	key_update_position(int key, t_data *data, t_player *p)
+int	key_update_position(int key, t_data *data, t_player_ *p)
 {
 	if (data->menu.is_menu)
 		return (1);
-	if (key == A_UP && p->py < HI && data->run.player.dir.up)
+	if (key == A_UP && p->py < HI && data->run.player_.dir_.up)
 	{
 		p->py += p->dx;
 		p->px += p->dy;
 	}
-	else if (key == A_LEFT && p->px > 0 && data->run.player.dir.left)
+	else if (key == A_LEFT && p->px > 0 && data->run.player_.dir_.left)
 	{
 		p->px += p->dx;
 		p->py -= p->dy;
 	}
-	else if (key == A_RIGHT && p->px < WI && data->run.player.dir.right)
+	else if (key == A_RIGHT && p->px < WI && data->run.player_.dir_.right)
 	{
 		p->px -= p->dx;
 		p->py += p->dy;
 	}
-	else if (key == A_DOWN && p->py > 0 && data->run.player.dir.down)
+	else if (key == A_DOWN && p->py > 0 && data->run.player_.dir_.down)
 	{
 		p->py -= p->dx;
 		p->px -= p->dy;

@@ -12,12 +12,16 @@ HDIR = src/headers/
 MDIR = libs/minilibx-linux
 LDIR = libs/libft
 
+MLX_WRP_DIR = ressources/mlx_wrapper/
+MLX_WRAPPER = $(MLX_WRP_DIR)mlx_wrapper.a
+
 A = src/checker/
 D = src/display/
 U = src/utils/
 E = src/events/
 S = src/setup/
 R = src/cast/
+F = src/fct_wrapper/
 
 UTILS = $(U)libft.c $(U)string_array_dup.c $(U)string_array_find_last.c \
 		$(U)string_array_find.c $(U)string_array_join.c $(U)string_array_match.c \
@@ -31,6 +35,7 @@ SETUP = $(S)setup_game.c $(S)exit.c $(S)map_parse.c \
 		$(S)read_file.c $(S)adjust_off_bounds.c
 CASTING = $(R)raycaster.c $(R)draw_lines.c $(R)menu.c $(R)draw_shapes.c \
 		$(R)raycast_computing.c $(R)draw_textures.c
+FCT_WRAPPER = $(F)draw_wall_column.c $(F)ray_tools.c
 
 INCLUDES = -I$(LDIR) -I$(HDIR) -I$(MDIR)
 
@@ -38,11 +43,14 @@ SRCS = $(SDIR)/main.c $(UTILS) $(CHECKER) $(DISPLAY) $(EVENTS) $(SETUP) $(CASTIN
 OBJS = $(SRCS:.c=.o)
 OBJS := $(patsubst $(SDIR)/%, $(ODIR)/%, $(OBJS))
 
+$(MLX_WRAPPER):
+	make -C $(MLX_WRP_DIR) PLATFORM=$(PLATFORM) --no-print-directory
+
 all: $(ODIR) libs $(NAME)
 	@echo "DOOOOM"
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LINK_FLAGS)
+$(NAME): $(OBJS) $(MLX_WRAPPER)
+	$(CC) $(CFLAGS) $(MLX_WRAPPER) $(OBJS) -o $@ $(LINK_FLAGS)
 
 $(ODIR)/%.o: $(SDIR)/%.c
 	@mkdir -p $(dir $@)
@@ -57,6 +65,7 @@ libs:
 
 clean:
 	@rm -rf $(ODIR)
+	make -C $(MLX_WRP_DIR) clean
 	@make -C $(MDIR) clean
 	@make -C $(LDIR) clean
 	@echo "Cleaned objects and libraries."

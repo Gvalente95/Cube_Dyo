@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:19:23 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 17:57:41 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int	extract_length(t_data *data, int x, int y)
 	draw_vertical_line(data, start_y, end_y, ray, distance, WHITE);
 	draw_vertical_line(data, end_y, HI, ray, distance, GREEN);
 }*/
-static void	assign_values(t_data *data, t_ray *ray, t_point *p0, t_point *p1)
+static void	assign_values(t_data *data, t_ray *ray_, t_point *p0, t_point *p1)
 {
 	p0->x = data->run.player.px + PSIZE / 2;
 	p0->y = data->run.player.py + PSIZE / 2;
-	p1->x = (int)ray->rx;
-	p1->y = (int)ray->ry;
+	p1->x = (int)ray_->rx;
+	p1->y = (int)ray_->ry;
 }
 
 static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
@@ -69,10 +69,16 @@ static void	render_wall_column(t_data *data, t_ray *ray, int ray_id)
 	d.end = end_y;
 	d.distance = ray->distance;
 	d.tex = select_texture(data, ray);
-	if (fabs(ray->dx) > fabs(ray->dy))
-		d.tx = (int)ray->ry % d.tex->wi;
+	float wall_x;
+	int vertical_hit = fabs(ray->dx) > fabs(ray->dy);
+	if (vertical_hit)
+		wall_x = ray->ry - floorf(ray->ry);
 	else
-		d.tx = (int)ray->rx % d.tex->wi;
+		wall_x = ray->rx - floorf(ray->rx);
+	d.tx = (int)(wall_x * d.tex->wi);
+	if ((vertical_hit && ray->dx < 0) || (!vertical_hit && ray->dy > 0))
+		d.tx = d.tex->wi - d.tx - 1;
+	d.tx = (int)(wall_x * d.tex->wi);
 	draw_textured_line(&d);
 }
 

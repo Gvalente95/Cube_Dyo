@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:15:00 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 05:43:09 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 06:37:25 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,9 @@ void	check_data(t_data *data)
 		data->check_list[i++] = OK;
 	if (check_tokens(data) == KO)
 		perror("Error with config file content\n");
-//	if (check_map == KO)
-//		perror("Error parsing the map\n");
+	if (check_map(data) == KO)
+		perror("Error parsing the map\n");
+	printf("MAP OK\n");
 	free(data->file);
 	data->file = NULL;
 	if (print_error_messages(data, data->check_list) == NO_ERROR)

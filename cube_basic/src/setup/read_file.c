@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:22:36 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 05:41:45 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 06:50:26 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ static void	extract_map(char **doc)
 	while ((*doc)[i] != '\n')
 		i--;
 	map = copy_from(doc, i);
+	printf("COPY WENT WELL\n");
 	free(*doc);
 	*doc = map;
 }

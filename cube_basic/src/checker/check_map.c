@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 15:48:45 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 08:07:44 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 08:44:09 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,17 @@ static bool closed(t_point max, int **imap, int x, int y)
 	return (true);
 }
 
-static bool check_line(t_point max, int **imap, int y)
+static bool check_line(t_point max, int **imap, int y, int *player_char)
 {
 	int	x;
-	int	player_char;
 
 	x = 0;
-	player_char = 0;
 	while (x < max.x)
 	{
 		if (!closed(max, imap, x, y))
 			return (perror("Map Unclosed bitch got you\n"), KO);
 		if (imap[y][x] == 9)
-			player_char++;
-		if (player_char >= 2)
-			return (perror("Map parsing : 2 times or more player pos"), KO);
+			*player_char += 1;
 		if (invalid_char(imap[y][x]))
 			return (perror("Invalid char in map\n"), KO);
 		x++;
@@ -58,16 +54,24 @@ static bool check_line(t_point max, int **imap, int y)
 
 bool check_map(t_data *data)
 {
-	t_point max = data->run.map.max;
-
-	for (int y = 0; y < max.y; y++)
+	int		player_char;
+	int		y;
+	t_point	max;
+	
+	y = 0;
+	player_char = 0;
+	max = data->run.map.max;
+	while (y < max.y)
 	{
-		if (check_line(max, data->run.map.imap, y) == KO)
+		if (check_line(max, data->run.map.imap, y, &player_char) == KO)
 		{
 			free_data(data);
 			exit(EXIT_FAILURE);
 			return (false);
 		}
+		y++;
 	}
+	if (player_char == 0 || player_char >= 2)
+		return (perror("Problem player in map\n"), free_data(data), exit(1), KO);
 	return (true);
 }

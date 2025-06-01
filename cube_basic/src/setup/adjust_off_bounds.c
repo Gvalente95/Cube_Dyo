@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 08:17:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 08:47:40 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ static int **adjustment(int **map, t_point max)
 	int     **nmap;
 	t_point iter;
 
-	nmap = malloc((max.y + 2) * sizeof(int *));
+	nmap = malloc((max.y + 3) * sizeof(int *));
+	nmap[max.y + 2] = NULL;
 	if (!nmap)
 		return (NULL);
 	for (iter.y = 0; iter.y < max.y + 2; iter.y++)
 	{
-		nmap[iter.y] = malloc((max.x + 2) * sizeof(int));
+		nmap[iter.y] = malloc((max.x + 3) * sizeof(int));
 		if (!nmap[iter.y])
 		{
 			while (--iter.y >= 0)
@@ -49,7 +50,7 @@ static int **adjustment(int **map, t_point max)
 			free(nmap);
 			return (NULL);
 		}
-		for (iter.x = 0; iter.x < max.x + 2; iter.x++)
+		for (iter.x = 0; iter.x < max.x + 3; iter.x++)
 		{
 			if (iter.y == 0 || iter.y == max.y + 1 || iter.x == 0 || iter.x == max.x + 1)
 				nmap[iter.y][iter.x] = -1;
@@ -67,8 +68,9 @@ void	adjust_off_bounds(int ***map, t_point max)
 
 	i = 0;
 	new_map = adjustment(*map, max);
-	while (new_map[i])
-		new_map[i++][max.x] = -1;
+	while (i < max.y + 2)
+		new_map[i++][max.x + 1] = -1;
+	printf("max x : %d\nmax y : %d\n", max.x, max.y);
 	print_imap(new_map, max);
 	int_array_free(*map);
 	*map = new_map;

@@ -6,13 +6,18 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:34:48 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:41:18 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	format_object(t_data *data, t_point *original, int *object, char current)
+void	format_object(
+	t_data *data,
+	t_point *original,
+	int *object,
+	char current
+	)
 {
 	if (!data || !object)
 		return ;
@@ -20,7 +25,8 @@ void	format_object(t_data *data, t_point *original, int *object, char current)
 		*object = -1;
 	else if (current >= '0' && current <= '9')
 		*object = current - '0';
-	else if (current == 'N' || current == 'S' || current == 'E' || current == 'W')
+	else if (current == 'N' || current == 'S'
+		|| current == 'E' || current == 'W')
 	{
 		*object = PLAYER_POS;
 		if (data)
@@ -31,7 +37,12 @@ void	format_object(t_data *data, t_point *original, int *object, char current)
 	(void)original;
 }
 
-void map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *data)
+void	map_scale_object(
+	int ***scaled_map,
+	char **map,
+	t_point *original,
+	t_data *data
+	)
 {
 	char	current;
 	int		object;
@@ -42,7 +53,7 @@ void map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *
 	if (!scaled_map || !*scaled_map || !map || !original || !data)
 		return ;
 	current = map[original->y][original->x];
-	scale = (t_point){original->x * SCALE_MAP, original->y * SCALE_MAP};	
+	scale = (t_point){original->x * SCALE_MAP, original->y * SCALE_MAP};
 	format_object(data, original, &object, current);
 	while (iter.y < SCALE_MAP)
 	{
@@ -54,21 +65,21 @@ void map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *
 	original->x++;
 }
 
-int **scale_map(char **map, t_data *data)
+int	**scale_map(char **map, t_data *data)
 {
 	t_point	max;
 	t_point	iter;
 	int		**scaled_map;
 
 	if (!map || !data)
-		return NULL;
+		return (NULL);
 	ft_bzero(&iter, sizeof(t_point));
 	ft_bzero(&max, sizeof(t_point));
 	map_get_format(map, data);
 	max = data->run.map.max;
 	scaled_map = allocate_scaled_map(max);
 	if (!scaled_map)
-		return NULL;
+		return (NULL);
 	while (iter.y < max.y)
 	{
 		iter.x = 0;

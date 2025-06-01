@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:28:32 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:39:38 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	print_imap(int **imap, t_point max)
 	if (!imap)
 	{
 		printf("Map vide ou non initialisée.\n");
-		return;
+		return ;
 	}
 	while (y < max.y + 1)
 	{
@@ -94,7 +94,7 @@ void	adjust_off_bounds(int ***map, t_point max)
 	if (!new_map)
 	{
 		perror("Error: Failed to adjust map bounds.");
-		return;
+		return ;
 	}
 	printf("max x : %d\nmax y : %d\n", max.x, max.y);
 	print_imap(new_map, max);

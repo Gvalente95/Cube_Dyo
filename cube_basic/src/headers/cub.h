@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 07:31:48 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:37:23 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,5 +312,7 @@ int			ft_isspace(int c);
 void		ft_suppress(char **content, char *to_suppress);
 int			ft_atohx(char *n);
 char		*copy_from(char **str, size_t here);
+char		*ft_strstr(char *str, char *to_find, size_t len);
+char		*ft_strrstr(char *str, char *to_find, size_t len);
 
 #endif

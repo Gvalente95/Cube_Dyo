@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:20:00 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:34:48 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	format_object(t_data *data, t_point *original, int *object, char current)
 		*object = -1;
 	else if (current >= '0' && current <= '9')
 		*object = current - '0';
-	else if (ft_isalpha(current))
+	else if (current == 'N' || current == 'S' || current == 'E' || current == 'W')
 	{
 		*object = PLAYER_POS;
 		if (data)

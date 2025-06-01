@@ -6,18 +6,36 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 07:38:45 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 07:56:31 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
+
+static void	print_imap(int **imap, t_point max)
+{
+	if (!imap)
+	{
+		printf("Map vide ou non initialisée.\n");
+		return;
+	}
+
+	for (int y = 0; y < max.y; y++)
+	{
+		for (int x = 0; x < max.x; x++)
+		{
+			printf("%3d", imap[y][x]);
+		}
+		printf("\n");
+	}
+	printf("Imap printed\n");
+}
 
 static int **adjustment(int **map, t_point max)
 {
 	int     **nmap;
 	t_point iter;
 
-	// Allocation du tableau de lignes (+2 pour les bordures haut/bas)
 	nmap = malloc((max.y + 2) * sizeof(int *));
 	if (!nmap)
 		return (NULL);
@@ -27,25 +45,22 @@ static int **adjustment(int **map, t_point max)
 		nmap[iter.y] = malloc((max.x + 2) * sizeof(int));
 		if (!nmap[iter.y])
 		{
-			// Libération en cas d'échec partiel
 			while (--iter.y >= 0)
 				free(nmap[iter.y]);
 			free(nmap);
 			return (NULL);
 		}
-
 		for (iter.x = 0; iter.x < max.x + 2; iter.x++)
 		{
-			// Bordures (haut, bas, gauche, droite)
 			if (iter.y == 0 || iter.y == max.y + 1 || iter.x == 0 || iter.x == max.x + 1)
 				nmap[iter.y][iter.x] = -1;
 			else
 				nmap[iter.y][iter.x] = map[iter.y - 1][iter.x - 1];
 		}
 	}
-	return nmap;
+	print_imap(nmap, max);
+	return (nmap);
 }
-
 
 void	adjust_off_bounds(int ***map, t_point max)
 {

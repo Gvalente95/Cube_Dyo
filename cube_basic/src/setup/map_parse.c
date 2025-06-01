@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 07:37:01 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 07:58:27 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ void format_object(t_data *data, t_point *original, int *object, char current)
 			data->run.player.start = current;
 	}
 	else
-		*object = -2;
-
-	(void)original; // toujours ignoré
+		*object = -1;
+	(void)original;
 }
 
 void map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *data)
@@ -107,8 +106,10 @@ char **parse_map(char *doc)
 		map[k++][y] = '\0';
 		i++; // skip newline
 	}
-
 	map[k] = NULL;
+	printf("Let's see\n");
+	print_map(map);
+	printf("map printed\n");
 	free(doc);
 	return map;
 }

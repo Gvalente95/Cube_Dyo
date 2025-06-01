@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:38:05 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 07:58:55 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	init_map_scale(t_map *map)
 	int	max_tile_w;
 	int	max_tile_h;
 
-	max_tile_w = (int)(WI / map->max.x);
-	max_tile_h = (int)(HI / map->max.y);
+	max_tile_w = (int)(WI / (map->max.x));
+	max_tile_h = (int)(HI / (map->max.y));
 	if (max_tile_w < max_tile_h)
 		map->map_s = max_tile_w;
 	else
@@ -80,6 +80,8 @@ void	init_struct(t_data *data)
 	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
 	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
+	data->run.map.max.x += 2;
+	data->run.map.max.y += 2;
 	init_map_scale(&data->run.map);
 	set_player_pos(data);
 	init_textures(data);

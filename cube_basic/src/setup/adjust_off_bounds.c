@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:00:31 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:14:54 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,19 @@ static void	print_imap(int **imap, t_point max)
 	printf("Imap printed\n");
 }
 
-static int **adjustment(int **map, t_point max)
+static int	**adjustment(int **map, t_point max)
 {
-	int     **nmap;
-	t_point iter;
+	int		**nmap;
+	t_point	iter;
 
-	nmap = malloc((max.y + 3) * sizeof(int *));
-	nmap[max.y + 2] = NULL;
+	nmap = malloc(sizeof(int *) * (max.y + 3));
 	if (!nmap)
 		return (NULL);
-	for (iter.y = 0; iter.y < max.y + 2; iter.y++)
+	nmap[max.y + 2] = NULL;
+	iter.y = 0;
+	while (iter.y < max.y + 2)
 	{
-		nmap[iter.y] = malloc((max.x + 3) * sizeof(int));
+		nmap[iter.y] = malloc(sizeof(int) * (max.x + 3));
 		if (!nmap[iter.y])
 		{
 			while (--iter.y >= 0)
@@ -49,22 +50,32 @@ static int **adjustment(int **map, t_point max)
 			free(nmap);
 			return (NULL);
 		}
-		for (iter.x = 0; iter.x < max.x + 2; iter.x++)
+		iter.x = 0;
+		while (iter.x < max.x + 2)
 		{
-			if (iter.y == 0 || iter.y == max.y + 1 || iter.x == 0 || iter.x == max.x + 1)
+			if (iter.y == 0 || iter.y == max.y + 1 ||
+				iter.x == 0 || iter.x == max.x + 1)
 				nmap[iter.y][iter.x] = -1;
 			else
 				nmap[iter.y][iter.x] = map[iter.y - 1][iter.x - 1];
+			iter.x++;
 		}
+		iter.y++;
 	}
 	return (nmap);
 }
+
 
 void	adjust_off_bounds(int ***map, t_point max)
 {
 	int	**new_map;
 
 	new_map = adjustment(*map, max);
+	if (!new_map)
+	{
+		perror("Error: Failed to adjust map bounds.");
+		return;
+	}
 	printf("max x : %d\nmax y : %d\n", max.x, max.y);
 	print_imap(new_map, max);
 	int_array_free(*map);

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 08:13:29 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:11:12 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void map_scale_object(int ***scaled_map, char **map, t_point *original, t_data *
 	original->x++;
 }
 
-
 int **scale_map(char **map, t_data *data)
 {
 	t_point	max;
@@ -80,37 +79,51 @@ int **scale_map(char **map, t_data *data)
 	return (scaled_map);
 }
 
-
-char **parse_map(char *doc)
+static char	**alloc_map(char *doc, int line_count)
 {
-	if (!doc)
-		return NULL;
+	int		i;
+	int		k;
+	int		j;
+	int		y;
+	char	**map;
 
-	int i = 1, k = 0, line_count = count_char(doc, '\n') - 1;
-	char **map = malloc(sizeof(char *) * (line_count + 1));
+	map = malloc(sizeof(char *) * (line_count + 1));
 	if (!map)
-		return NULL;
+		return (NULL);
+	i = 1;
+	k = 0;
 	while (doc[i] && k < line_count)
 	{
-		int j = 0, y = 0;
+		j = 0;
 		while (doc[i + j] && doc[i + j] != '\n')
 			j++;
-
 		if (no_char_in_line(doc, i, i + j))
-			break;
-
+			break ;
 		map[k] = malloc(j + 1);
 		if (!map[k])
-			break;
-
+			break ;
+		y = 0;
 		while (j-- > 0 && doc[i])
 			map[k][y++] = doc[i++];
 		map[k++][y] = '\0';
-		i++; // skip newline
+		i++;
 	}
 	map[k] = NULL;
-	print_map(map);
-	free(doc);
-	return map;
+	return (map);
 }
 
+char	**parse_map(char *doc)
+{
+	int		line_count;
+	char	**map;
+
+	if (!doc)
+		return (NULL);
+	line_count = count_char(doc, '\n') - 1;
+	map = alloc_map(doc, line_count);
+	if (!map)
+		return (NULL);
+	print_map(map);
+	free(doc);
+	return (map);
+}

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 10:19:54 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 03:59:13 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 04:22:05 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	get_color(t_color *object, int *res, char *line, t_data *data)
 		string_array_free(&color);
 		free(data->trimed_file);
 		return (free(line),
-			free_data(data),
+		free_data(data),
 			perror("Error parsing color in file\n"),
 			exit(EXIT_FAILURE));
 	}

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 07:48:34 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 03:58:30 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 04:47:34 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ typedef struct s_data
 	t_engine	run;
 	t_tokens	tokens;
 	t_texture	textures[NUM_TEXTURES];
-	t_check		check_list;
+	bool		check_list[NO_TOKEN];
 	char		**error;
 	char		*file;
 	char		*trimed_file;

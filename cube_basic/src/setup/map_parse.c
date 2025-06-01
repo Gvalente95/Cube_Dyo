@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:11:12 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:20:00 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ static char	**alloc_map(char *doc, int line_count)
 	char	**map;
 
 	map = malloc(sizeof(char *) * (line_count + 1));
-	if (!map)
-		return (NULL);
 	i = 1;
 	k = 0;
 	while (doc[i] && k < line_count)
@@ -100,8 +98,6 @@ static char	**alloc_map(char *doc, int line_count)
 		if (no_char_in_line(doc, i, i + j))
 			break ;
 		map[k] = malloc(j + 1);
-		if (!map[k])
-			break ;
 		y = 0;
 		while (j-- > 0 && doc[i])
 			map[k][y++] = doc[i++];

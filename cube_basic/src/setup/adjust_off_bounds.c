@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 07:17:14 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:14:54 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:28:32 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,49 @@
 
 static void	print_imap(int **imap, t_point max)
 {
+	int	y;
+	int	x;
+
+	y = 0;
+	x = 0;
 	if (!imap)
 	{
 		printf("Map vide ou non initialisée.\n");
 		return;
 	}
-	for (int y = 0; y < max.y + 1; y++)
+	while (y < max.y + 1)
 	{
-		for (int x = 0; x < max.x + 1; x++)
+		x = 0;
+		while (x < max.x + 1)
 		{
-			printf("%3d", imap[y][x]);
+			printf("%3d", imap[y][x++]);
 		}
 		printf("\n");
+		y++;
 	}
 	printf("Imap printed\n");
+}
+
+static bool	fill_adjusted_map(int **nmap, int **map, t_point max)
+{
+	t_point	iter;
+
+	iter.y = 0;
+	while (iter.y < max.y + 2)
+	{
+		iter.x = 0;
+		while (iter.x < max.x + 2)
+		{
+			if (iter.y == 0 || iter.y == max.y + 1
+				|| iter.x == 0 || iter.x == max.x + 1)
+				nmap[iter.y][iter.x] = -1;
+			else
+				nmap[iter.y][iter.x] = map[iter.y - 1][iter.x - 1];
+			iter.x++;
+		}
+		iter.y++;
+	}
+	return (true);
 }
 
 static int	**adjustment(int **map, t_point max)
@@ -50,21 +79,12 @@ static int	**adjustment(int **map, t_point max)
 			free(nmap);
 			return (NULL);
 		}
-		iter.x = 0;
-		while (iter.x < max.x + 2)
-		{
-			if (iter.y == 0 || iter.y == max.y + 1 ||
-				iter.x == 0 || iter.x == max.x + 1)
-				nmap[iter.y][iter.x] = -1;
-			else
-				nmap[iter.y][iter.x] = map[iter.y - 1][iter.x - 1];
-			iter.x++;
-		}
 		iter.y++;
 	}
+	if (!fill_adjusted_map(nmap, map, max))
+		return (NULL);
 	return (nmap);
 }
-
 
 void	adjust_off_bounds(int ***map, t_point max)
 {

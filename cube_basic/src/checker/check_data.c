@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:15:00 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 08:08:36 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 09:33:15 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,25 +130,28 @@ static bool	check_tokens(t_data *data)
 void	check_data(t_data *data)
 {
 	int	i;
+	int	stop;
 
 	i = 0;
+	stop = 0;
 	while (i < NO_TOKEN)
 		data->check_list[i++] = OK;
 	if (check_tokens(data) == KO)
 		perror("Error with config file content\n");
 	if (check_map(data) == KO)
-		perror("Error parsing the map\n");
+		stop = 1;
 	free(data->file);
 	data->file = NULL;
-	if (print_error_messages(data, data->check_list) == NO_ERROR)
+	if (!stop && print_error_messages(data, data->check_list) == NO_ERROR)
 		return (string_array_free(&data->error));
 	i = 0;
-	while (data->error[i])
+	while (data->error && data->error[i])
 	{
 		perror(data->error[i]);
 		free(data->error[i++]);
 	}
-	free(data->error);	
+	if (data->error)
+		free(data->error);	
 	free_data(data);
 	exit(EXIT_FAILURE);
 }

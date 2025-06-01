@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:15:00 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 04:52:15 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/01 05:36:26 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,42 @@
 
 static char	*ft_strstr(char *str, char *to_find, size_t len)
 {
-	size_t i, j;
+	size_t	i;
+	size_t	j;
 
-	printf("FINDING 1\n");
 	if (!*to_find)
 		return (str);
-	for (i = 0; str[i] && i < len; i++) {
-		for (j = 0; to_find[j] && str[i + j] && i + j < len && str[i + j] == to_find[j]; j++)
-			;
-		if (!to_find[j])
-			return (&str[i]);
+	i = 0;
+	while (str[i] && i < len)
+	{
+		j = 0;
+		while (to_find[j] && str[i + j]
+			&& i + j < len && str[i + j] == to_find[j])
+		{
+			if (!to_find[j])
+				return (&str[i]);
+			j++;
+		}
+		i++;
 	}
 	return (NULL);
 }
 
 static char	*ft_strrstr(char *str, char *to_find, size_t len)
 {
-	size_t i;
+	size_t	i;
 
-	printf("FINDING 2\n");
 	if (!*to_find)
 		return (str + len);
-	for (i = len; i > 0; i--) {
+	i = len;
+	while (i > 0)
+	{
 		if (i >= ft_strlen(to_find) && !ft_strncmp(&str[i - ft_strlen(to_find)], to_find, ft_strlen(to_find)))
 			return (&str[i - ft_strlen(to_find)]);
+		i--;
 	}
 	return (NULL);
 }
-
-/*static bool	no_char_in_line(char *doc, int start, int end)
-{
-	while (start < end)
-	{
-		if (ft_isalpha(doc[start]) || ft_isalnum(doc[start]))
-			return (false);
-		start++;
-	}
-	return (true);
-}*/
 
 static bool	is_in_file(char *doc, int tok, char *tokens[NO_TOKEN])
 {
@@ -59,14 +57,13 @@ static bool	is_in_file(char *doc, int tok, char *tokens[NO_TOKEN])
 	int		i;
 
 	i = 0;
-	printf("is in file ?\n");
 	is_token = ft_strnstr(doc, tokens[tok], ft_strlen(doc));
 	if (is_token)
 	{
 		is_token += ft_strlen(tokens[tok]);
 		while (is_token[i] && ft_isspace(is_token[i]))
-			if (is_token[i] == '\n')
-				i++;
+			if (is_token[i++] == '\n')
+				break ;
 		if (no_char_in_line(is_token, (int)ft_strlen(tokens[tok]), i))
 			return (false);
 		return (true);
@@ -79,21 +76,10 @@ static bool	is_in_double(char *doc, int tok, char *tokens[NO_TOKEN])
 	char	*first_occurence;
 	char	*last_occurence;
 
-	printf("Is in double ?\n");
 	first_occurence = ft_strstr(doc, tokens[tok], ft_strlen(tokens[tok]));
 	last_occurence = ft_strrstr(doc, tokens[tok], ft_strlen(tokens[tok]));
 	if (first_occurence && last_occurence && first_occurence != last_occurence)
 		return (true);
-	//while (first_occurence && first_occurence[len_to_end_of_line])
-	//	len_to_end_of_line++;
-	//if (first_occurence && !last_occurence)
-	//	return (false);
-	//if (!ft_strncmp(
-	//			first_occurence,
-	//			last_occurence,
-	//			ft_strlen(first_occurence) + len_to_end_of_line
-	//			))
-	//	return (true);
 	return (false);
 }
 
@@ -131,7 +117,6 @@ static bool	check_tokens(t_data *data)
 	int			i;
 
 	i = 0;
-	printf("checking tokens\n");
 	while (i < NO_TOKEN)
 	{
 		if (is_in_file(data->file, i, tokens)
@@ -151,14 +136,10 @@ void	check_data(t_data *data)
 		data->check_list[i++] = OK;
 	if (check_tokens(data) == KO)
 		perror("Error with config file content\n");
-	//if (check_map(data) == KO)
-	//	perror("Error Parsing map :\n");
 	free(data->file);
 	data->file = NULL;
-	printf("Printing error messges\n");
 	if (print_error_messages(data, data->check_list) == NO_ERROR)
 		return ;
-	printf("Error ther is\n");
 	i = 0;
 	while (data->error[i])
 	{

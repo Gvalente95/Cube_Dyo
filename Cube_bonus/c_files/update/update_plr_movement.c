@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 11:45:19 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/26 20:10:18 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:15:39 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static t_vec3f	set_input_mov_2(t_md *md, float spd, \
 	mov.y = (mv_for - mv_back) * for_dir.y + (mv_rght - mv_lft) * -rgt_dir.y;
 	if (md->key_click == SPACE_KEY && \
 		md->plr.pos.z + md->prm.height >= -EPSILON)
-		mov.z = -spd * 5;
+		mov.z = - ((1 + md->prm.mov_drift) * 5);
 	else if (md->key_prs[R_KEY] == 1)
 		mov.z = -(spd * .2);
 	md->cam.input_mov = get_v3f(mv_lft - mv_rght, mv_for - mv_back, \
@@ -84,6 +84,8 @@ void	set_plr_z(t_md *md, t_ent *plr)
 {
 	if (!md->prm.fly_cam)
 	{
+		if (md->plr_in_house && plr->pos.z < -md->t_len / 3)
+			plr->mov.z = GRAVITY * 10;
 		plr->grounded = 0;
 		if (plr->pos.z + md->prm.height < 0 && !md->key_prs[R_KEY])
 			plr->mov.z += GRAVITY;

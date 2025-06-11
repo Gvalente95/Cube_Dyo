@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 01:55:29 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/06/01 15:19:08 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:43:26 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	update_input(t_md *md)
 		r_spd *= 2;
 	c->rot.x += ((md->key_prs[RIGHT_KEY] - md->key_prs[LEFT_KEY]) * r_spd);
 	c->rot.y += ((md->key_prs[DOWN_KEY] - md->key_prs[UP_KEY]) * r_spd);
+	md->prm.fov = minmax(10, 360, md->prm.fov + md->mouse.scroll_delta.y * 10);
 	if (!md->inv.active)
 		update_mouse_input(md, c->pointed, c->pointed_ent, c->pointed_door);
 	return ;

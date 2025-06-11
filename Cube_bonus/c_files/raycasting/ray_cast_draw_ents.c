@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/30 19:44:01 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 13:14:58 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:33:39 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	get_scale_and_pos(t_md *md, t_ent *e, t_vec2 win_sz, t_vec2 *draw_p)
 		tanf(md->cam.rot.y * (_PI / 180.0f)) * (win_sz.y / 2);
 
 	e_size = max(md->t_len, e->size.y);
-	scale_factor = e_size / md->txd.e_scales[e->type];
+	scale_factor = e_size / md->txd.e_scales[minmax(0, 8, e->type)];
 	dist = (maxf(0.1, e->hit_dist) / 2) * scale_factor;
 	scale = minmaxf(5, win_sz.y * 2, (win_sz.y * e->size.y) / dist);
 	draw_p->x = e->ray_hit_index - scale / 2;

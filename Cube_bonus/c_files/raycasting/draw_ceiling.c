@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:56:10 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 13:31:05 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:45:14 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void	draw_ceiling(t_md *md, t_floor_draw_d d, float pitch_offset)
 	if (md->prm.show_sky)
 		draw_strip(md->hud.sky_buffer, md->screen, _v2(d.win.x), d.win.y);
 	else
-		draw_pixels(md->screen, v2(d.win.x, 0), v2(1, d.win.y), md->hud.skyclr);
+		draw_pixels(md->screen, v2(d.win.x, 0), v2(1, d.win.y), \
+		md->hud.ceiling_color);
 	d.p = (md->win_sz.y / 2 - pitch_offset) - d.win.y;
 	while (d.win.y-- > 0)
 	{

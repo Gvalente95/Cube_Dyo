@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 20:39:27 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/06/01 13:46:02 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:44:27 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static void	init_cursor(t_md *md)
 	md->cam.input_offst = _v2(0);
 	msd->prev = _v2(0);
 	msd->grid_pos = _v2(0);
+	msd->scroll_delta = v2f(0);
+	msd->scroll_raw = _v2(0);
 	msd->delta = v2f(0);
 	msd->focus = 0;
 	msd->pressed = 0;

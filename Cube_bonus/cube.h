@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:53:43 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/06/01 15:37:32 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:06:37 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define HEIGHT			0
 # define BOB_AMOUNT		.2
 # define BOB_SPD		7
-# define GRAVITY		.03
+# define GRAVITY		.06
 # define ARROW_ROT_SPEED 2
 # define MOUSESPD		.5
 # define START_HP		10

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:30:54 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/26 20:50:50 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:17:03 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_map
 	int		coins_left;
 	int		tries_amount;
 	int		difficulty;
+	int		accept_unvalid;
 }	t_map;
 
 typedef struct s_colorPicker

@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 22:58:02 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/26 19:57:21 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:47:30 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ static int	exit_autocam(t_md *md, t_autocam *autocam)
 	md->plr.dir.y = 0;
 	md->timer.time = 1;
 	md->key_click = -1;
-	md->hud.fog_color = _BLACK;
 	md->prm.ent_mode = 1;
 	md->prm.fly_cam = 0;
 	md->prm.super_view = 0;
 	md->prm.show_ceiling = 1;
-	md->hud.fog_color = v4_to_color(10, 10, 10, 255);
 	md->prm.ray_mod = 5;
 	md->fx.fog = .8f;
 	md->prm.alternate_draw = 0;

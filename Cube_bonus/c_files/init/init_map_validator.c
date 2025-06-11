@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 02:32:22 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/16 18:21:13 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:24:58 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	find_breach(t_md *md, t_map *map, int plr_index)
 	char		*flooded_map;
 	int			found_breach;
 
-	return (0);
 	if (map->len > 20000)
 		free_and_quit(md, "Map too large for this version, sorry :|", NULL);
 	flooded_map = ft_strdup(map->buffer);

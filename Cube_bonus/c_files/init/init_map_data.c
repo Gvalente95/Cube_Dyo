@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:55:04 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 12:03:17 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:44:37 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ static int	parse_file_line(char *line, t_md *md)
 		line++;
 	if (!*line)
 		return (1);
-	if (!ft_strncmp(line, "NO ", 3))
+	if (!ft_strncmp(line, "!", 2))
+		md->map.accept_unvalid = 1;
+	else if (!ft_strncmp(line, "NO ", 3))
 		add_texture_img(md, line, NORTH, 0);
 	else if (!ft_strncmp(line, "SO ", 3))
 		add_texture_img(md, line, SOUTH, 1);
@@ -73,9 +75,11 @@ static int	parse_file_line(char *line, t_md *md)
 	else if (!ft_strncmp(line, "WE ", 3))
 		add_texture_img(md, line, WEST, 1);
 	else if (line[0] == 'C')
-		md->hud.skyclr = str_to_color(line + 2);
+		md->hud.ceiling_color = str_to_color(line + 2);
 	else if (line[0] == 'F')
 		md->hud.floor_color = str_to_color(line + 2);
+	else if (line[0] == 'B')
+		md->hud.fog_color = str_to_color(line + 2);
 	else if (contains_valid_character(line, md->txd.ents_tp_map[0]))
 		return (0);
 	return (1);
@@ -99,7 +103,7 @@ static char	*parse_file_data(t_md *md)
 			break ;
 		setstr(&line, extract_line(file_content));
 	}
-	print_color(md->hud.skyclr, "Sky color");
+	print_color(md->hud.ceiling_color, "Sky color");
 	print_color(md->hud.floor_color, "Floor color");
 	return (safe_free(line), ft_strdup(file_content));
 }

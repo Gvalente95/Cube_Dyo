@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 15:57:28 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/24 13:52:06 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 18:43:49 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	mouse_event_handler(int but, int x, int y, void *param)
 	md->mouse.pressed = but;
 	if (md->mouse.pressed == MOUSE_PRESS)
 		md->mouse.click = MOUSE_PRESS;
-	scroll.y += (but == MOUSE_SCRL_D) - (but == MOUSE_SCRL_UP);
-	scroll.x += (but == MOUSE_SCRL_L) - (but == MOUSE_SCRL_R);
+	scroll.y = (but == MOUSE_SCRL_D) - (but == MOUSE_SCRL_UP);
+	scroll.x = (but == MOUSE_SCRL_L) - (but == MOUSE_SCRL_R);
 	md->mouse.scroll_raw = scroll;
 	return (0);
 }

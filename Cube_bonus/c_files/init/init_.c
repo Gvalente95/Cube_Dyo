@@ -6,7 +6,7 @@
 /*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:36:33 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/06/01 13:44:13 by gvalente         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:50:38 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ static void	init_var(t_md *md)
 	md->switch_interior = 0;
 	md->inv.active = 0;
 	md->autocam.active = 1;
+	md->map.accept_unvalid = 0;
+	md->hud.fog_color = _BLACK;
 }
 
 int	init_cube(t_md *md, char *file_arg, int start_debug)

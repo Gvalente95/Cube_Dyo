@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giuliovalente <giuliovalente@student.42    +#+  +:+       +#+        */
+/*   By: gvalente <gvalente@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 22:10:05 by giuliovalen       #+#    #+#             */
-/*   Updated: 2025/05/02 13:53:17 by giuliovalen      ###   ########.fr       */
+/*   Updated: 2025/06/11 19:28:43 by gvalente         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,9 @@ int	init_map(t_md *md, char *file_name)
 	plr_index = get_to_find_index(md->map.buffer, "NSEW");
 	if (plr_index < 0)
 		free_and_quit(md, "No player", NULL);
-	if (find_breach(md, &md->map, plr_index))
+	if (!md->map.accept_unvalid && find_breach(md, &md->map, plr_index))
 		free_and_quit(md, "Unclosed map\n", NULL);
-	if (!validate_map(md, md->map.buffer))
+	if (!md->map.accept_unvalid && !validate_map(md, md->map.buffer))
 		free_and_quit(md, NULL, NULL);
 	printf("%s\n", md->map.buffer);
 	md->map.size.x--;

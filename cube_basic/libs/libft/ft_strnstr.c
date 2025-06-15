@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aseite <marvin@42lausanne.ch>              +#+  +:+       +#+        */
+/*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 19:34:19 by aseite            #+#    #+#             */
-/*   Updated: 2024/10/10 19:34:22 by aseite           ###   ########.fr       */
+/*   Updated: 2025/06/01 04:17:30 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 
 	i = 0;
 	if (!big && !len)
-		return (0);
+		return (NULL);
 	if (little[i] == 0 || little == big)
 		return ((char *)big);
 	while (big[i])
@@ -36,7 +36,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 		else
 			i++;
 	}
-	return (0);
+	return (NULL);
 }
 /*
 #include <stdio.h>

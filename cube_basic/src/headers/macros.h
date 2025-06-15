@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 11:56:48 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/29 11:33:56 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/05/31 12:41:54 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,17 @@
 # define WI 1024
 # define HI 512
 
-# define SCALE_MAP 7
+# define SCALE_MAP 1
 
+/*	move_limit == 2 * STEP	*/
+# define MOVE_LIMIT 20
 # define FOV_ANGLE 60.0
 # define TILE_SIZE 16
 # define FOV 1.0471975512
 # define NUM_RAYS WI
-# define PROJECTION_CONSTANT WI * 30
+
+/*	PROJ_CTE ==(environ) WI * 30	*/
+# define PROJECTION_CONSTANT 42000
 
 # define PLAYER_POS 9
 # define WALL 1
@@ -53,6 +57,5 @@
 # define BLUE 0x0000FF
 # define BLACK 0x000000
 # define WHITE 0xFFFFFF
-# define GREY WHITE / 2
 
 #endif

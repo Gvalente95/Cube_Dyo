@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/28 13:30:04 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/15 06:28:21 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,62 @@
 
 void	set_player_pos(t_data *data)
 {
-	t_point	pos;
-	int		stop;
+	int	x;
+	int	y;
+	int	x0;
+	int	y0;
 
-	stop = 0;
-	for (int i = 0; i < data->run.map.max.y * SCALE_MAP && !stop; i++)
+	y = 0;
+	while (y < data->run.map.max.y * SCALE_MAP)
 	{
-		for (int j = 0; j < data->run.map.max.x * SCALE_MAP; j++)
+		x = 0;
+		while (x < data->run.map.max.x * SCALE_MAP)
 		{
-			if (data->run.map.imap[i][j] == 9)
+			if (data->run.map.imap[y][x] >= PLAYER_POS)
 			{
-				pos.x = j;
-				pos.y = i;
-				stop = 1;
+				x0 = x * data->run.map.map_s + MOVE_LIMIT + 10;
+				y0 = y * data->run.map.map_s + MOVE_LIMIT + 10;
 				break ;
 			}
+			x++;
 		}
+		if (x != data->run.map.max.x * SCALE_MAP)
+			break ;
+		y++;
 	}
-	data->run.player.py = pos.y * SCALE_MAP;
-	data->run.player.px = pos.x * SCALE_MAP;
-	printf("pos x : %d\npos y : %d\n", pos.x, pos.y);
+	data->run.player.py = y0;
+	data->run.player.px = x0;
+}
+
+void	set_player_dir(t_data *data)
+{
+	printf("Start angle : %c\n", data->run.player.start);
+	if (data->run.player.start == 'N')
+		data->run.player.pa = PI;
+	if (data->run.player.start == 'S')
+		data->run.player.pa = 0;
+	if (data->run.player.start == 'E')
+		data->run.player.pa = PI / 2;
+	if (data->run.player.start == 'W')
+		data->run.player.pa = -PI / 2;
+}
+
+void	init_map_scale(t_map *map)
+{
+	int	max_tile_w;
+	int	max_tile_h;
+
+	max_tile_w = (int)(WI / (map->max.x));
+	max_tile_h = (int)(HI / (map->max.y));
+	if (max_tile_w < max_tile_h)
+		map->map_s = max_tile_w;
+	else
+		map->map_s = max_tile_h;
+	map->map_s /= SCALE_MAP;
+	if (map->map_s < 4)
+		map->map_s = 4;
+	else if (map->map_s > 64)
+		map->map_s = 64;
 }
 
 void	init_struct(t_data *data)
@@ -44,10 +80,13 @@ void	init_struct(t_data *data)
 	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
 	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
+	data->run.map.max.x += 2;
+	data->run.map.max.y += 2;
+	init_map_scale(&data->run.map);
 	set_player_pos(data);
-	data->run.player.dx = 10;
-	data->run.map.mapS = (int)(data->run.map.max.x * data->run.map.max.y / SCALE_MAP * 2 / 4);
-	printf("map S : %d\n", data->run.map.mapS);
+	init_textures(data);
+	set_player_dir(data);
+	printf("map S : %d\n", data->run.map.map_s);
 }
 
 void	set_up_loops(t_data *data)

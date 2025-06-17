@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 08:12:07 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/15 06:28:21 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 15:38:13 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void	init_map_scale(t_map *map)
 void	init_struct(t_data *data)
 {
 	data->mlx = mlx_init();
-	data->mlx_cast = mlx_init();
+//	data->mlx_cast = mlx_init();
 	data->win = mlx_new_window(data->mlx, WI, HI, "Cub3D");
-	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
+//	data->win_cast = mlx_new_window(data->mlx_cast, WI, HI, "CASTING !!");
 	data->menu.option = 1;
 	data->run.map.max.x += 2;
 	data->run.map.max.y += 2;

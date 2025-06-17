@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 11:28:27 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/15 06:34:31 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 15:41:22 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,16 @@ int	compute_frame(void *param)
 		return (1);
 	if (!data->run.frame.img)
 		init_display(&data->run.frame, data->mlx);
-	if (!data->run.frame2.img)
-		init_display(&data->run.frame2, data->mlx_cast);
+//	if (!data->run.frame2.img)
+//		init_display(&data->run.frame2, data->mlx_cast);
 	if (!data->menu.is_menu)
 		cast_game(data);
 	else
 		cast_menu(data, data->menu.slot_menu);
 	mlx_put_image_to_window(data->mlx, data->win,
 		data->run.frame.img, 0, 0);
-	mlx_put_image_to_window(data->mlx_cast, data->win_cast,
-		data->run.frame2.img, 0, 0);
+//	mlx_put_image_to_window(data->mlx_cast, data->win_cast,
+//		data->run.frame2.img, 0, 0);
 	if (data->menu.is_menu)
 		put_strings(data);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:57:51 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 15:20:32 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 15:49:49 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	cast_menu(t_data *data, char place[MENU_SLOTS])
 	{
 		i = 0;
 		while (i < WI)
-			my_mlx_pixel_put(data, i++, j, WHITE);
+			my_mlx_pixel_put2(data, i++, j, WHITE);
 		j++;
 	}
 	j = slot;
@@ -42,7 +42,7 @@ int	cast_menu(t_data *data, char place[MENU_SLOTS])
 	{
 		i = HI / 2 - WI / 8;
 		while (i < WI / 2 + WI / 8)
-			my_mlx_pixel_put(data, i++, j, GREEN);
+			my_mlx_pixel_put2(data, i++, j, GREEN);
 		j++;
 	}
 	return (1);

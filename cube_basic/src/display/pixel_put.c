@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 10:42:41 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 10:44:31 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 15:40:16 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	my_mlx_pixel_put2(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
+	return (my_mlx_pixel_put(data, x, y, color));
 	if (x < 0 || y < 0 || x >= WI || y >= HI)
 		return ;
 	if (!data || !data->run.frame2.addr)

@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:57:51 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/17 15:49:49 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:15:58 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	cast_menu(t_data *data, char place[MENU_SLOTS])
 	j = slot;
 	while (j < slot + 40 && j < HI)
 	{
-		i = HI / 2 - WI / 8;
+		i = HI / 2 + 40;
 		while (i < WI / 2 + WI / 8)
 			my_mlx_pixel_put2(data, i++, j, GREEN);
 		j++;

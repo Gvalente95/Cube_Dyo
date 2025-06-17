@@ -6,11 +6,27 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 07:07:46 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/05/31 11:03:02 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:20:54 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
+
+static void	clean_window(t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < WI)
+	{
+		j = 0;
+		while (j < HI)
+			my_mlx_pixel_put2(data, i, j++, BLACK);
+		i++;
+	}
+}
 
 void	show_cmds(t_data *data)
 {
@@ -20,7 +36,10 @@ void	show_cmds(t_data *data)
 void	define_action(t_data *data)
 {
 	if (data->menu.option == 1)
+	{
+		clean_window(data);
 		data->menu.is_menu = 0;
+	}
 	if (data->menu.option == 2)
 		show_cmds(data);
 	if (data->menu.option == 3)

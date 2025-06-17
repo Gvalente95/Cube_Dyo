@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/15 06:43:31 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/17 16:11:02 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	draw_vertical_line_(t_data *data,
 
 	if (color == WHITE)
 	{
-		shade = 255 - (distance * 255 / NUM_RAYS);
+		shade = 255 - (distance * 255 / NUM_RAYS + 30);
 		if (shade < 0)
 			shade = 0;
 		if (shade > 255)
@@ -52,6 +52,12 @@ void	draw_vertical_line_(t_data *data,
 				shaded_color = (shade << 16) | (shade << 8) | shade;
 			else
 				shaded_color = color;
+			if (ray < data->run.map.max.x * (data->run.map.map_s / 3)
+				&& start < data->run.map.max.y * (data->run.map.map_s / 3))
+			{
+				start++;
+				continue ;
+			}
 			my_mlx_pixel_put2(data, ray, start, shaded_color);
 		}
 		start++;

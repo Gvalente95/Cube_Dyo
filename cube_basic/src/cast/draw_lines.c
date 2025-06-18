@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/17 16:13:49 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/18 10:41:00 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,42 +55,66 @@ void	draw_line(t_point p0, t_point p1, t_data *data)
 	define_dif(&dif, p0, p1);
 	while (true)
 	{
-		my_mlx_pixel_put(data, p0.x / (data->run.map.map_s / 10), p0.y / (data->run.map.map_s / 10), GREEN);
+		my_mlx_pixel_put(data, p0.x / (data->run.map.map_s / 10),
+			p0.y / (data->run.map.map_s / 10), GREEN);
 		if (p0.x == p1.x && p0.y == p1.y)
 			break ;
 		update_error_and_point(&p0, dir, dif, &err);
 	}
 }
 
-static int	get_shaded_color(int base_color, int distance)
+static int	get_shade_degree(int distance, int color)
 {
 	int	shade;
 
-	if (base_color != WHITE)
-		return (base_color);
-	shade = 255 - (distance * 255 / NUM_RAYS);
-	if (shade < 0)
-		shade = 0;
-	if (shade > 255)
-		shade = 255;
-	return ((shade << 16) | (shade << 8) | shade);
-	(void)base_color;
+	if (color == WHITE)
+	{
+		shade = 255 - (distance * 255 / NUM_RAYS + 30);
+		if (shade < 0)
+			shade = 0;
+		if (shade > 255)
+			shade = 255;
+	}
+	else
+		shaded_color = color;
+	return (shade);
 }
 
-void	draw_vertical_line(t_column_draw *cd, int start, int end)
+void	draw_vertical_line_(t_data *data,
+	int start,
+	int end,
+	int ray,
+	int distance,
+	int color)
 {
-	int	shaded_color;
+	int		shade;
+	int		shaded_color;
 
-	shaded_color = cd->color;
-	if (cd->color == WHITE)
-		shaded_color = get_shaded_color(cd->color, cd->distance);
+	if (color == WHITE)
+	{
+		shade = 255 - (distance * 255 / NUM_RAYS + 30);
+		if (shade < 0)
+			shade = 0;
+		if (shade > 255)
+			shade = 255;
+	}
+	else
+		shaded_color = color;
 	while (start < end)
 	{
 		if (start >= 0 && start < HI)
 		{
-			if (cd->color == WHITE)
-				shaded_color = get_shaded_color(cd->color, cd->distance);
-			my_mlx_pixel_put2(cd->data, cd->ray, start, shaded_color);
+			if (color == WHITE)
+				shaded_color = (shade << 16) | (shade << 8) | shade;
+			else
+				shaded_color = color;
+			if (ray < data->run.map.max.x * (data->run.map.map_s / 3)
+				&& start < data->run.map.max.y * (data->run.map.map_s / 3))
+			{
+				start++;
+				continue ;
+			}
+			my_mlx_pixel_put2(data, ray, start, shaded_color);
 		}
 		start++;
 	}

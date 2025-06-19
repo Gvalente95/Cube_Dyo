@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 06:04:42 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/18 10:36:56 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/19 05:15:07 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,34 +31,18 @@ void	draw_vertical_line_(t_data *data,
 	int distance,
 	int color)
 {
-	int		shade;
-	int		shaded_color;
-
-	if (color == WHITE)
-	{
-		shade = 255 - (distance * 255 / NUM_RAYS + 30);
-		if (shade < 0)
-			shade = 0;
-		if (shade > 255)
-			shade = 255;
-	}
-	else
-		shaded_color = color;
+	(void)distance;
 	while (start < end)
 	{
 		if (start >= 0 && start < HI)
 		{
-			if (color == WHITE)
-				shaded_color = (shade << 16) | (shade << 8) | shade;
-			else
-				shaded_color = color;
 			if (ray < data->run.map.max.x * (data->run.map.map_s / 3)
 				&& start < data->run.map.max.y * (data->run.map.map_s / 3))
 			{
 				start++;
 				continue ;
 			}
-			my_mlx_pixel_put2(data, ray, start, shaded_color);
+			my_mlx_pixel_put2(data, ray, start, color);
 		}
 		start++;
 	}
@@ -153,7 +137,7 @@ void	raycasting(t_data *data)
 	{
 		trace_single_ray(data, &ray, ra);
 		ray.distance = extract_length(data, ray.rx, ray.ry);
-		cast_length(data, ray.distance, r--);
+		cast_length(data, ray.distance, r);
 		p0.x = data->run.player.px + PSIZE / 2;
 		p0.y = data->run.player.py + PSIZE / 2;
 		p1.x = (int)ray.rx;

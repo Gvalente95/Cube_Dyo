@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 09:42:55 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/18 10:41:00 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/19 05:07:21 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,62 +60,5 @@ void	draw_line(t_point p0, t_point p1, t_data *data)
 		if (p0.x == p1.x && p0.y == p1.y)
 			break ;
 		update_error_and_point(&p0, dir, dif, &err);
-	}
-}
-
-static int	get_shade_degree(int distance, int color)
-{
-	int	shade;
-
-	if (color == WHITE)
-	{
-		shade = 255 - (distance * 255 / NUM_RAYS + 30);
-		if (shade < 0)
-			shade = 0;
-		if (shade > 255)
-			shade = 255;
-	}
-	else
-		shaded_color = color;
-	return (shade);
-}
-
-void	draw_vertical_line_(t_data *data,
-	int start,
-	int end,
-	int ray,
-	int distance,
-	int color)
-{
-	int		shade;
-	int		shaded_color;
-
-	if (color == WHITE)
-	{
-		shade = 255 - (distance * 255 / NUM_RAYS + 30);
-		if (shade < 0)
-			shade = 0;
-		if (shade > 255)
-			shade = 255;
-	}
-	else
-		shaded_color = color;
-	while (start < end)
-	{
-		if (start >= 0 && start < HI)
-		{
-			if (color == WHITE)
-				shaded_color = (shade << 16) | (shade << 8) | shade;
-			else
-				shaded_color = color;
-			if (ray < data->run.map.max.x * (data->run.map.map_s / 3)
-				&& start < data->run.map.max.y * (data->run.map.map_s / 3))
-			{
-				start++;
-				continue ;
-			}
-			my_mlx_pixel_put2(data, ray, start, shaded_color);
-		}
-		start++;
 	}
 }

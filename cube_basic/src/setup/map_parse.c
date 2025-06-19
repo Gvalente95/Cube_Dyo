@@ -6,7 +6,7 @@
 /*   By: dyodlm <dyodlm@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 12:29:23 by dyodlm            #+#    #+#             */
-/*   Updated: 2025/06/01 09:41:18 by dyodlm           ###   ########.fr       */
+/*   Updated: 2025/06/19 05:14:48 by dyodlm           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	map_scale_object(
 	ft_bzero(&iter, sizeof(t_point));
 	if (!scaled_map || !*scaled_map || !map || !original || !data)
 		return ;
-	current = map[original->y][original->x];
+	if (map && original->x < data->run.map.max.x && original->y < data->run.map.max.y)
+		current = map[original->y][original->x];
+	else
+		current = -1;
 	scale = (t_point){original->x * SCALE_MAP, original->y * SCALE_MAP};
 	format_object(data, original, &object, current);
 	while (iter.y < SCALE_MAP)
